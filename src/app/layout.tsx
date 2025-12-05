@@ -4,9 +4,9 @@ import Navigation from "@/components/Navigation";
 import ScanlineOverlay from "@/components/ScanlineOverlay";
 
 export const metadata: Metadata = {
-  title: "PORTFOLIO.SYS | Retro Developer Portfolio",
-  description: "A 90s retro-themed personal portfolio showcasing work experience, projects, research, and design work.",
-  keywords: ["portfolio", "developer", "software engineer", "retro", "90s", "web development"],
+  title: "SAS.PORTFOLIO.SYS",
+  description: "Sasanka Wakkumbura's personal portfolio showcasing work experience, projects, research, and design work.",
+  keywords: ["portfolio", "developer", "software engineer", "Sasanka Wakkumbura", "web development"],
 };
 
 export default function RootLayout({
