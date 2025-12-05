@@ -44,9 +44,27 @@ export default function ResearchPage() {
                 {research.map((paper) => (
                     <div key={paper.id} className="research-item" style={{ opacity: 0 }}>
                         <RetroWindow title={`PAPER: ${paper.year}`}>
-                            <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.25rem' }}>
-                                {paper.title}
-                            </h3>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                                <h3 className="text-accent" style={{ fontSize: '1.25rem', margin: 0 }}>
+                                    {paper.title}
+                                </h3>
+                                {paper.tags && paper.tags.length > 0 && (
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        {paper.tags.map(tag => (
+                                            <span key={tag} style={{
+                                                fontSize: '0.75rem',
+                                                padding: '0.25rem 0.5rem',
+                                                background: 'var(--bg-section)',
+                                                border: '1px solid var(--border-color)',
+                                                color: 'var(--text-secondary)',
+                                                textTransform: 'uppercase'
+                                            }}>
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
                             {/* Abstract */}
                             <div style={{ marginBottom: '1.5rem' }}>

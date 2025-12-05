@@ -7,34 +7,23 @@ export interface Research {
     results: string;
     pdfUrl?: string;
     year: string;
+    tags?: string[];
 }
 
 export const research: Research[] = [
     {
-        id: 'research-1',
-        title: 'Machine Learning in Modern Web Development',
-        abstract: 'This paper explores the integration of machine learning models into web applications, analyzing performance implications and user experience improvements.',
+        id: 'research-3',
+        title: 'Analysis of Adversarial Attacks and Defense Mechanisms on Machine Learning Models',
+        abstract: 'A comprehensive literature review analyzing various adversarial attack vectors on machine learning models and evaluating the effectiveness of current defense mechanisms.',
         goals: [
-            'Evaluate ML model performance in browser environments',
-            'Compare server-side vs client-side inference',
-            'Develop best practices for ML-powered web apps',
+            'Analyze common adversarial attack methods',
+            'Evaluate defense mechanism effectiveness',
+            'Identify gaps in current security measures',
         ],
-        method: 'We conducted a series of experiments using TensorFlow.js and WebGL acceleration across different browsers and devices. Performance metrics including inference time, memory usage, and user experience were measured.',
-        results: 'Client-side ML inference showed promising results for smaller models (<10MB), with average inference times under 100ms. Server-side inference remains preferred for complex models requiring GPU acceleration.',
-        pdfUrl: '/research/ml-web-dev.pdf',
-        year: '2023',
-    },
-    {
-        id: 'research-2',
-        title: 'Optimizing Developer Experience in Large Codebases',
-        abstract: 'An investigation into tools and practices that improve developer productivity and satisfaction when working with enterprise-scale codebases.',
-        goals: [
-            'Identify pain points in large codebase navigation',
-            'Evaluate impact of AI-assisted coding tools',
-            'Measure productivity improvements from tooling changes',
-        ],
-        method: 'Survey-based study combined with time-tracking analysis across 50 developers working on codebases ranging from 100K to 5M lines of code.',
-        results: 'AI-assisted coding tools showed a 25% improvement in task completion time. Improved search and navigation tools had the highest impact on developer satisfaction.',
-        year: '2022',
+        method: 'Systematic literature review of recent publications in the field of adversarial machine learning.',
+        results: 'Identified key vulnerabilities in standard CNN architectures and highlighted the trade-offs between model robustness and accuracy.',
+        pdfUrl: '/research/Analysis_of_Adversarial_Attacks.pdf',
+        year: '2024',
+        tags: ['Literature Review'],
     },
 ];

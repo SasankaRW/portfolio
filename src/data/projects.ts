@@ -85,3 +85,35 @@ export const projects: Project[] = [
         ],
     },
 ];
+
+export const tools: Project[] = [
+    {
+        id: 'tool-1',
+        slug: 'auto-typer',
+        name: 'Auto Typer',
+        description: 'Automated typing utility for simulating keyboard input with adjustable speed.',
+        icon: '⌨️',
+        techStack: ['Python', 'PyAutoGUI', 'Tkinter'],
+        role: 'Creator',
+        features: [
+            'Adjustable typing speed',
+            'Script support for long texts',
+            'GUI interface for easy control',
+            'Start/Stop hotkeys'
+        ]
+    },
+    {
+        id: 'tool-2',
+        slug: 'file-organizer',
+        name: 'File Organizer',
+        description: 'Script to automatically organize files in a directory based on file extensions.',
+        icon: '📂',
+        techStack: ['Python', 'OS Module'],
+        role: 'Creator',
+        features: [
+            'Categorizes files by type (Images, Docs, etc.)',
+            'Recursive directory scanning',
+            'Customizable rules'
+        ]
+    }
+];

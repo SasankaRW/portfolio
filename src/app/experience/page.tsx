@@ -25,7 +25,7 @@ export default function ExperiencePage() {
         <div className="section">
             <div className="section-header">
                 <h1 className="section-title">&gt; EXPERIENCE.EXE</h1>
-                <p className="section-subtitle">Work History (Grid View)</p>
+                <p className="section-subtitle">Work History </p>
             </div>
 
             <div className="terminal-container" style={{ marginBottom: '2rem' }}>
