@@ -10,9 +10,29 @@ export interface Project {
     github?: string;
     demo?: string;
     image?: string;
+    video?: string;
+    gallery?: string[];
 }
 
 export const projects: Project[] = [
+    {
+        id: 'proj-new-score',
+        slug: 'basketball-scoreboard',
+        name: 'Basketball ScoreBoard',
+        description: 'Professional real-time scoreboard for high-stakes tournaments with remote control & overlay support.',
+        icon: '🏀',
+        techStack: ['Firebase', 'HTML5', 'CSS3', 'JS (ES6)'],
+        role: 'Creator',
+        demo: 'https://basketball-score-board-tau.vercel.app/',
+        image: '/images/projects/scoreboard.png',
+        features: [
+            'Real-Time Sync (Firebase Realtime DB)',
+            'Precision Timer (down to 0.1s)',
+            'Dual-View: Scoreboard & Remote Control',
+            'Live Stream Overlay Ready (OBS)',
+            'Progressive Web App (PWA)'
+        ],
+    },
     {
         id: 'proj-1',
         slug: 'medinvent-connect',
@@ -21,6 +41,12 @@ export const projects: Project[] = [
         icon: '🏥',
         techStack: ['Flutter', 'React', 'Node.js', 'MongoDB'],
         role: 'Team Lead / Full Stack Developer',
+        image: '/images/projects/medinvent-dashboard.png',
+        gallery: [
+            '/images/projects/medinvent-dashboard.png',
+            '/images/projects/medinvent-appt.png',
+            '/images/projects/medinvent-presc.png'
+        ],
         features: [
             'Clinic and appointment management',
             'Secure authentication',
@@ -34,7 +60,7 @@ export const projects: Project[] = [
         name: 'RFID Live Tracking',
         description: '3D application simulating real-time RFID tag movement and location history.',
         icon: '📡',
-        techStack: ['WPF', 'C#', 'RFID', '3D Simulation'],
+        techStack: ['javascript', 'Three.js', 'RFID', 'WebGL'],
         role: 'Developer',
         features: [
             'Real-time RFID tag movement simulation',
@@ -78,6 +104,11 @@ export const projects: Project[] = [
         icon: '🤖',
         techStack: ['Arduino', 'C++'],
         role: 'Embedded Developer',
+        image: '/images/projects/sentinel-rover.jpg',
+        video: '/images/projects/sentinel-demo.mp4',
+        gallery: [
+            '/images/projects/sentinel-rover.jpg',
+        ],
         features: [
             'Autonomous navigation',
             'Video streaming',
@@ -102,18 +133,4 @@ export const tools: Project[] = [
             'Start/Stop hotkeys'
         ]
     },
-    {
-        id: 'tool-2',
-        slug: 'file-organizer',
-        name: 'File Organizer',
-        description: 'Script to automatically organize files in a directory based on file extensions.',
-        icon: '📂',
-        techStack: ['Python', 'OS Module'],
-        role: 'Creator',
-        features: [
-            'Categorizes files by type (Images, Docs, etc.)',
-            'Recursive directory scanning',
-            'Customizable rules'
-        ]
-    }
 ];

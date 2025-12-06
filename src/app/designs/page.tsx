@@ -4,22 +4,41 @@ import { useEffect, useRef, useState } from 'react';
 import anime from 'animejs';
 import RetroModal from '@/components/RetroModal';
 
-// Placeholder design items (user will provide real images)
+import Image from 'next/image';
+
+// Real design items from public/images
 const designItems = [
-    { id: 1, title: 'Dashboard UI', category: 'Web Design', placeholder: '🎨' },
-    { id: 2, title: 'Mobile App', category: 'App Design', placeholder: '📱' },
-    { id: 3, title: 'Brand Identity', category: 'Branding', placeholder: '✨' },
-    { id: 4, title: 'Icon Set', category: 'Icons', placeholder: '🔷' },
-    { id: 5, title: 'Poster Design', category: 'Print', placeholder: '🖼️' },
-    { id: 6, title: 'Website Mockup', category: 'Web Design', placeholder: '💻' },
+    // Flyers
+    { id: 1, title: 'Event Flyer (Feb)', category: 'Flyers', image: '/images/flyers/24feb6.png' },
+    { id: 2, title: 'Dunky Event', category: 'Flyers', image: '/images/flyers/dunky rn.png' },
+    { id: 3, title: 'Retro vs Modern', category: 'Flyers', image: '/images/flyers/old vs presnt-Recovered.png' },
+
+    // Labels
+    { id: 4, title: 'Curry Powder Label', category: 'Labels', image: '/images/labels/CURRY POWDER50g.png' },
+    { id: 5, title: 'Mustard Powder Label', category: 'Labels', image: '/images/labels/MUSTARD POWDERbottle.png' },
+    { id: 6, title: 'Product Catalog Page', category: 'Labels', image: '/images/labels/PAGE .2.jpeg' },
+    { id: 7, title: 'Fruitopia Label', category: 'Labels', image: '/images/labels/fruitopia.jpeg' },
+    { id: 8, title: 'Sauce Collection', category: 'Labels', image: '/images/labels/sauces.jpg' },
+
+    // UI/UX
+    { id: 9, title: 'Fit Fitness App', category: 'UI/UX', image: '/images/ui/fit-fitness-app.png' },
+    { id: 10, title: 'Cylon Trail', category: 'UI/UX', image: '/images/ui/cylontrail.png' },
 ];
+
+const categories = ['All', 'Flyers', 'Labels', 'UI/UX'];
 
 export default function DesignsPage() {
     const [selectedDesign, setSelectedDesign] = useState<typeof designItems[0] | null>(null);
+    const [activeCategory, setActiveCategory] = useState('All');
     const gridRef = useRef<HTMLDivElement>(null);
+
+    const filteredItems = activeCategory === 'All'
+        ? designItems
+        : designItems.filter(item => item.category === activeCategory);
 
     useEffect(() => {
         if (gridRef.current) {
+            // Reset animations when category changes
             const items = gridRef.current.querySelectorAll('.gallery-item');
             anime({
                 targets: items,
@@ -30,11 +49,7 @@ export default function DesignsPage() {
                 easing: 'easeOutCubic',
             });
         }
-    }, []);
-
-    const handleZoom = (item: typeof designItems[0]) => {
-        setSelectedDesign(item);
-    };
+    }, [activeCategory]);
 
     return (
         <div className="section">
@@ -46,55 +61,69 @@ export default function DesignsPage() {
             <div className="terminal-container" style={{ marginBottom: '2rem' }}>
                 <div className="terminal-header">
                     <span className="terminal-prompt">C:\DESIGNS&gt;</span>
-                    <span className="text-muted">view gallery</span>
+                    <span className="text-muted">filter --category {activeCategory}</span>
                 </div>
-                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                    Click on an image to zoom
-                </p>
+
+                {/* Category Filter Buttons */}
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                    {categories.map(cat => (
+                        <button
+                            key={cat}
+                            className={`retro-btn ${activeCategory === cat ? 'retro-btn-primary' : ''}`}
+                            onClick={() => setActiveCategory(cat)}
+                            style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             <div ref={gridRef} className="gallery-grid">
-                {designItems.map((item) => (
+                {filteredItems.map((item) => (
                     <div
                         key={item.id}
                         className="gallery-item"
-                        onClick={() => handleZoom(item)}
+                        onClick={() => setSelectedDesign(item)}
                         style={{ opacity: 0 }}
                     >
-                        {/* Placeholder for actual images */}
                         <div style={{
                             aspectRatio: '4/3',
                             background: 'var(--bg-section)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '3rem',
+                            position: 'relative',
+                            overflow: 'hidden'
                         }}>
-                            {item.placeholder}
-                            <span style={{
-                                fontSize: '0.75rem',
-                                color: 'var(--text-muted)',
-                                marginTop: '0.5rem',
-                            }}>
-                                {item.category}
-                            </span>
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                fill
+                                style={{ objectFit: 'cover' }}
+                            />
                         </div>
                         <div className="gallery-item-overlay">
                             <span style={{ color: 'var(--accent-primary)', fontSize: '0.875rem' }}>
-                                CLICK TO ZOOM
+                                VIEW DESIGN
                             </span>
                         </div>
                         <div style={{
                             padding: '0.75rem',
-                            borderTop: '2px solid var(--border-color)',
+                            borderTop: '1px solid var(--border-color)',
+                            background: 'var(--bg-card)'
                         }}>
                             <p style={{
                                 fontSize: '0.875rem',
                                 color: 'var(--text-primary)',
-                                margin: 0
+                                margin: 0,
+                                fontWeight: 600
                             }}>
                                 {item.title}
+                            </p>
+                            <p style={{
+                                fontSize: '0.75rem',
+                                color: 'var(--text-muted)',
+                                margin: '0.25rem 0 0 0'
+                            }}>
+                                {item.category}
                             </p>
                         </div>
                     </div>
@@ -105,27 +134,27 @@ export default function DesignsPage() {
             <RetroModal
                 isOpen={!!selectedDesign}
                 onClose={() => setSelectedDesign(null)}
-                title={selectedDesign?.title || 'Design'}
+                title={selectedDesign?.title || 'Design Viewer'}
             >
                 {selectedDesign && (
-                    <div className="crt-frame">
+                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
                         <div style={{
-                            aspectRatio: '16/10',
-                            background: 'var(--bg-main)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '5rem',
+                            position: 'relative',
+                            width: '100%',
+                            height: 'auto',
+                            minHeight: '60vh',
+                            maxHeight: '80vh',
+                            background: 'var(--bg-black)',
                         }}>
-                            {selectedDesign.placeholder}
-                            <span style={{
-                                fontSize: '1rem',
-                                color: 'var(--text-muted)',
-                                marginTop: '1rem',
-                            }}>
-                                {selectedDesign.category}
-                            </span>
+                            <Image
+                                src={selectedDesign.image}
+                                alt={selectedDesign.title}
+                                fill
+                                style={{ objectFit: 'contain' }}
+                            />
+                        </div>
+                        <div style={{ padding: '1rem', borderTop: '2px solid var(--border-color)' }}>
+                            <p className="text-accent">{selectedDesign.title} ({selectedDesign.category})</p>
                         </div>
                     </div>
                 )}

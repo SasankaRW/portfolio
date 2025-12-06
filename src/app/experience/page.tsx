@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import anime from 'animejs';
+import RetroWindow from '@/components/RetroWindow';
 import { experiences } from '@/data/experiences';
 
 export default function ExperiencePage() {
@@ -9,95 +10,90 @@ export default function ExperiencePage() {
 
     useEffect(() => {
         if (gridRef.current) {
-            const items = gridRef.current.querySelectorAll('.retro-window');
+            // Animate grid items
             anime({
-                targets: items,
+                targets: gridRef.current.children,
                 opacity: [0, 1],
                 translateY: [20, 0],
                 delay: anime.stagger(100, { start: 200 }),
-                duration: 500,
+                duration: 600,
                 easing: 'easeOutCubic',
             });
         }
     }, []);
 
     return (
-        <div className="section">
+        <div className="section" style={{ maxWidth: '1400px', margin: '0 auto' }}>
             <div className="section-header">
                 <h1 className="section-title">&gt; EXPERIENCE.EXE</h1>
-                <p className="section-subtitle">Work History </p>
+                <p className="section-subtitle">Execution Log & Career History</p>
             </div>
 
-            <div className="terminal-container" style={{ marginBottom: '2rem' }}>
+            <div className="terminal-container" style={{ marginBottom: '3rem' }}>
                 <div className="terminal-header">
-                    <span className="terminal-prompt">C:\EXPERIENCE&gt;</span>
-                    <span className="text-muted">list --detailed</span>
+                    <span className="terminal-prompt">C:\LOGS&gt;</span>
+                    <span className="text-muted">cat work_history.log --grid-view</span>
                 </div>
             </div>
 
-            <div ref={gridRef} className="projects-grid">
-                {experiences.map((exp) => (
-                    <div key={exp.id} className="retro-window" style={{ height: '100%', opacity: 0 }}>
-                        <div className="retro-window-titlebar">
-                            <span className="retro-window-title">{exp.company}</span>
-                            <div className="retro-window-controls">
-                                <span className="retro-window-btn">_</span>
-                                <span className="retro-window-btn">□</span>
-                            </div>
-                        </div>
-                        <div className="retro-window-content" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 35px)' }}>
-                            <div style={{ marginBottom: '1rem' }}>
-                                <h3 className="text-accent" style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>
-                                    {exp.role}
-                                </h3>
-                                <p className="text-muted" style={{ fontSize: '0.875rem' }}>{exp.duration}</p>
-                            </div>
-
-                            <p style={{
-                                color: 'var(--text-secondary)',
-                                fontSize: '0.9rem',
-                                marginBottom: '1rem',
-                                lineHeight: 1.5,
-                                flexGrow: 1
-                            }}>
-                                {exp.description}
-                            </p>
-
-                            <ul style={{
-                                listStyle: 'none',
-                                padding: 0,
-                                marginTop: 'auto',
-                                borderTop: '1px solid var(--border-color)',
-                                paddingTop: '1rem'
-                            }}>
-                                {exp.responsibilities.slice(0, 3).map((resp, index) => (
-                                    <li
-                                        key={index}
-                                        style={{
-                                            padding: '0.25rem 0',
-                                            paddingLeft: '1rem',
-                                            position: 'relative',
-                                            color: 'var(--text-muted)',
-                                            fontSize: '0.8rem'
-                                        }}
-                                    >
-                                        <span style={{
-                                            position: 'absolute',
-                                            left: 0,
-                                            color: 'var(--accent-primary)'
-                                        }}>
-                                            •
+            <div ref={gridRef} style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
+                gap: '2rem',
+                marginBottom: '4rem'
+            }}>
+                {experiences.map((exp, index) => (
+                    <div key={exp.id} className="experience-card" style={{ opacity: 0 }}>
+                        <RetroWindow title={`LOG_/${String(experiences.length - index).padStart(2, '0')}`} style={{ height: '100%' }}>
+                            <div style={{ padding: '0.5rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                                    <div style={{ flex: 1, paddingRight: '1rem' }}>
+                                        <h3 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', marginBottom: '0.2rem', lineHeight: 1.2 }}>
+                                            {exp.role}
+                                        </h3>
+                                        <span style={{ fontSize: '0.9rem', color: 'var(--accent-secondary)' }}>
+                                            @{exp.company}
                                         </span>
-                                        {resp}
-                                    </li>
-                                ))}
-                                {exp.responsibilities.length > 3 && (
-                                    <li style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem', fontStyle: 'italic' }}>
-                                        + {exp.responsibilities.length - 3} more items...
-                                    </li>
-                                )}
-                            </ul>
-                        </div>
+                                    </div>
+                                    <div style={{
+                                        background: 'rgba(0, 255, 65, 0.1)',
+                                        border: '1px solid var(--accent-primary)',
+                                        color: 'var(--accent-primary)',
+                                        padding: '0.25rem 0.5rem',
+                                        fontSize: '0.75rem',
+                                        fontFamily: 'var(--font-terminal)',
+                                        whiteSpace: 'nowrap',
+                                        borderRadius: '2px'
+                                    }}>
+                                        {exp.duration}
+                                    </div>
+                                </div>
+
+                                <p style={{ color: 'var(--text-secondary)', marginBottom: '1.2rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                                    {exp.description}
+                                </p>
+
+                                <div style={{ marginTop: 'auto' }}>
+                                    <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                        System Activities:
+                                    </h4>
+                                    <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        {exp.responsibilities.map((resp, idx) => (
+                                            <li key={idx} style={{
+                                                display: 'flex',
+                                                gap: '0.75rem',
+                                                fontSize: '0.85rem',
+                                                color: 'var(--text-secondary)',
+                                                lineHeight: 1.4
+                                            }}>
+                                                <span style={{ color: 'var(--accent-primary)', minWidth: '10px' }}>&gt;</span>
+                                                <span>{resp}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </RetroWindow>
                     </div>
                 ))}
             </div>

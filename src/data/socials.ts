@@ -33,6 +33,12 @@ export const bio = {
     location: "Sri Lanka",
     short: "Dynamic software engineer with experience in system integration, scalable applications, and research-driven development.",
     long: "Dynamic software engineer with experience in system integration, scalable applications, and research-driven development. Skilled in Python, C#, and modern web technologies, with additional expertise in low-level hardware integration, device SDK connectivity, and UI/UX design. Experienced in building reliable applications that interface with RFID, barcode scanners, and simulation tools.",
+    points: [
+        "Dynamic software engineer with experience in system integration and scalable applications.",
+        "Skilled in Python, C#, and modern web technologies (React, Next.js).",
+        "Expertise in low-level hardware integration, device SDK connectivity, and UI/UX design.",
+        "Experienced in building reliable applications interfacing with RFID & barcode scanners."
+    ]
 };
 
 export const skills = {

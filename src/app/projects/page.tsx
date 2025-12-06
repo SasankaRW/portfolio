@@ -6,10 +6,12 @@ import FolderIcon from '@/components/FolderIcon';
 import RetroModal from '@/components/RetroModal';
 import { projects, tools } from '@/data/projects';
 import Link from 'next/link';
+import Image from 'next/image';
 import RetroButton from '@/components/RetroButton';
 
 export default function ProjectsPage() {
     const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+    const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
     const gridRef = useRef<HTMLDivElement>(null);
     const toolsGridRef = useRef<HTMLDivElement>(null);
 
@@ -39,6 +41,20 @@ export default function ProjectsPage() {
         }
     }, []);
 
+    // Helper to build media list for the selected project
+    const getMediaList = (project: typeof projects[0]) => {
+        const list: { type: 'image' | 'video', src: string }[] = [];
+        if (project.video) list.push({ type: 'video', src: project.video });
+        if (project.gallery) {
+            project.gallery.forEach(img => list.push({ type: 'image', src: img }));
+        } else if (project.image && !project.video) {
+            list.push({ type: 'image', src: project.image });
+        }
+        return list;
+    };
+
+    const mediaList = selectedProject ? getMediaList(selectedProject) : [];
+
     return (
         <div className="section">
             <div className="section-header">
@@ -53,7 +69,7 @@ export default function ProjectsPage() {
                     <span className="text-muted">dir /w</span>
                 </div>
                 <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                    {projects.length} project(s) found. Click to view details.
+                    {projects.length} project(s) found. Click to open folder.
                 </p>
             </div>
 
@@ -89,32 +105,102 @@ export default function ProjectsPage() {
                 ))}
             </div>
 
-            {/* Project/Tool Detail Modal */}
+            {/* Project/Tool Detail Modal (Folder Window) */}
             <RetroModal
                 isOpen={!!selectedProject}
                 onClose={() => setSelectedProject(null)}
-                title={selectedProject?.name || ''}
+                title={selectedProject?.name.toUpperCase() || 'FOLDER_VIEW'}
             >
                 {selectedProject && (
                     <div>
-                        <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>{selectedProject.icon}</div>
-                            <p className="text-accent" style={{ fontWeight: 600 }}>{selectedProject.role}</p>
+                        {/* Header Info */}
+                        <div style={{ marginBottom: '2rem', textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{selectedProject.icon}</div>
+                            <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{selectedProject.name}</h2>
+                            <p className="text-accent" style={{ fontWeight: 600, fontSize: '1rem' }}>{selectedProject.role}</p>
                         </div>
 
-                        <p style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                        {/* Description */}
+                        <p style={{ marginBottom: '2rem', color: 'var(--text-secondary)', lineHeight: 1.6, fontSize: '1rem' }}>
                             {selectedProject.description}
                         </p>
 
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <h4 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>TECH STACK:</h4>
+                        {/* Media Gallery */}
+                        {mediaList.length > 0 && (
+                            <div style={{ marginBottom: '2rem' }}>
+                                <div className="gallery-grid" style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                                    gap: '1rem'
+                                }}>
+                                    {mediaList.map((media, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="gallery-item"
+                                            style={{
+                                                cursor: 'pointer',
+                                                border: '1px solid var(--border-color)',
+                                                transition: 'transform 0.2s',
+                                                borderRadius: '4px',
+                                                overflow: 'hidden'
+                                            }}
+                                            onClick={() => setSelectedMedia(media)}
+                                        >
+                                            <div style={{
+                                                position: 'relative',
+                                                width: '100%',
+                                                aspectRatio: '16/9',
+                                                background: 'var(--bg-black)'
+                                            }}>
+                                                {media.type === 'video' ? (
+                                                    <video
+                                                        src={media.src}
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                        muted
+                                                        playsInline
+                                                    />
+                                                ) : (
+                                                    <Image
+                                                        src={media.src}
+                                                        alt={`${selectedProject.name} media ${idx + 1}`}
+                                                        fill
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
+                                                )}
+                                                <div className="gallery-item-overlay" style={{
+                                                    position: 'absolute',
+                                                    inset: 0,
+                                                    background: 'rgba(0,0,0,0.5)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    opacity: 0,
+                                                    transition: 'opacity 0.2s'
+                                                }}>
+                                                    <span style={{ color: 'var(--accent-primary)', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                                                        {media.type === 'video' ? 'PLAY VIDEO' : 'ZOOM'}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Tech Stack */}
+                        <div style={{ marginBottom: '2rem' }}>
+                            <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.25rem', width: 'max-content' }}>
+                                // TECH_STACK
+                            </h4>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                 {selectedProject.techStack.map(tech => (
                                     <span key={tech} style={{
-                                        fontSize: '0.75rem',
-                                        padding: '0.25rem 0.5rem',
+                                        fontSize: '0.8rem',
+                                        padding: '0.3rem 0.6rem',
                                         border: '1px solid var(--border-color)',
-                                        color: 'var(--text-secondary)'
+                                        background: 'var(--bg-section)',
+                                        color: 'var(--text-primary)'
                                     }}>
                                         {tech}
                                     </span>
@@ -122,30 +208,96 @@ export default function ProjectsPage() {
                             </div>
                         </div>
 
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <h4 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>FEATURES:</h4>
+                        {/* Features */}
+                        <div style={{ marginBottom: '2rem' }}>
+                            <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.25rem', width: 'max-content' }}>
+                                // SYSTEM_FEATURES
+                            </h4>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
                                 {selectedProject.features.map((feature, idx) => (
                                     <li key={idx} style={{
-                                        fontSize: '0.85rem',
+                                        fontSize: '0.9rem',
                                         color: 'var(--text-secondary)',
-                                        marginBottom: '0.25rem',
+                                        marginBottom: '0.5rem',
                                         display: 'flex',
-                                        gap: '0.5rem'
+                                        gap: '0.75rem',
+                                        alignItems: 'baseline'
                                     }}>
-                                        <span className="text-accent">&gt;</span>
+                                        <span className="text-accent" style={{ fontFamily: 'var(--font-terminal)' }}>[{idx + 1}]</span>
                                         {feature}
                                     </li>
                                 ))}
                             </ul>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-                            <Link href={`/projects/${selectedProject.slug}`} style={{ width: '100%' }}>
-                                <RetroButton className="w-full" style={{ width: '100%' }}>
-                                    VIEW FULL DETAILS
-                                </RetroButton>
-                            </Link>
+                        {/* Sticky Action Bar */}
+                        <div style={{
+                            position: 'sticky',
+                            bottom: '-1rem',
+                            left: 0,
+                            right: 0,
+                            paddingTop: '1rem',
+                            paddingBottom: '0.5rem',
+                            background: 'linear-gradient(to top, var(--bg-card) 90%, transparent)',
+                            display: 'flex',
+                            gap: '1rem',
+                            marginTop: '2rem',
+                            borderTop: '1px solid var(--border-color)',
+                            backdropFilter: 'blur(5px)'
+                        }}>
+                            {selectedProject.demo && (
+                                <a href={selectedProject.demo} target="_blank" rel="noopener noreferrer" style={{ flex: 1 }}>
+                                    <RetroButton className="w-full" style={{ width: '100%', borderColor: 'var(--accent-green)', color: 'var(--accent-green)' }}>
+                                        LIVE DEMO
+                                    </RetroButton>
+                                </a>
+                            )}
+                            {selectedProject.github && (
+                                <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" style={{ flex: 1 }}>
+                                    <RetroButton className="w-full" style={{ width: '100%' }}>
+                                        GITHUB REPO
+                                    </RetroButton>
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </RetroModal>
+
+            {/* Zoom Modal for Media */}
+            <RetroModal
+                isOpen={!!selectedMedia}
+                onClose={() => setSelectedMedia(null)}
+                title="MEDIA_VIEWER.EXE"
+            >
+                {selectedMedia && (
+                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
+                        <div style={{
+                            position: 'relative',
+                            width: '100%',
+                            height: 'auto',
+                            minHeight: '60vh',
+                            maxHeight: '80vh',
+                            background: 'var(--bg-black)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            {selectedMedia.type === 'video' ? (
+                                <video
+                                    src={selectedMedia.src}
+                                    controls
+                                    autoPlay
+                                    style={{ width: '100%', maxHeight: '80vh', objectFit: 'contain', outline: 'none' }}
+                                />
+                            ) : (
+                                <Image
+                                    src={selectedMedia.src}
+                                    alt="Gallery Zoom"
+                                    fill
+                                    style={{ objectFit: 'contain' }}
+                                />
+                            )}
                         </div>
                     </div>
                 )}

@@ -36,6 +36,21 @@ export default function Navigation() {
                             {link.label}
                         </Link>
                     ))}
+                    <a
+                        href="/Sasanka_Ravindu_SE_Resume.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="nav-retro-link"
+                        style={{
+                            color: 'var(--accent-primary)',
+                            border: '1px solid var(--accent-primary)',
+                            padding: '0.25rem 0.75rem',
+                            marginLeft: '1rem',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        [ RESUME ]
+                    </a>
                 </div>
 
                 {/* Mobile Toggle */}
@@ -60,6 +75,16 @@ export default function Navigation() {
                             <span className="nav-arrow">&gt;</span> {link.label}
                         </Link>
                     ))}
+                    <a
+                        href="/Sasanka_Ravindu_SE_Resume.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="nav-retro-mobile-link"
+                        style={{ color: 'var(--accent-primary)' }}
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <span className="nav-arrow">&gt;</span> [ VIEW RESUME ]
+                    </a>
                 </div>
             )}
         </nav>

@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import anime from 'animejs';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
+import RetroModal from '@/components/RetroModal';
 import { projects } from '@/data/projects';
 
 export default function ProjectDetailPage() {
@@ -13,6 +15,7 @@ export default function ProjectDetailPage() {
     const slug = params.slug as string;
     const project = projects.find((p) => p.slug === slug);
     const contentRef = useRef<HTMLDivElement>(null);
+    const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
 
     useEffect(() => {
         if (contentRef.current) {
@@ -43,6 +46,24 @@ export default function ProjectDetailPage() {
         );
     }
 
+    // Construct unified media list
+    const mediaList: { type: 'image' | 'video', src: string }[] = [];
+
+    if (project.video) {
+        mediaList.push({ type: 'video', src: project.video });
+    }
+
+    if (project.gallery && project.gallery.length > 0) {
+        project.gallery.forEach(img => {
+            // Avoid duplicates if video thumbnail is same as image (unlikely here but good practice)
+            mediaList.push({ type: 'image', src: img });
+        });
+    } else if (project.image && !project.video) {
+        // Fallback to main image if no gallery and no video exists (or just add it if video exists? 
+        // Logic: specific gallery overrides single image, but if video exists we still might want main image unless it's in gallery)
+        mediaList.push({ type: 'image', src: project.image });
+    }
+
     return (
         <div className="section">
             <div className="section-header">
@@ -55,27 +76,74 @@ export default function ProjectDetailPage() {
                 }}>
                     ← BACK TO PROJECTS
                 </Link>
-                <h1 className="section-title">
-                    <span style={{ marginRight: '1rem' }}>{project.icon}</span>
-                    {project.name}
-                </h1>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                    <h1 className="section-title">
+                        <span style={{ marginRight: '1rem' }}>{project.icon}</span>
+                        {project.name}
+                    </h1>
+                    {project.demo && (
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                            <RetroButton variant="primary">LIVE DEMO</RetroButton>
+                        </a>
+                    )}
+                </div>
             </div>
 
             <div ref={contentRef}>
-                {/* Main Info */}
+                {/* Main Info with Gallery */}
                 <RetroWindow title="PROJECT INFO" className="mb-6" style={{ marginBottom: '1.5rem', opacity: 0 }}>
-                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.5rem' }}>
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem' }}>
                         {project.description}
                     </p>
-                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+
+                    {mediaList.length > 0 && (
+                        <div style={{ marginBottom: '1rem' }}>
+                            <div className="gallery-grid">
+                                {mediaList.map((media, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="gallery-item"
+                                        onClick={() => setSelectedMedia(media)}
+                                    >
+                                        <div style={{
+                                            position: 'relative',
+                                            width: '100%',
+                                            aspectRatio: '16/9',
+                                            background: 'var(--bg-black)'
+                                        }}>
+                                            {media.type === 'video' ? (
+                                                <video
+                                                    src={media.src}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                    muted
+                                                    playsInline
+                                                />
+                                            ) : (
+                                                <Image
+                                                    src={media.src}
+                                                    alt={`${project.name} media ${idx + 1}`}
+                                                    fill
+                                                    style={{ objectFit: 'cover' }}
+                                                />
+                                            )}
+
+                                            {/* Overlay */}
+                                            <div className="gallery-item-overlay">
+                                                <span style={{ color: 'var(--accent-primary)', fontSize: '0.875rem' }}>
+                                                    {media.type === 'video' ? 'PLAY VIDEO' : 'VIEW IMAGE'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                         {project.github && (
                             <a href={project.github} target="_blank" rel="noopener noreferrer">
                                 <RetroButton>📦 VIEW SOURCE</RetroButton>
-                            </a>
-                        )}
-                        {project.demo && (
-                            <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                                <RetroButton variant="primary">🚀 LIVE DEMO</RetroButton>
                             </a>
                         )}
                     </div>
@@ -142,6 +210,45 @@ export default function ProjectDetailPage() {
                     </p>
                 </RetroWindow>
             </div>
+
+            {/* Zoom Modal */}
+            <RetroModal
+                isOpen={!!selectedMedia}
+                onClose={() => setSelectedMedia(null)}
+                title={project.name + (selectedMedia?.type === 'video' ? ' (Video Demo)' : ' (Gallery)')}
+            >
+                {selectedMedia && (
+                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
+                        <div style={{
+                            position: 'relative',
+                            width: '100%',
+                            height: 'auto',
+                            minHeight: '60vh',
+                            maxHeight: '80vh',
+                            background: 'var(--bg-black)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            {selectedMedia.type === 'video' ? (
+                                <video
+                                    src={selectedMedia.src}
+                                    controls
+                                    autoPlay
+                                    style={{ width: '100%', maxHeight: '80vh', objectFit: 'contain', outline: 'none' }}
+                                />
+                            ) : (
+                                <Image
+                                    src={selectedMedia.src}
+                                    alt="Gallery Zoom"
+                                    fill
+                                    style={{ objectFit: 'contain' }}
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}
+            </RetroModal>
         </div>
     );
 }
