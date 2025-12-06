@@ -78,15 +78,4 @@ export const experiences: Experience[] = [
             'Built Python scripts, web apps, and custom tools',
         ],
     },
-    {
-        id: 'exp-7',
-        company: 'UoM Basketball',
-        role: 'Manager',
-        duration: '2022 – 2025',
-        description: 'Team management and logistics.',
-        responsibilities: [
-            'Managed logistics, training, and tournaments',
-            'Contributed to winning the 2025 SLUG Championship',
-        ],
-    },
 ];

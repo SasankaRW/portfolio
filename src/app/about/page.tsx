@@ -9,8 +9,8 @@ import { experiences } from '@/data/experiences';
 export default function AboutPage() {
     const skillsRef = useRef<HTMLDivElement>(null);
 
-    // Flatten skills for display
-    const allSkills = Object.values(skills).flat();
+    // Flatten and dedup skills for display
+    const allSkills = Array.from(new Set(Object.values(skills).flat()));
 
     useEffect(() => {
         if (skillsRef.current) {

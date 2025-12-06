@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import anime from 'animejs';
 import TerminalText from '@/components/TerminalText';
+import InteractiveTerminal from '@/components/InteractiveTerminal';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
@@ -85,10 +86,7 @@ export default function HomePage() {
           <TerminalText text="INITIALIZING COMMAND CENTER..." speed={30} />
         </div>
       ) : (
-        <div ref={containerRef} style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '1.5rem',
+        <div ref={containerRef} className="home-dashboard-grid" style={{
           opacity: showContent ? 1 : 0
         }}>
 
@@ -109,8 +107,8 @@ export default function HomePage() {
                   👨‍💻
                 </div>
                 <div>
-                  <div className="text-accent" style={{ fontWeight: 600 }}>{bio.location}</div>
-                  <div className="text-muted" style={{ fontSize: '0.875rem' }}>ID: SRW-2025</div>
+                  <div className="text-accent" style={{ fontWeight: 600, fontSize: '1.2rem' }}>{bio.location}</div>
+                  <div className="text-muted" style={{ fontSize: '1rem' }}>ID: SRW-2025</div>
                   <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
                     {socials.map(s => (
                       <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
@@ -121,7 +119,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
                 {bio.short}
               </p>
             </RetroWindow>
@@ -166,32 +164,7 @@ export default function HomePage() {
 
           {/* COLUMN 3: SYSTEM SPECS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <RetroWindow title="SYSTEM_SPECS">
-              <div className="terminal-container" style={{ border: 'none', padding: 0, background: 'transparent' }}>
-                <div className="terminal-header" style={{ borderBottom: 'none', paddingBottom: 0, marginBottom: '0.5rem' }}>
-                  <span className="terminal-prompt">C:\SKILLS&gt;</span>
-                  <span className="text-muted">load_modules</span>
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                  <div className="text-accent" style={{ fontSize: '0.8rem', marginBottom: '0.25rem' }}>WEB_DEV</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
-                    {skills.web.slice(0, 4).map(s => (
-                      <span key={s} style={{ fontSize: '0.75rem', padding: '2px 6px', background: 'var(--bg-section)', border: '1px solid var(--border-color)' }}>{s}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ marginBottom: '1rem' }}>
-                  <div className="text-cyan" style={{ fontSize: '0.8rem', marginBottom: '0.25rem' }}>LANGUAGES</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
-                    {skills.languages.slice(0, 4).map(s => (
-                      <span key={s} style={{ fontSize: '0.75rem', padding: '2px 6px', background: 'var(--bg-section)', border: '1px solid var(--border-color)' }}>{s}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </RetroWindow>
+            <InteractiveTerminal />
 
             <RetroWindow title="MEMORY_BANK">
               <div style={{ fontSize: '0.9rem' }}>
