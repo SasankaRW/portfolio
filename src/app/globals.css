@@ -547,11 +547,79 @@ a:hover {
   color: var(--accent-primary);
   text-transform: uppercase;
   letter-spacing: 0.15em;
+  z-index: 1001;
+  /* Above mobile menu */
+  position: relative;
 }
 
 .nav-retro-links {
   display: flex;
   gap: 2rem;
+}
+
+.nav-retro-mobile-toggle {
+  display: none;
+  /* Hidden on desktop */
+  background: transparent;
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  font-family: var(--font-terminal);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.nav-retro-mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-section);
+  border-bottom: 2px solid var(--border-color);
+  padding: 4rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  backdrop-filter: blur(10px);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.nav-retro-mobile-link {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-retro-mobile-link:hover,
+.nav-retro-mobile-link.text-accent {
+  color: var(--accent-primary);
+  padding-left: 10px;
+}
+
+.nav-arrow {
+  display: inline-block;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.nav-retro-mobile-link:hover .nav-arrow,
+.nav-retro-mobile-link.text-accent .nav-arrow {
+  opacity: 1;
 }
 
 .nav-retro-link {
@@ -896,7 +964,21 @@ a:hover {
   }
 
   .nav-retro-links {
-    gap: 1rem;
+    display: none;
+    /* Hide desktop links on mobile */
+  }
+
+  .nav-retro-mobile-toggle {
+    display: block;
+    /* Show mobile toggle */
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
   }
 
   .nav-retro-link {
@@ -1008,4 +1090,15 @@ a:hover {
 /* Main content padding for fixed nav */
 .main-content {
   padding-top: 60px;
+}
+
+/* Desktop/Mobile Utilities fallback */
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
 }
