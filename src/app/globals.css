@@ -11,36 +11,41 @@
    CSS CUSTOM PROPERTIES (Color Palette)
    ============================================ */
 :root {
-  /* Sci-Fi HUD Palette -> Linux Terminal Palette */
-  --bg-main: #0c0c0c;
-  --bg-section: rgba(0, 20, 0, 0.85);
-  --bg-card: rgba(0, 30, 0, 0.5);
-  --border-color: #003300;
+  /* Sci-Fi HUD Palette */
+  --bg-main: #050505;
+  --bg-section: rgba(10, 15, 20, 0.6);
+  --bg-card: rgba(10, 25, 30, 0.4);
+  --border-color: #1A3C3C;
 
   /* Retro Accent Colors */
   --accent-cyan: #00FFCC;
-  --accent-green: #00FF00;
-  /* Classic Terminal Green */
+  /* The main "Blue" replacement */
+  --accent-green: #00FF66;
   --accent-amber: #FFB000;
   --accent-blue: #00A3FF;
+  /* Kept for reference but secondary */
 
   /* Default accent */
-  --accent-primary: var(--accent-green);
+  --accent-primary: var(--accent-cyan);
 
   /* Text Colors */
-  --text-primary: #EEFFEE;
-  --text-secondary: #88AA88;
-  --text-muted: #335533;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --text-muted: #666666;
 
   /* Fonts */
-  --font-main: 'IBM Plex Mono', monospace;
-  --font-terminal: 'VT323', monospace;
-  --font-pixel: 'Press Start 2P', cursive;
+  --font-main: 'IBM Plex Mono',
+    monospace;
+  /* Keeping for clarity + tech feel */
+  --font-terminal: 'VT323',
+    monospace;
+  --font-pixel: 'Press Start 2P',
+    cursive;
 
   /* Shadows & Glows */
-  --shadow-retro: 0 0 10px rgba(0, 255, 0, 0.1);
-  --shadow-window: 0 0 20px rgba(0, 0, 0, 0.7);
-  --glow-accent: 0 0 8px rgba(0, 255, 0, 0.4);
+  --shadow-retro: 0 0 10px rgba(0, 255, 204, 0.1);
+  --shadow-window: 0 0 20px rgba(0, 0, 0, 0.5);
+  --glow-accent: 0 0 8px rgba(0, 255, 204, 0.3);
 }
 
 /* Amber Mode Theme (Easter Egg) */
@@ -517,8 +522,10 @@ a:hover {
    NAVIGATION
    ============================================ */
 .nav-retro {
-  background: rgba(10, 15, 20, 0.95);
-  border-bottom: 2px solid var(--border-color);
+  background: rgba(5, 10, 5, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(74, 222, 128, 0.1);
   padding: 0.75rem 2rem;
   position: fixed;
   top: 0;
@@ -528,7 +535,7 @@ a:hover {
 }
 
 .nav-retro-inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -536,32 +543,108 @@ a:hover {
 }
 
 .nav-retro-logo {
-  font-family: var(--font-main);
+  font-family: var(--font-terminal);
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.25rem;
   color: var(--accent-primary);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1rem;
   z-index: 1001;
-  /* Above mobile menu */
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-retro-logo::before {
+  content: '>';
+  color: var(--text-muted);
+}
+
+.nav-retro-logo::after {
+  content: '_';
+  animation: cursorBlink 1s step-end infinite;
 }
 
 .nav-retro-links {
   display: flex;
-  gap: 2rem;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-retro-link {
+  position: relative;
+  padding: 0.5rem 0.5rem;
+  /* Reduced padding, gap handles spacing */
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  /* Space between brackets and text */
+}
+
+.nav-retro-link:hover,
+.nav-retro-link.text-accent {
+  color: var(--accent-primary);
+  background: transparent;
+  border: none !important;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+  box-shadow: none !important;
+}
+
+.nav-retro-link::before {
+  content: '[';
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(10px);
+  color: var(--accent-primary);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: bold;
+}
+
+.nav-retro-link::after {
+  content: ']';
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-10px);
+  color: var(--accent-primary);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: bold;
+}
+
+.nav-retro-link:hover::before,
+.nav-retro-link.text-accent::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nav-retro-link:hover::after,
+.nav-retro-link.text-accent::after {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .nav-retro-mobile-toggle {
   display: none;
-  /* Hidden on desktop */
   background: transparent;
-  border: 1px solid var(--accent-primary);
+  border: 1px solid var(--border-color);
   color: var(--accent-primary);
   font-family: var(--font-terminal);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
   z-index: 1001;
+  transition: all 0.2s;
+}
+
+.nav-retro-mobile-toggle:hover {
+  background: rgba(74, 222, 128, 0.1);
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
 }
 
 .nav-retro-mobile-menu {
@@ -569,14 +652,15 @@ a:hover {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--bg-section);
-  border-bottom: 2px solid var(--border-color);
-  padding: 4rem 2rem 2rem;
+  bottom: 0;
+  background: rgba(5, 5, 5, 0.95);
+  padding: 6rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   backdrop-filter: blur(10px);
-  animation: slideDown 0.3s ease-out;
+  animation: slideDown 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-bottom: 2px solid var(--accent-primary);
 }
 
 @keyframes slideDown {
@@ -592,7 +676,7 @@ a:hover {
 }
 
 .nav-retro-mobile-link {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -977,9 +1061,9 @@ a:hover {
 }
 
 .home-dashboard-grid .interactive-terminal {
-  height: 420px !important;
-  min-height: 420px !important;
-  max-height: 420px !important;
+  height: 450px !important;
+  min-height: 450px !important;
+  max-height: 450px !important;
   flex: 0 0 auto !important;
   display: flex;
   flex-direction: column;
@@ -1124,38 +1208,29 @@ a:hover {
 }
 
 /* Animation utility - Retro Glitch Effect */
+/* Animation utility - Tech Data Focus */
 @keyframes retroGlitch {
   0% {
     opacity: 0;
-    transform: translateX(-2px);
-    filter: brightness(2);
+    transform: translateY(10px);
+    filter: blur(10px);
   }
 
-  10% {
+  40% {
     opacity: 1;
-    transform: translateX(2px);
-    filter: brightness(1.5);
-  }
-
-  20% {
-    opacity: 0.8;
-    transform: translateX(-1px);
-    filter: brightness(1);
-  }
-
-  30% {
-    opacity: 1;
-    transform: translateX(0);
+    filter: blur(2px) brightness(1.2);
   }
 
   100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
+    filter: blur(0) brightness(1);
   }
 }
 
 .animate-fade-in {
-  animation: retroGlitch 0.3s ease-out forwards;
+  animation: retroGlitch 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity, filter;
 }
 
 .animate-slide-up {

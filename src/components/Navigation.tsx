@@ -44,12 +44,10 @@ export default function Navigation() {
                         style={{
                             color: 'var(--accent-primary)',
                             border: '1px solid var(--accent-primary)',
-                            padding: '0.25rem 0.75rem',
-                            marginLeft: '1rem',
                             transition: 'all 0.2s'
                         }}
                     >
-                        [ RESUME ]
+                        RESUME
                     </a>
                 </div>
 
