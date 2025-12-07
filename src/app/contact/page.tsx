@@ -103,7 +103,7 @@ export default function ContactPage() {
                                     className="retro-input"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    placeholder="John Doe"
+                                    placeholder="Your Name"
                                     required
                                 />
                             </div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                                     className="retro-input"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    placeholder="john@example.com"
+                                    placeholder="abc@example.com"
                                     required
                                 />
                             </div>
