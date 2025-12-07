@@ -31,9 +31,6 @@ const WELCOME_TEXT = `
  | |    | |_) | | \\ \\  | |  | |   | |__| | |____ _| || |__| |
  |_|    |____/|_|  \\_\\ |_|  |_|    \\____/|______|_____\\____/ 
 
- SYSTEM ONLINE...
- INITIALIZING... OK
- LOADING MODULES... OK
  
  Welcome to PORTFOLIO_OS v3.0.0
  (c) 2025 Sasanka Ravindu Wakkumbura
@@ -197,7 +194,7 @@ export default function InteractiveTerminal() {
     // Auto-scroll to bottom of terminal content
     useEffect(() => {
         if (bottomRef.current) {
-            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+            bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }, [history]);
 
