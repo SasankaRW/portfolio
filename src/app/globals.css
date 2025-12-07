@@ -758,6 +758,16 @@ a:hover {
   gap: 1.5rem;
 }
 
+/* ============================================
+   EXPERIENCE GRID
+   ============================================ */
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -831,6 +841,12 @@ a:hover {
 .section {
   padding: 4rem 2rem;
   max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-wide {
+  max-width: 1600px;
+  padding: 2rem;
   margin: 0 auto;
 }
 
@@ -944,17 +960,18 @@ a:hover {
    ============================================ */
 .home-dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 350px 1fr 300px;
+  gap: 2rem;
+  align-items: start;
 }
 
 .interactive-terminal {
-  height: 450px;
+  height: 400px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
   font-family: var(--font-terminal);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 /* ============================================
@@ -1008,6 +1025,11 @@ a:hover {
     grid-template-columns: 1fr;
   }
 
+  .experience-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
   h1 {
     font-size: 1.75rem;
   }
@@ -1023,6 +1045,10 @@ a:hover {
   .home-dashboard-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .section-wide {
+    padding: 1rem;
   }
 
   .interactive-terminal {

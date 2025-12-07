@@ -36,12 +36,7 @@ export default function ExperiencePage() {
                 </div>
             </div>
 
-            <div ref={gridRef} style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
-                gap: '2rem',
-                marginBottom: '4rem'
-            }}>
+            <div ref={gridRef} className="experience-grid">
                 {experiences.map((exp, index) => (
                     <div key={exp.id} className="experience-card" style={{ opacity: 0 }}>
                         <RetroWindow title={`LOG_/${String(experiences.length - index).padStart(2, '0')}`} style={{ height: '100%' }}>

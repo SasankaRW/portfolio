@@ -10,6 +10,7 @@ import RetroButton from '@/components/RetroButton';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { bio, skills, education, achievements, socials } from '@/data/socials';
 import { experiences } from '@/data/experiences';
+import { projects as projectsData } from '@/data/projects';
 
 const menuItems = [
   { href: '/experience', icon: '📁', label: 'EXPERIENCE', color: 'var(--accent-amber)' },
@@ -54,7 +55,7 @@ export default function HomePage() {
   }, [showContent]);
 
   return (
-    <div className="section" style={{ minHeight: '100vh', paddingTop: '2rem' }}>
+    <div className="section-wide" style={{ minHeight: '100vh', paddingTop: '2rem' }}>
 
       {/* Header Status Bar */}
       <div style={{
@@ -90,7 +91,7 @@ export default function HomePage() {
           opacity: showContent ? 1 : 0
         }}>
 
-          {/* COLUMN 1: IDENTITY */}
+          {/* COLUMN 1: IDENTITY & LOGS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <RetroWindow title="USER_PROFILE">
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -138,7 +139,69 @@ export default function HomePage() {
             </RetroWindow>
           </div>
 
-          {/* COLUMN 2: NAVIGATION (MAIN MENU) */}
+          {/* COLUMN 2: COMMAND CENTER (TERMINAL) */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <InteractiveTerminal />
+
+            <RetroWindow title="LATEST_PROJECTS">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+                {projectsData.slice(0, 2).map((project) => (
+                  <Link key={project.id} href={`/projects`} style={{ textDecoration: 'none' }}>
+                    <div className="retro-btn" style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem',
+                      padding: '1rem',
+                      height: '100%',
+                      textAlign: 'left',
+                      textTransform: 'none',
+                      letterSpacing: 'normal',
+                      border: '1px solid var(--border-color)'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                        <span style={{ fontSize: '1.25rem' }}>{project.icon}</span>
+                        <span style={{
+                          color: 'var(--accent-primary)',
+                          fontWeight: 600,
+                          fontSize: '0.9rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em'
+                        }}>
+                          {project.name}
+                        </span>
+                      </div>
+                      <p className="text-muted" style={{
+                        fontSize: '0.8rem',
+                        margin: 0,
+                        lineHeight: 1.4,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}>
+                        {project.description}
+                      </p>
+                      <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto', flexWrap: 'wrap' }}>
+                        {project.techStack.slice(0, 3).map((tech) => (
+                          <span key={tech} style={{
+                            fontSize: '0.7rem',
+                            color: 'var(--text-secondary)',
+                            background: 'var(--bg-section)',
+                            padding: '2px 6px',
+                            border: '1px solid var(--border-color)'
+                          }}>
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </RetroWindow>
+          </div>
+
+          {/* COLUMN 3: NAVIGATION & STATS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <RetroWindow title="MAIN_MENU">
               <div style={{ display: 'grid', gap: '1rem' }}>
@@ -160,11 +223,6 @@ export default function HomePage() {
                 ))}
               </div>
             </RetroWindow>
-          </div>
-
-          {/* COLUMN 3: SYSTEM SPECS */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <InteractiveTerminal />
 
             <RetroWindow title="MEMORY_BANK">
               <div style={{ fontSize: '0.9rem' }}>
