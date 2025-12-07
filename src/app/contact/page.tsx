@@ -179,6 +179,15 @@ export default function ContactPage() {
                                 <span>{social.name}</span>
                             </a>
                         ))}
+                        <a
+                            href="/Sasanka_Ravindu_SE_Resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="retro-btn retro-btn-primary"
+                            style={{ textAlign: 'center', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                        >
+                            <span style={{ fontSize: '1.2rem' }}>💾</span> DOWNLOAD RESUME
+                        </a>
                     </div>
 
                     <div style={{

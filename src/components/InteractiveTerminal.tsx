@@ -22,16 +22,16 @@ interface CommandHistoryDisplay {
 
 // --- Constants ---
 const ASCII_HEADER = `
-  _____  ____  _____ _______ ______ ____  _      _____ ____  
- |  __ \\|  _ \\|  __ \\__   __|  ____/ __ \\| |    |_   _/ __ \\ 
- | |__) | |_) | |__) | | |  | |__ | |  | | |      | || |  | |
- |  ___/|  _ <|  _  /  | |  |  __|| |  | | |      | || |  | |
- | |    | |_) | | \\ \\  | |  | |   | |__| | |____ _| || |__| |
- |_|    |____/|_|  \\_\\ |_|  |_|    \\____/|______|_____\\____/ 
+   _____          _____              _____ _____  _____ _____  
+  / ____|   /\   / ____|             / ____|  __ \\|_   _|  __ \\ 
+ | (___    /  \\ | (___             | |  __| |__) | | | | |  | |
+  \\___ \\  / /\\ \\ \\___ \\            | | |_ |  _  /  | | | |  | |
+  ____) |/ ____ \\____) |     _     | |__| | | \\ \\ _| |_| |__| |
+ |_____//_/    \\_\\_____/    (_)     \\_____|_|  \\_\\_____|_____/ 
 `;
 
 const WELCOME_INFO = `
- Welcome to PORTFOLIO_OS v3.0.0
+ Welcome to SAS.GRID.OS v3.0.0
  (c) 2025 Sasanka Ravindu Wakkumbura
 
  [TIP] Press TAB for autocomplete
@@ -40,15 +40,14 @@ const WELCOME_INFO = `
 const COMMANDS = ['help', 'ls', 'dir', 'cd', 'cat', 'type', 'open', 'clear', 'cls', 'whoami', 'pwd'];
 
 const WELCOME_TEXT = `
-  _____  ____  _____ _______ ______ ____  _      _____ ____  
- |  __ \\|  _ \\|  __ \\__   __|  ____/ __ \\| |    |_   _/ __ \\ 
- | |__) | |_) | |__) | | |  | |__ | |  | | |      | || |  | |
- |  ___/|  _ <|  _  /  | |  |  __|| |  | | |      | || |  | |
- | |    | |_) | | \\ \\  | |  | |   | |__| | |____ _| || |__| |
- |_|    |____/|_|  \\_\\ |_|  |_|    \\____/|______|_____\\____/ 
-
+   _____          _____              _____ _____  _____ _____  
+  / ____|   /\   / ____|             / ____|  __ \\|_   _|  __ \\ 
+ | (___    /  \\ | (___             | |  __| |__) | | | | |  | |
+  \\___ \\  / /\\ \\ \\___ \\            | | |_ |  _  /  | | | |  | |
+  ____) |/ ____ \\____) |     _     | |__| | | \\ \\ _| |_| |__| |
+ |_____//_/    \\_\\_____/    (_)     \\_____|_|  \\_\\_____|_____/ 
  
- Welcome to PORTFOLIO_OS v3.0.0
+ Welcome to SAS.GRID.OS v3.0.0
  (c) 2025 Sasanka Ravindu Wakkumbura
 
  [TIP] Press TAB for autocomplete
@@ -157,7 +156,7 @@ ${e.details ? `(${e.details})` : ''}
         children: {
             'README.txt': {
                 type: 'file',
-                content: 'Welcome to PORTFOLIO_OS v3.0.0\nUse "ls" to list files, "cd" to navigate, and "cat" to read files.\n\nTry:\n  cd projects\n  ls\n  cat basketball-scoreboard.txt'
+                content: 'Welcome to SAS.GRID.OS v3.0.0\nUse "ls" to list files, "cd" to navigate, and "cat" to read files.\n\nTry:\n  cd projects\n  ls\n  cat basketball-scoreboard.txt'
             },
             'about': {
                 type: 'dir',
@@ -268,8 +267,9 @@ export default function InteractiveTerminal() {
   cd <dir>     - Change directory
   cat <file>   - Read file content
   clear        - Clear terminal screen
-  whoami       - Current user
-  pwd          - Print working directory`
+  about        - About the developer
+  whoami       - Current user identifier
+  ???          - ???`
                 });
                 break;
 
@@ -280,7 +280,47 @@ export default function InteractiveTerminal() {
                 return;
 
             case 'whoami':
-                output.push({ id: Date.now() + 1, type: 'output', text: `visitor@portfolio\nUser ID: GUEST-${Math.floor(Math.random() * 1000)}` });
+                output.push({ id: Date.now() + 1, type: 'output', text: `visitor@sas.grid\nAuthorization: Guest\nID: GUEST-${Math.floor(Math.random() * 1000)}\n\n(Type 'about' to see who *I* am)` });
+                break;
+
+            case 'about':
+                output.push({
+                    id: Date.now() + 1,
+                    type: 'output',
+                    text: `SASANKA RAVINDU WAKKUMBURA\n--------------------------\n${bio.title}\n${bio.short}\n\nType 'cat about/bio.txt' for full details.`
+                });
+                break;
+
+            case '???':
+                output.push({
+                    id: Date.now() + 1,
+                    type: 'output',
+                    text: `SECRET COMMANDS UNLOCKED:\n  sudo    - Try to gain root access\n  game    - Shall we play a game?\n  coffee  - Refill caffeine`
+                });
+                break;
+
+            case 'sudo':
+                output.push({ id: Date.now() + 1, type: 'error', text: `Permission denied: You didn't say the magic word.` });
+                break;
+
+            case 'game':
+                output.push({ id: Date.now() + 1, type: 'output', text: `Global Thermonuclear War... Just kidding.\nHow about a nice game of Chess? (Comming soon)` });
+                break;
+
+            case 'coffee':
+                output.push({
+                    id: Date.now() + 1,
+                    type: 'ascii',
+                    text: `
+    ( (
+     ) )
+  ........
+  |      |]
+  \\      /
+   \`----'
+`
+                });
+                output.push({ id: Date.now() + 2, type: 'output', text: `Here's your Java(Script).` });
                 break;
 
             case 'pwd':
@@ -453,7 +493,7 @@ export default function InteractiveTerminal() {
                     display: 'flex',
                     flexDirection: 'column',
                     overflow: 'hidden',
-                    background: '#0a0a0a',
+                    background: 'var(--bg-terminal, #0a0a0a)',
                     padding: '1rem',
                     cursor: 'text'
                 }}
@@ -464,7 +504,7 @@ export default function InteractiveTerminal() {
                     overflowY: 'auto',
                     marginBottom: '0.5rem',
                     fontFamily: 'var(--font-terminal)',
-                    fontSize: '0.9rem',
+                    fontSize: '1.1rem',
                     lineHeight: '1.4'
                 }}>
                     {history.map((item) => (
@@ -496,7 +536,7 @@ export default function InteractiveTerminal() {
                             border: 'none',
                             color: 'var(--accent-primary)',
                             fontFamily: 'var(--font-terminal)',
-                            fontSize: '1rem',
+                            fontSize: '1.1rem',
                             flex: 1,
                             outline: 'none',
                             caretColor: 'var(--accent-primary)'

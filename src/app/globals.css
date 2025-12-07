@@ -46,6 +46,8 @@
   --shadow-retro: 0 0 10px rgba(0, 255, 204, 0.1);
   --shadow-window: 0 0 20px rgba(0, 0, 0, 0.5);
   --glow-accent: 0 0 8px rgba(0, 255, 204, 0.3);
+  /* Component Specific */
+  --bg-terminal: #0a0a0a;
 }
 
 /* Amber Mode Theme (Easter Egg) */
@@ -54,6 +56,71 @@
   --accent-cyan: var(--accent-amber);
   --border-color: #3C2A0A;
   --glow-accent: 0 0 8px rgba(255, 176, 0, 0.3);
+}
+
+/* ============================================
+   THEME MODES
+   ============================================ */
+
+/* Arch Mode (Dracula/Nord hybrid - Dark Blue/Grey with Cyan) */
+.theme-arch {
+  --bg-main: #0f1419;
+  --bg-section: #141b22;
+  --bg-card: #1f2933;
+  --bg-terminal: #141b22;
+  --border-color: #3e4c59;
+  --accent-primary: #7FD5EA;
+  /* Arch Blue-ish */
+  --accent-cyan: #95E6CB;
+  --text-primary: #E6E6E6;
+  --text-secondary: #B3B9C5;
+  --text-muted: #5C6773;
+  --glow-accent: 0 0 5px rgba(127, 213, 234, 0.2);
+}
+
+/* Minimal Mode (Clean Monochrome Dark) */
+.theme-minimal {
+  --bg-main: #111111;
+  --bg-section: #111111;
+  --bg-card: #111111;
+  --bg-terminal: #000000;
+  --border-color: #333333;
+  --accent-primary: #FFFFFF;
+  --accent-cyan: #FFFFFF;
+  --text-primary: #FFFFFF;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --shadow-retro: none;
+  --shadow-window: none;
+  --glow-accent: none;
+}
+
+/* Light Mode (Paper/Blueprint Style) */
+.theme-light {
+  --bg-main: #F0F2F5;
+  --bg-section: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-terminal: #E0E0E0;
+  /* Light Grey for Terminal */
+  --border-color: #000000;
+  --accent-primary: #000000;
+  --accent-cyan: #0055FF;
+  --text-primary: #000000;
+  --text-secondary: #444444;
+  --text-muted: #777777;
+  --shadow-retro: none;
+  --shadow-window: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --glow-accent: none;
+}
+
+/* Matrix Mode (Digital Rain) */
+.theme-matrix {
+  --bg-main: #0D0208;
+  --bg-terminal: #000000;
+  --accent-primary: #20C20E;
+  --accent-cyan: #20C20E;
+  --border-color: #1A3C1A;
+  --glow-accent: 0 0 8px rgba(32, 194, 14, 0.4);
 }
 
 /* ============================================
@@ -466,6 +533,7 @@ a:hover {
   background: var(--accent-primary);
   margin-left: 2px;
   animation: blink 1s step-end infinite;
+  box-shadow: 0 0 8px var(--accent-primary);
 }
 
 @keyframes blink {
@@ -522,10 +590,10 @@ a:hover {
    NAVIGATION
    ============================================ */
 .nav-retro {
-  background: rgba(5, 10, 5, 0.9);
+  background: var(--bg-section);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(74, 222, 128, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   padding: 0.75rem 2rem;
   position: fixed;
   top: 0;
@@ -897,6 +965,26 @@ a:hover {
   pointer-events: none;
 }
 
+.crt-thumb {
+  position: relative;
+  border: 2px solid var(--border-color);
+  overflow: hidden;
+}
+
+.crt-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.1) 0px,
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px,
+      transparent 2px);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.4;
+}
+
 /* ============================================
    PAGE SECTIONS
    ============================================ */
@@ -1261,5 +1349,36 @@ a:hover {
 @media (max-width: 768px) {
   .mobile-only {
     display: block;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.shake-click:active {
+  animation: shake 0.2s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
   }
 }

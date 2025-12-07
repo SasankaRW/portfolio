@@ -153,8 +153,7 @@ export default function ProjectsPage() {
                                             }}
                                             onClick={() => setSelectedMedia(media)}
                                         >
-                                            <div style={{
-                                                position: 'relative',
+                                            <div className="crt-thumb" style={{
                                                 width: '100%',
                                                 aspectRatio: '16/9',
                                                 background: 'var(--bg-black)'
@@ -171,6 +170,7 @@ export default function ProjectsPage() {
                                                         src={media.src}
                                                         alt={`${selectedProject.name} media ${idx + 1}`}
                                                         fill
+                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                         style={{ objectFit: 'cover' }}
                                                     />
                                                 )}

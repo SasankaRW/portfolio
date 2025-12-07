@@ -7,6 +7,7 @@ import TerminalText from '@/components/TerminalText';
 import InteractiveTerminal from '@/components/InteractiveTerminal';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
+import BootSequence from '@/components/BootSequence';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { bio, skills, education, achievements, socials } from '@/data/socials';
 import { experiences } from '@/data/experiences';
@@ -34,21 +35,23 @@ export default function HomePage() {
     document.body.classList.toggle('amber-mode');
   });
 
+  // Check if boot sequence has already run in this session
+  useEffect(() => {
+    const hasBooted = sessionStorage.getItem('sas_grid_booted');
+    if (hasBooted) {
+      setBootComplete(true);
+      setShowContent(true);
+    }
+  }, []);
+
   useEffect(() => {
     // Prevent scrolling during boot
-    document.body.style.overflow = 'hidden';
-
-    // Faster boot sequence
-    const timer = setTimeout(() => {
-      setBootComplete(true);
-      setTimeout(() => {
-        setShowContent(true);
-        // Re-enable scrolling after boot
-        document.body.style.overflow = 'auto';
-      }, 300);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!bootComplete) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [bootComplete]);
 
   useEffect(() => {
     if (showContent && containerRef.current) {
@@ -107,7 +110,10 @@ export default function HomePage() {
       }}>
         <div>
           <h1 style={{ fontSize: '1.5rem', margin: 0, lineHeight: 1 }}>{bio.name}</h1>
-          <p className="text-muted" style={{ margin: 0, fontSize: '0.875rem' }}>{bio.title}</p>
+          <p className="text-muted" style={{ margin: 0, fontSize: '0.875rem' }}>
+            {bio.title}
+            <span className="terminal-cursor" style={{ height: '0.8em', width: '0.4em', verticalAlign: 'baseline', opacity: 0.7 }}></span>
+          </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{
@@ -122,8 +128,12 @@ export default function HomePage() {
       </div>
 
       {!bootComplete ? (
-        <div style={{ height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <TerminalText text="INITIALIZING COMMAND CENTER..." speed={30} />
+        <div style={{ height: '100vh', width: '100vw', position: 'fixed', top: 0, left: 0, background: 'var(--bg-main)', zIndex: 9999 }}>
+          <BootSequence onComplete={() => {
+            setBootComplete(true);
+            setTimeout(() => setShowContent(true), 100);
+            sessionStorage.setItem('sas_grid_booted', 'true');
+          }} />
         </div>
       ) : (
         <div ref={containerRef} className="home-dashboard-grid" style={{
@@ -162,6 +172,18 @@ export default function HomePage() {
               <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
                 {bio.short}
               </p>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                <a
+                  href="/Sasanka_Ravindu_SE_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="retro-btn retro-btn-primary"
+                  style={{ flex: 1, textAlign: 'center', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                >
+                  <span style={{ fontSize: '1.2rem' }}>💾</span> DOWNLOAD RESUME
+                </a>
+
+              </div>
             </RetroWindow>
 
             <RetroWindow title="ACTIVITY_LOG">

@@ -102,16 +102,15 @@ export default function DesignsPage() {
                         onClick={() => setSelectedDesign(item)}
                         style={{ opacity: 0 }}
                     >
-                        <div style={{
+                        <div className="crt-thumb" style={{
                             aspectRatio: '4/3',
                             background: 'var(--bg-section)',
-                            position: 'relative',
-                            overflow: 'hidden'
                         }}>
                             <Image
                                 src={item.image}
                                 alt={item.title}
                                 fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 style={{ objectFit: 'cover' }}
                             />
                         </div>
