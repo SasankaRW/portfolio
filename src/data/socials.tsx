@@ -76,7 +76,7 @@ export const education = [
         institution: "University of Moratuwa, Sri Lanka",
         degree: "BSc in Information Technology",
         year: "2022 – July 2026",
-        details: "Current C.GPA: 3.62"
+        details: ""
     },
     {
         institution: "CICRA Campus, Sri Lanka",

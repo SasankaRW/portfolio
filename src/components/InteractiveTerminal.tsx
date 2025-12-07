@@ -17,10 +17,26 @@ interface FileSystemNode {
 interface CommandHistoryDisplay {
     id: number;
     text: string;
-    type: 'input' | 'output' | 'error';
+    type: 'input' | 'output' | 'error' | 'ascii';
 }
 
 // --- Constants ---
+const ASCII_HEADER = `
+  _____  ____  _____ _______ ______ ____  _      _____ ____  
+ |  __ \\|  _ \\|  __ \\__   __|  ____/ __ \\| |    |_   _/ __ \\ 
+ | |__) | |_) | |__) | | |  | |__ | |  | | |      | || |  | |
+ |  ___/|  _ <|  _  /  | |  |  __|| |  | | |      | || |  | |
+ | |    | |_) | | \\ \\  | |  | |   | |__| | |____ _| || |__| |
+ |_|    |____/|_|  \\_\\ |_|  |_|    \\____/|______|_____\\____/ 
+`;
+
+const WELCOME_INFO = `
+ Welcome to PORTFOLIO_OS v3.0.0
+ (c) 2025 Sasanka Ravindu Wakkumbura
+
+ [TIP] Press TAB for autocomplete
+`;
+
 const COMMANDS = ['help', 'ls', 'dir', 'cd', 'cat', 'type', 'open', 'clear', 'cls', 'whoami', 'pwd'];
 
 const WELCOME_TEXT = `
@@ -178,7 +194,8 @@ const FILE_SYSTEM = generateFileSystem();
 export default function InteractiveTerminal() {
     const [input, setInput] = useState('');
     const [history, setHistory] = useState<CommandHistoryDisplay[]>([
-        { id: 1, text: WELCOME_TEXT, type: 'output' },
+        { id: 1, text: ASCII_HEADER, type: 'ascii' },
+        { id: 1.5, text: WELCOME_INFO, type: 'output' },
         { id: 2, text: 'Type "help" for available commands.', type: 'output' },
     ]);
     const [currentPath, setCurrentPath] = useState<string[]>([]); // root is empty array
@@ -451,7 +468,7 @@ export default function InteractiveTerminal() {
                     lineHeight: '1.4'
                 }}>
                     {history.map((item) => (
-                        <div key={item.id} style={{
+                        <div key={item.id} className={item.type === 'ascii' ? 'ascii-art' : ''} style={{
                             color: item.type === 'input' ? 'var(--text-secondary)' :
                                 item.type === 'error' ? '#ff5555' : 'var(--accent-primary)',
                             marginBottom: '0.25rem',

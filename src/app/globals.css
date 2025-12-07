@@ -653,12 +653,13 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(5, 5, 5, 0.95);
+  background: #050505;
   padding: 6rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  backdrop-filter: blur(10px);
+  z-index: 990;
+  overflow-y: auto;
   animation: slideDown 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   border-bottom: 2px solid var(--accent-primary);
 }
@@ -680,14 +681,22 @@ a:hover {
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  background: rgba(0, 20, 0, 0.3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s;
 }
 
 .nav-retro-mobile-link:hover,
 .nav-retro-mobile-link.text-accent {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: var(--accent-primary);
   color: var(--accent-primary);
-  padding-left: 10px;
+  padding-left: 1.5rem;
 }
 
 .nav-arrow {
@@ -701,33 +710,7 @@ a:hover {
   opacity: 1;
 }
 
-.nav-retro-link {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: color 0.2s;
-  position: relative;
-}
 
-.nav-retro-link:hover {
-  color: var(--accent-primary);
-}
-
-.nav-retro-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--accent-primary);
-  transition: width 0.2s;
-}
-
-.nav-retro-link:hover::after {
-  width: 100%;
-}
 
 /* ============================================
    MODAL
@@ -1138,6 +1121,33 @@ a:hover {
 
   h2 {
     font-size: 1.5rem;
+  }
+
+  .home-dashboard-grid {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-dashboard-grid .interactive-terminal {
+    font-size: 0.55rem;
+    /* Shrink font to fit ASCII art */
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll causing layout break */
+    white-space: pre-wrap;
+    /* Ensure text wraps if absolutely necessary */
+  }
+
+  .ascii-art {
+    display: none !important;
+  }
+
+  .project-feed {
+    max-height: none;
+    /* Let it expand nicely on mobile */
   }
 
   h3 {

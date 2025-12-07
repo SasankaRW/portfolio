@@ -19,46 +19,48 @@ export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="nav-retro">
-            <div className="nav-retro-inner">
-                <Link href="/" className="nav-retro-logo" onClick={() => setIsOpen(false)}>
-                    PORTFOLIO.SYS
-                </Link>
+        <>
+            <nav className="nav-retro">
+                <div className="nav-retro-inner">
+                    <Link href="/" className="nav-retro-logo" onClick={() => setIsOpen(false)}>
+                        PORTFOLIO.SYS
+                    </Link>
 
-                {/* Desktop Menu */}
-                <div className="nav-retro-links desktop-only">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={`nav-retro-link ${pathname === link.href ? 'text-accent' : ''}`}
+                    {/* Desktop Menu */}
+                    <div className="nav-retro-links desktop-only">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`nav-retro-link ${pathname === link.href ? 'text-accent' : ''}`}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                        <a
+                            href="/Sasanka_Ravindu_SE_Resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="nav-retro-link"
+                            style={{
+                                color: 'var(--accent-primary)',
+                                border: '1px solid var(--accent-primary)',
+                                transition: 'all 0.2s'
+                            }}
                         >
-                            {link.label}
-                        </Link>
-                    ))}
-                    <a
-                        href="/Sasanka_Ravindu_SE_Resume.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="nav-retro-link"
-                        style={{
-                            color: 'var(--accent-primary)',
-                            border: '1px solid var(--accent-primary)',
-                            transition: 'all 0.2s'
-                        }}
-                    >
-                        RESUME
-                    </a>
-                </div>
+                            RESUME
+                        </a>
+                    </div>
 
-                {/* Mobile Toggle */}
-                <button
-                    className="nav-retro-mobile-toggle mobile-only"
-                    onClick={() => setIsOpen(!isOpen)}
-                >
-                    {isOpen ? '[ X ]' : '[ /// ]'}
-                </button>
-            </div>
+                    {/* Mobile Toggle */}
+                    <button
+                        className="nav-retro-mobile-toggle mobile-only"
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        {isOpen ? '[ X ]' : '[ /// ]'}
+                    </button>
+                </div>
+            </nav>
 
             {/* Mobile Menu */}
             {isOpen && (
@@ -85,6 +87,6 @@ export default function Navigation() {
                     </a>
                 </div>
             )}
-        </nav>
+        </>
     );
 }
