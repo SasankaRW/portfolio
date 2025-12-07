@@ -32,10 +32,17 @@ export default function HomePage() {
   });
 
   useEffect(() => {
+    // Prevent scrolling during boot
+    document.body.style.overflow = 'hidden';
+
     // Faster boot sequence
     const timer = setTimeout(() => {
       setBootComplete(true);
-      setTimeout(() => setShowContent(true), 300);
+      setTimeout(() => {
+        setShowContent(true);
+        // Re-enable scrolling after boot
+        document.body.style.overflow = 'auto';
+      }, 300);
     }, 1500);
     return () => clearTimeout(timer);
   }, []);

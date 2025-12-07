@@ -23,6 +23,24 @@ interface CommandHistoryDisplay {
 // --- Constants ---
 const COMMANDS = ['help', 'ls', 'dir', 'cd', 'cat', 'type', 'open', 'clear', 'cls', 'whoami', 'pwd'];
 
+const WELCOME_TEXT = `
+  _____  ____  _____ _______ ______ ____  _      _____ ____  
+ |  __ \\|  _ \\|  __ \\__   __|  ____/ __ \\| |    |_   _/ __ \\ 
+ | |__) | |_) | |__) | | |  | |__ | |  | | |      | || |  | |
+ |  ___/|  _ <|  _  /  | |  |  __|| |  | | |      | || |  | |
+ | |    | |_) | | \\ \\  | |  | |   | |__| | |____ _| || |__| |
+ |_|    |____/|_|  \\_\\ |_|  |_|    \\____/|______|_____\\____/ 
+
+ SYSTEM ONLINE...
+ INITIALIZING... OK
+ LOADING MODULES... OK
+ 
+ Welcome to PORTFOLIO_OS v3.0.0
+ (c) 2025 Sasanka Ravindu Wakkumbura
+
+ [TIP] Press TAB for autocomplete
+`;
+
 // --- File System Generation ---
 const generateFileSystem = (): FileSystemNode => {
     // 1. Projects
@@ -88,7 +106,6 @@ Location: ${bio.location}
 Socials:
 ${socials.map(s => `${s.name}: ${s.url}`).join('\n')}
 
-Type 'mail' to open the contact form (GUI).
     `.trim();
 
     // 4. About
@@ -164,7 +181,7 @@ const FILE_SYSTEM = generateFileSystem();
 export default function InteractiveTerminal() {
     const [input, setInput] = useState('');
     const [history, setHistory] = useState<CommandHistoryDisplay[]>([
-        { id: 1, text: 'Welcome to PORTFOLIO_OS v3.0.0', type: 'output' },
+        { id: 1, text: WELCOME_TEXT, type: 'output' },
         { id: 2, text: 'Type "help" for available commands.', type: 'output' },
     ]);
     const [currentPath, setCurrentPath] = useState<string[]>([]); // root is empty array
