@@ -443,6 +443,7 @@ export default function InteractiveTerminal() {
             >
                 <div style={{
                     flex: 1,
+                    minHeight: 0, // Critical for scrolling in flex container
                     overflowY: 'auto',
                     marginBottom: '0.5rem',
                     fontFamily: 'var(--font-terminal)',

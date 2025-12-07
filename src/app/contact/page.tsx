@@ -23,20 +23,35 @@ export default function ContactPage() {
         e.preventDefault();
         setIsSubmitting(true);
 
-        // Simulate form submission
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        setIsSubmitting(false);
-        setSubmitted(true);
-
-        // Reset form
-        if (formRef.current) {
-            anime({
-                targets: formRef.current,
-                opacity: [1, 0],
-                duration: 300,
-                easing: 'easeOutQuad',
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
             });
+
+            if (!response.ok) {
+                throw new Error('Failed to send message');
+            }
+
+            setSubmitted(true);
+
+            // Reset form animation
+            if (formRef.current) {
+                anime({
+                    targets: formRef.current,
+                    opacity: [1, 0],
+                    duration: 300,
+                    easing: 'easeOutQuad',
+                });
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('Failed to send message. Please try again or email me directly.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

@@ -32,6 +32,9 @@ export default function DesignsPage() {
     const [activeCategory, setActiveCategory] = useState('All');
     const gridRef = useRef<HTMLDivElement>(null);
 
+    const [isZoomed, setIsZoomed] = useState(false);
+    const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 });
+
     const filteredItems = activeCategory === 'All'
         ? designItems
         : designItems.filter(item => item.category === activeCategory);
@@ -50,6 +53,18 @@ export default function DesignsPage() {
             });
         }
     }, [activeCategory]);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        setCursorPos({ x, y });
+    };
+
+    const closeViewer = () => {
+        setSelectedDesign(null);
+        setIsZoomed(false);
+    };
 
     return (
         <div className="section">
@@ -133,28 +148,42 @@ export default function DesignsPage() {
             {/* Zoom Modal */}
             <RetroModal
                 isOpen={!!selectedDesign}
-                onClose={() => setSelectedDesign(null)}
+                onClose={closeViewer}
                 title={selectedDesign?.title || 'Design Viewer'}
             >
                 {selectedDesign && (
                     <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
-                        <div style={{
-                            position: 'relative',
-                            width: '100%',
-                            height: 'auto',
-                            minHeight: '60vh',
-                            maxHeight: '80vh',
-                            background: 'var(--bg-black)',
-                        }}>
+                        <div
+                            onMouseMove={handleMouseMove}
+                            onClick={() => setIsZoomed(!isZoomed)}
+                            style={{
+                                position: 'relative',
+                                width: '100%',
+                                height: 'auto',
+                                minHeight: '60vh',
+                                maxHeight: '80vh',
+                                background: 'var(--bg-black)',
+                                overflow: 'hidden',
+                                cursor: isZoomed ? 'zoom-out' : 'zoom-in'
+                            }}
+                        >
                             <Image
                                 src={selectedDesign.image}
                                 alt={selectedDesign.title}
                                 fill
-                                style={{ objectFit: 'contain' }}
+                                style={{
+                                    objectFit: 'contain',
+                                    transform: isZoomed ? 'scale(2.5)' : 'scale(1)',
+                                    transformOrigin: `${cursorPos.x}% ${cursorPos.y}%`,
+                                    transition: 'transform 0.2s ease-out'
+                                }}
                             />
                         </div>
                         <div style={{ padding: '1rem', borderTop: '2px solid var(--border-color)' }}>
                             <p className="text-accent">{selectedDesign.title} ({selectedDesign.category})</p>
+                            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                                {isZoomed ? '[CLICK TO RESET]' : '[CLICK TO ZOOM]'}
+                            </p>
                         </div>
                     </div>
                 )}

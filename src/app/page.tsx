@@ -23,6 +23,9 @@ export default function HomePage() {
   const [bootComplete, setBootComplete] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [amberMode, setAmberMode] = useState(false);
+  const [logIndex, setLogIndex] = useState(0);
+  const [projectIndex, setProjectIndex] = useState(0);
+  const [memoryIndex, setMemoryIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Konami code easter egg
@@ -61,17 +64,46 @@ export default function HomePage() {
     }
   }, [showContent]);
 
+  // Content Rotation - Each section rotates separately
+  useEffect(() => {
+    if (!showContent) return;
+
+    // Activity Log rotates every 8 seconds
+    const logIntervalId = setInterval(() => {
+      setLogIndex(prev => (prev + 1) % experiences.length);
+    }, 8000);
+
+    // Memory Bank rotates every 10 seconds
+    const memoryIntervalId = setInterval(() => {
+      setMemoryIndex(prev => (prev + 1) % education.length);
+    }, 10000);
+
+    // Projects rotate every 12 seconds
+    const projectIntervalId = setInterval(() => {
+      setProjectIndex(prev => (prev + 1) % projectsData.length);
+    }, 12000);
+
+    return () => {
+      clearInterval(logIntervalId);
+      clearInterval(memoryIntervalId);
+      clearInterval(projectIntervalId);
+    };
+  }, [showContent]);
+
+  // Circular project buffer for seamless 2-item display
+  const displayProjects = [...projectsData, ...projectsData].slice(projectIndex, projectIndex + 2);
+
   return (
-    <div className="section-wide" style={{ minHeight: '100vh', paddingTop: '2rem' }}>
+    <div className="section-wide" style={{ minHeight: '100vh', paddingTop: '1rem', paddingBottom: '1rem' }}>
 
       {/* Header Status Bar */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '2rem',
+        marginBottom: '1rem',
         borderBottom: '2px solid var(--border-color)',
-        paddingBottom: '1rem'
+        paddingBottom: '0.5rem'
       }}>
         <div>
           <h1 style={{ fontSize: '1.5rem', margin: 0, lineHeight: 1 }}>{bio.name}</h1>
@@ -99,12 +131,12 @@ export default function HomePage() {
         }}>
 
           {/* COLUMN 1: IDENTITY & LOGS */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <RetroWindow title="USER_PROFILE">
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
                 <div style={{
-                  width: '80px',
-                  height: '80px',
+                  width: '60px',
+                  height: '60px',
                   background: 'var(--bg-section)',
                   border: '2px solid var(--border-color)',
                   display: 'flex',
@@ -117,7 +149,7 @@ export default function HomePage() {
                 <div>
                   <div className="text-accent" style={{ fontWeight: 600, fontSize: '1.2rem' }}>{bio.location}</div>
                   <div className="text-muted" style={{ fontSize: '1rem' }}>ID: SRW-2025</div>
-                  <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem' }}>
+                  <div style={{ marginTop: '0.5rem', display: 'flex', gap: '1rem' }}>
                     {socials.map(s => (
                       <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
                         style={{ textDecoration: 'none', fontSize: '1.2rem' }} title={s.name}>
@@ -132,29 +164,33 @@ export default function HomePage() {
               </p>
             </RetroWindow>
 
-            <RetroWindow title="LATEST_LOG">
+            <RetroWindow title="ACTIVITY_LOG">
               <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.9rem' }}>
                 <li style={{ marginBottom: '0.75rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <span className="text-muted" style={{ fontSize: '0.75rem', display: 'block' }}>CURRENT ROLE</span>
-                  {experiences[0].role} @ {experiences[0].company}
+                  <span className="text-muted" style={{ fontSize: '0.75rem', display: 'block' }}>EXPERIENCE_LOG_{logIndex + 1}</span>
+                  <div className="animate-fade-in" key={logIndex} style={{ minHeight: '3em' }}>
+                    {experiences[logIndex].role} @ {experiences[logIndex].company}
+                  </div>
                 </li>
                 <li>
-                  <span className="text-muted" style={{ fontSize: '0.75rem', display: 'block' }}>LATEST ACHIEVEMENT</span>
-                  {achievements[4]}
+                  <span className="text-muted" style={{ fontSize: '0.75rem', display: 'block' }}>ACHIEVEMENT_LOG_{logIndex + 1}</span>
+                  <div className="animate-fade-in" key={`ach-${logIndex}`} style={{ minHeight: '3em' }}>
+                    {achievements[logIndex % achievements.length]}
+                  </div>
                 </li>
               </ul>
             </RetroWindow>
           </div>
 
           {/* COLUMN 2: COMMAND CENTER (TERMINAL) */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <InteractiveTerminal />
 
-            <RetroWindow title="LATEST_PROJECTS">
+            <RetroWindow title="PROJECT_FEED" className="project-feed">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-                {projectsData.slice(0, 2).map((project) => (
-                  <Link key={project.id} href={`/projects`} style={{ textDecoration: 'none' }}>
-                    <div className="retro-btn" style={{
+                {displayProjects.map((project, idx) => (
+                  <Link key={`${project.id}-${idx}`} href={`/projects`} style={{ textDecoration: 'none' }}>
+                    <div className="retro-btn animate-fade-in" style={{
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '0.5rem',
@@ -209,16 +245,16 @@ export default function HomePage() {
           </div>
 
           {/* COLUMN 3: NAVIGATION & STATS */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <RetroWindow title="MAIN_MENU">
-              <div style={{ display: 'grid', gap: '1rem' }}>
+              <div style={{ display: 'grid', gap: '0.5rem' }}>
                 {menuItems.map((item) => (
                   <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
                     <div className="retro-btn dos-flicker" style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '1rem',
-                      padding: '1rem',
+                      gap: '0.75rem',
+                      padding: '0.75rem',
                       height: '100%',
                       borderColor: item.color,
                       color: item.color
@@ -234,17 +270,16 @@ export default function HomePage() {
             <RetroWindow title="MEMORY_BANK">
               <div style={{ fontSize: '0.9rem' }}>
                 <div style={{ marginBottom: '0.5rem' }}>
-                  <span className="text-amber">EDUCATION</span>
+                  <span className="text-amber">EDUCATION_AND_STATS</span>
                 </div>
-                {education.slice(0, 1).map((edu, i) => (
-                  <div key={i}>
-                    <div style={{ fontWeight: 600 }}>{edu.degree}</div>
-                    <div className="text-muted" style={{ fontSize: '0.8rem' }}>{edu.institution}</div>
-                    <div className="text-accent" style={{ fontSize: '0.8rem', marginTop: '0.25rem' }}>{edu.details}</div>
-                  </div>
-                ))}
+                <div className="animate-fade-in" key={memoryIndex} style={{ minHeight: '10em', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ fontWeight: 600 }}>{education[memoryIndex].degree}</div>
+                  <div className="text-muted" style={{ fontSize: '0.8rem' }}>{education[memoryIndex].institution}</div>
+                  <div className="text-accent" style={{ fontSize: '0.8rem', marginTop: '0.25rem' }}>{education[memoryIndex].details}</div>
+                </div>
               </div>
             </RetroWindow>
+
           </div>
 
         </div>

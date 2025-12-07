@@ -114,7 +114,14 @@ export default function ProjectsPage() {
                 {selectedProject && (
                     <div>
                         {/* Header Info */}
-                        <div style={{ marginBottom: '2rem', textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem' }}>
+                        <div style={{ marginBottom: '2rem', textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem', position: 'relative' }}>
+                            {selectedProject.demo && (
+                                <a href={selectedProject.demo} target="_blank" rel="noopener noreferrer" style={{ position: 'absolute', right: 0, top: 0 }}>
+                                    <RetroButton style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', borderColor: 'var(--accent-green)', color: 'var(--accent-green)' }}>
+                                        LIVE SITE
+                                    </RetroButton>
+                                </a>
+                            )}
                             <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{selectedProject.icon}</div>
                             <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{selectedProject.name}</h2>
                             <p className="text-accent" style={{ fontWeight: 600, fontSize: '1rem' }}>{selectedProject.role}</p>
@@ -245,13 +252,7 @@ export default function ProjectsPage() {
                             borderTop: '1px solid var(--border-color)',
                             backdropFilter: 'blur(5px)'
                         }}>
-                            {selectedProject.demo && (
-                                <a href={selectedProject.demo} target="_blank" rel="noopener noreferrer" style={{ flex: 1 }}>
-                                    <RetroButton className="w-full" style={{ width: '100%', borderColor: 'var(--accent-green)', color: 'var(--accent-green)' }}>
-                                        LIVE DEMO
-                                    </RetroButton>
-                                </a>
-                            )}
+
                             {selectedProject.github && (
                                 <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" style={{ flex: 1 }}>
                                     <RetroButton className="w-full" style={{ width: '100%' }}>
