@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/basketball-score-board/:path*",
+            "destination": "https://basketball-score-board-tau.vercel.app/:path*"
+        }
+    ]
+}
