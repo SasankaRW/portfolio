@@ -2,307 +2,269 @@
 
 import { useEffect, useRef, useState } from 'react';
 import anime from 'animejs';
-import FolderIcon from '@/components/FolderIcon';
-import RetroModal from '@/components/RetroModal';
-import { projects, tools } from '@/data/projects';
-import Link from 'next/link';
-import Image from 'next/image';
-import RetroButton from '@/components/RetroButton';
+import ProjectCard from '@/components/ProjectCard';
+import ProjectDetailView from '@/components/ProjectDetailView';
+import { projects, tools, Project } from '@/data/projects';
+
+type ViewMode = 'all-projects' | 'all-tools' | 'project-detail';
 
 export default function ProjectsPage() {
-    const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
-    const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
+    const [viewMode, setViewMode] = useState<ViewMode>('all-projects');
+    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+    const [expandedMenu, setExpandedMenu] = useState<{ projects: boolean, tools: boolean }>({ projects: true, tools: true });
+
+    // Animation refs
     const gridRef = useRef<HTMLDivElement>(null);
-    const toolsGridRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (gridRef.current) {
-            const items = gridRef.current.querySelectorAll('.folder-icon');
+        // Animate grid items when view satisfies grid condition
+        if ((viewMode === 'all-projects' || viewMode === 'all-tools') && gridRef.current) {
+            const items = gridRef.current.children;
             anime({
                 targets: items,
                 opacity: [0, 1],
-                scale: [0.8, 1],
-                delay: anime.stagger(100, { start: 200 }),
-                duration: 500,
-                easing: 'easeOutCubic',
+                scale: [0.95, 1],
+                delay: anime.stagger(50),
+                duration: 400,
+                easing: 'easeOutQuad',
             });
         }
+    }, [viewMode]);
 
-        if (toolsGridRef.current) {
-            const items = toolsGridRef.current.querySelectorAll('.folder-icon');
-            anime({
-                targets: items,
-                opacity: [0, 1],
-                scale: [0.8, 1],
-                delay: anime.stagger(100, { start: 600 }),
-                duration: 500,
-                easing: 'easeOutCubic',
-            });
-        }
-    }, []);
-
-    // Helper to build media list for the selected project
-    const getMediaList = (project: typeof projects[0]) => {
-        const list: { type: 'image' | 'video', src: string }[] = [];
-        if (project.video) list.push({ type: 'video', src: project.video });
-        if (project.gallery) {
-            project.gallery.forEach(img => list.push({ type: 'image', src: img }));
-        } else if (project.image && !project.video) {
-            list.push({ type: 'image', src: project.image });
-        }
-        return list;
+    const handleProjectClick = (project: Project) => {
+        setSelectedProject(project);
+        setViewMode('project-detail');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const mediaList = selectedProject ? getMediaList(selectedProject) : [];
+    const handleCategoryClick = (mode: 'all-projects' | 'all-tools') => {
+        setViewMode(mode);
+        setSelectedProject(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
-        <div className="section">
-            <div className="section-header">
+        <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
+            <div className="section-header" style={{ marginBottom: '2rem' }}>
                 <h1 className="section-title">&gt; PROJECTS.EXE</h1>
                 <p className="section-subtitle">Project Directory</p>
             </div>
 
-            {/* Main Projects Section */}
-            <div className="terminal-container" style={{ marginBottom: '2rem' }}>
-                <div className="terminal-header">
-                    <span className="terminal-prompt">C:\PROJECTS&gt;</span>
-                    <span className="text-muted">dir /w</span>
-                </div>
-                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                    {projects.length} project(s) found. Click to open folder.
-                </p>
-            </div>
+            <div className="layout-container" style={{ display: 'flex', gap: '2rem', flex: 1, alignItems: 'flex-start', flexDirection: 'column' }}>
+                <style jsx>{`
+                    @media (min-width: 1024px) {
+                        .layout-container {
+                            flex-direction: row !important;
+                        }
+                        .sidebar {
+                            width: 300px;
+                            position: sticky;
+                            top: 100px;
+                            flex-shrink: 0;
+                            height: fit-content;
+                            max-height: 80vh;
+                            overflow-y: auto;
+                        }
+                        /* Custom scrollbar for sidebar */
+                        .sidebar::-webkit-scrollbar {
+                            width: 6px;
+                        }
+                    }
+                    @media (max-width: 1023px) {
+                        .sidebar {
+                            width: 100%;
+                            margin-bottom: 2rem;
+                        }
+                    }
+                `}</style>
 
-            <div ref={gridRef} className="desktop-grid" style={{ marginBottom: '4rem' }}>
-                {projects.map((project) => (
-                    <FolderIcon
-                        key={project.id}
-                        label={project.name}
-                        onClick={() => setSelectedProject(project)}
-                    />
-                ))}
-            </div>
+                {/* SIDEBAR NAVIGATION */}
+                <aside className="sidebar retro-window" style={{ padding: '0', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{
+                        padding: '1rem',
+                        borderBottom: '1px solid var(--border-color)',
+                        background: 'rgba(0, 255, 204, 0.02)'
+                    }}>
+                        <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontFamily: 'var(--font-terminal)' }}>EXPLORER</div>
+                    </div>
 
-            {/* Tools Section */}
-            <div className="section-header" style={{ marginBottom: '2rem' }}>
-                <h2 className="section-title" style={{ fontSize: '1.25rem' }}>&gt; TOOLS & UTILITIES</h2>
-            </div>
+                    <nav style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
-            <div className="terminal-container" style={{ marginBottom: '2rem' }}>
-                <div className="terminal-header">
-                    <span className="terminal-prompt">C:\TOOLS&gt;</span>
-                    <span className="text-muted">list --all</span>
-                </div>
-            </div>
+                        {/* PROJECTS GROUP */}
+                        <div>
+                            <div
+                                onClick={() => handleCategoryClick('all-projects')}
+                                style={{
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '0.75rem',
+                                    fontWeight: 600,
+                                    color: viewMode === 'all-projects' ? 'var(--accent-primary)' : 'var(--text-primary)',
+                                    transition: 'color 0.2s'
+                                }}
+                            >
+                                <span style={{ fontSize: '0.8rem', transform: expandedMenu.projects ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
+                                <span>PROJECTS</span>
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: 'auto' }}>{projects.length}</span>
+                            </div>
 
-            <div ref={toolsGridRef} className="desktop-grid">
-                {tools.map((tool) => (
-                    <FolderIcon
-                        key={tool.id}
-                        label={tool.name}
-                        onClick={() => setSelectedProject(tool)}
-                    />
-                ))}
-            </div>
-
-            {/* Project/Tool Detail Modal (Folder Window) */}
-            <RetroModal
-                isOpen={!!selectedProject}
-                onClose={() => setSelectedProject(null)}
-                title={selectedProject?.name.toUpperCase() || 'FOLDER_VIEW'}
-            >
-                {selectedProject && (
-                    <div>
-                        {/* Header Info */}
-                        <div style={{ marginBottom: '2rem', textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1.5rem', position: 'relative' }}>
-                            {selectedProject.demo && (
-                                <a href={selectedProject.demo} target="_blank" rel="noopener noreferrer" style={{ position: 'absolute', right: 0, top: 0 }}>
-                                    <RetroButton style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem', borderColor: 'var(--accent-green)', color: 'var(--accent-green)' }}>
-                                        LIVE SITE
-                                    </RetroButton>
-                                </a>
-                            )}
-                            <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>{selectedProject.icon}</div>
-                            <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{selectedProject.name}</h2>
-                            <p className="text-accent" style={{ fontWeight: 600, fontSize: '1rem' }}>{selectedProject.role}</p>
-                        </div>
-
-                        {/* Description */}
-                        <p style={{ marginBottom: '2rem', color: 'var(--text-secondary)', lineHeight: 1.6, fontSize: '1rem' }}>
-                            {selectedProject.description}
-                        </p>
-
-                        {/* Media Gallery */}
-                        {mediaList.length > 0 && (
-                            <div style={{ marginBottom: '2rem' }}>
-                                <div className="gallery-grid" style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                                    gap: '1rem'
-                                }}>
-                                    {mediaList.map((media, idx) => (
+                            {expandedMenu.projects && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', paddingLeft: '1.25rem', borderLeft: '1px solid var(--border-color)', marginLeft: '0.4rem' }}>
+                                    {projects.map(p => (
                                         <div
-                                            key={idx}
-                                            className="gallery-item"
+                                            key={p.id}
+                                            onClick={() => handleProjectClick(p)}
                                             style={{
+                                                padding: '0.4rem 0.5rem',
+                                                fontSize: '0.9rem',
                                                 cursor: 'pointer',
-                                                border: '1px solid var(--border-color)',
-                                                transition: 'transform 0.2s',
+                                                color: selectedProject?.id === p.id ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                                                background: selectedProject?.id === p.id ? 'rgba(0, 255, 204, 0.05)' : 'transparent',
                                                 borderRadius: '4px',
-                                                overflow: 'hidden'
+                                                transition: 'all 0.2s',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.5rem'
                                             }}
-                                            onClick={() => setSelectedMedia(media)}
+                                            className="hover:text-accent"
                                         >
-                                            <div className="crt-thumb" style={{
-                                                width: '100%',
-                                                aspectRatio: '16/9',
-                                                background: 'var(--bg-black)'
-                                            }}>
-                                                {media.type === 'video' ? (
-                                                    <video
-                                                        src={media.src}
-                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                        muted
-                                                        playsInline
-                                                    />
-                                                ) : (
-                                                    <Image
-                                                        src={media.src}
-                                                        alt={`${selectedProject.name} media ${idx + 1}`}
-                                                        fill
-                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                        style={{ objectFit: 'cover' }}
-                                                    />
-                                                )}
-                                                <div className="gallery-item-overlay" style={{
-                                                    position: 'absolute',
-                                                    inset: 0,
-                                                    background: 'rgba(0,0,0,0.5)',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    opacity: 0,
-                                                    transition: 'opacity 0.2s'
-                                                }}>
-                                                    <span style={{ color: 'var(--accent-primary)', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                                                        {media.type === 'video' ? 'PLAY VIDEO' : 'ZOOM'}
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            <span style={{ fontSize: '1rem' }}>{p.icon}</span>
+                                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</span>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
 
-                        {/* Tech Stack */}
-                        <div style={{ marginBottom: '2rem' }}>
-                            <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.25rem', width: 'max-content' }}>
-                                // TECH_STACK
-                            </h4>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                {selectedProject.techStack.map(tech => (
-                                    <span key={tech} style={{
-                                        fontSize: '0.8rem',
-                                        padding: '0.3rem 0.6rem',
-                                        border: '1px solid var(--border-color)',
-                                        background: 'var(--bg-section)',
-                                        color: 'var(--text-primary)'
-                                    }}>
-                                        {tech}
-                                    </span>
+                        {/* TOOLS GROUP */}
+                        <div>
+                            <div
+                                onClick={() => handleCategoryClick('all-tools')}
+                                style={{
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    marginBottom: '0.75rem',
+                                    fontWeight: 600,
+                                    color: viewMode === 'all-tools' ? 'var(--accent-primary)' : 'var(--text-primary)',
+                                    transition: 'color 0.2s'
+                                }}
+                            >
+                                <span style={{ fontSize: '0.8rem', transform: expandedMenu.tools ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
+                                <span>TOOLS</span>
+                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: 'auto' }}>{tools.length}</span>
+                            </div>
+
+                            {expandedMenu.tools && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', paddingLeft: '1.25rem', borderLeft: '1px solid var(--border-color)', marginLeft: '0.4rem' }}>
+                                    {tools.map(t => (
+                                        <div
+                                            key={t.id}
+                                            onClick={() => handleProjectClick(t)}
+                                            style={{
+                                                padding: '0.4rem 0.5rem',
+                                                fontSize: '0.9rem',
+                                                cursor: 'pointer',
+                                                color: selectedProject?.id === t.id ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                                                background: selectedProject?.id === t.id ? 'rgba(0, 255, 204, 0.05)' : 'transparent',
+                                                borderRadius: '4px',
+                                                transition: 'all 0.2s',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.5rem'
+                                            }}
+                                            className="hover:text-accent"
+                                        >
+                                            <span style={{ fontSize: '1rem' }}>{t.icon}</span>
+                                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                    </nav>
+                </aside>
+
+                {/* MAIN CONTENT AREA */}
+                <main style={{ flex: 1, width: '100%', minWidth: 0 }}> {/* minWidth 0 prevents flex child from overflowing */}
+
+                    {/* VIEW: PROJECT GRID */}
+                    {viewMode === 'all-projects' && (
+                        <div className="animate-fade-in">
+                            <div className="terminal-container" style={{ marginBottom: '2rem' }}>
+                                <div className="terminal-header">
+                                    <span className="terminal-prompt">C:\PROJECTS&gt;</span>
+                                    <span className="text-muted">dir /v /sort:date</span>
+                                </div>
+                                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
+                                    {projects.length} project(s) found. Select a project to view details.
+                                </p>
+                            </div>
+
+                            <div
+                                ref={gridRef}
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                                    gap: '1.5rem',
+                                    marginBottom: '4rem'
+                                }}
+                            >
+                                {projects.map((project) => (
+                                    <ProjectCard
+                                        key={project.id}
+                                        project={project}
+                                        onClick={() => handleProjectClick(project)}
+                                    />
                                 ))}
                             </div>
                         </div>
+                    )}
 
-                        {/* Features */}
-                        <div style={{ marginBottom: '2rem' }}>
-                            <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.25rem', width: 'max-content' }}>
-                                // SYSTEM_FEATURES
-                            </h4>
-                            <ul style={{ listStyle: 'none', padding: 0 }}>
-                                {selectedProject.features.map((feature, idx) => (
-                                    <li key={idx} style={{
-                                        fontSize: '0.9rem',
-                                        color: 'var(--text-secondary)',
-                                        marginBottom: '0.5rem',
-                                        display: 'flex',
-                                        gap: '0.75rem',
-                                        alignItems: 'baseline'
-                                    }}>
-                                        <span className="text-accent" style={{ fontFamily: 'var(--font-terminal)' }}>[{idx + 1}]</span>
-                                        {feature}
-                                    </li>
+                    {/* VIEW: TOOLS GRID */}
+                    {viewMode === 'all-tools' && (
+                        <div className="animate-fade-in">
+                            <div className="terminal-container" style={{ marginBottom: '2rem' }}>
+                                <div className="terminal-header">
+                                    <span className="terminal-prompt">C:\TOOLS&gt;</span>
+                                    <span className="text-muted">list --all</span>
+                                </div>
+                                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
+                                    {tools.length} tool(s) found.
+                                </p>
+                            </div>
+
+                            <div
+                                ref={gridRef}
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                                    gap: '1.5rem',
+                                }}
+                            >
+                                {tools.map((tool) => (
+                                    <ProjectCard
+                                        key={tool.id}
+                                        project={tool}
+                                        onClick={() => handleProjectClick(tool)}
+                                    />
                                 ))}
-                            </ul>
+                            </div>
                         </div>
+                    )}
 
-                        {/* Sticky Action Bar */}
-                        <div style={{
-                            position: 'sticky',
-                            bottom: '-1rem',
-                            left: 0,
-                            right: 0,
-                            paddingTop: '1rem',
-                            paddingBottom: '0.5rem',
-                            background: 'linear-gradient(to top, var(--bg-card) 90%, transparent)',
-                            display: 'flex',
-                            gap: '1rem',
-                            marginTop: '2rem',
-                            borderTop: '1px solid var(--border-color)',
-                            backdropFilter: 'blur(5px)'
-                        }}>
+                    {/* VIEW: DETAIL */}
+                    {viewMode === 'project-detail' && selectedProject && (
+                        <ProjectDetailView project={selectedProject} />
+                    )}
 
-                            {selectedProject.github && (
-                                <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" style={{ flex: 1 }}>
-                                    <RetroButton className="w-full" style={{ width: '100%' }}>
-                                        GITHUB REPO
-                                    </RetroButton>
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                )}
-            </RetroModal>
-
-            {/* Zoom Modal for Media */}
-            <RetroModal
-                isOpen={!!selectedMedia}
-                onClose={() => setSelectedMedia(null)}
-                title="MEDIA_VIEWER.EXE"
-            >
-                {selectedMedia && (
-                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
-                        <div style={{
-                            position: 'relative',
-                            width: '100%',
-                            height: 'auto',
-                            minHeight: '60vh',
-                            maxHeight: '80vh',
-                            background: 'var(--bg-black)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            {selectedMedia.type === 'video' ? (
-                                <video
-                                    src={selectedMedia.src}
-                                    controls
-                                    autoPlay
-                                    style={{ width: '100%', maxHeight: '80vh', objectFit: 'contain', outline: 'none' }}
-                                />
-                            ) : (
-                                <Image
-                                    src={selectedMedia.src}
-                                    alt="Gallery Zoom"
-                                    fill
-                                    style={{ objectFit: 'contain' }}
-                                />
-                            )}
-                        </div>
-                    </div>
-                )}
-            </RetroModal>
+                </main>
+            </div>
         </div>
     );
 }

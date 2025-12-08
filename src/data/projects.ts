@@ -131,6 +131,11 @@ export const tools: Project[] = [
             'Script support for long texts',
             'GUI interface for easy control',
             'Start/Stop hotkeys'
+        ],
+        image: '/images/projects/typer/1.png',
+        gallery: [
+            '/images/projects/typer/1.png',
+            '/images/projects/typer/Screenshot 2025-12-08 223519.png'
         ]
     },
 ];
