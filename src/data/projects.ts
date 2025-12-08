@@ -23,7 +23,7 @@ export const projects: Project[] = [
         icon: '🏀',
         techStack: ['Firebase', 'HTML5', 'CSS3', 'JS (ES6)'],
         role: 'Creator',
-        demo: '/basketball-score-board',
+        demo: 'https://basketball-score-board-tau.vercel.app/',
         image: '/images/projects/scoreboard.png',
         features: [
             'Real-Time Sync (Firebase Realtime DB)',
