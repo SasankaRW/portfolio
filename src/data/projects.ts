@@ -106,9 +106,11 @@ export const projects: Project[] = [
         techStack: ['Java Spring Boot', 'React', 'MongoDB', 'Docker', 'Redux', 'Material UI'],
         role: 'Team Lead',
         github: 'https://github.com/SasankaRW/velvet-bloom',
-        image: '/images/projects/velvet-bloom/home.png',
+        image: '/images/projects/velvet-bloom/Browsing.png',
         gallery: [
-            '/images/projects/velvet-bloom/home.png',
+            '/images/projects/velvet-bloom/Browsing.png',
+            '/images/projects/velvet-bloom/Checkout.png',
+            '/images/projects/velvet-bloom/Inventory.png'
         ],
         features: [
             'Microservices-ready Monolithic Architecture',
