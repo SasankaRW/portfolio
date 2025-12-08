@@ -260,7 +260,15 @@ export default function ProjectsPage() {
 
                     {/* VIEW: DETAIL */}
                     {viewMode === 'project-detail' && selectedProject && (
-                        <ProjectDetailView project={selectedProject} />
+                        <ProjectDetailView
+                            project={selectedProject}
+                            onBack={() => {
+                                const isTool = tools.some(t => t.id === selectedProject.id);
+                                setViewMode(isTool ? 'all-tools' : 'all-projects');
+                                setSelectedProject(null);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                        />
                     )}
 
                 </main>

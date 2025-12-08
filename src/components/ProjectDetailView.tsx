@@ -8,9 +8,10 @@ import RetroModal from './RetroModal';
 
 interface ProjectDetailViewProps {
     project: Project;
+    onBack: () => void;
 }
 
-export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
+export default function ProjectDetailView({ project, onBack }: ProjectDetailViewProps) {
     const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
 
     // Helper to build media list
@@ -38,6 +39,25 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                 }
             `}</style>
 
+            <button
+                onClick={onBack}
+                style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--text-muted)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '1rem',
+                    fontFamily: 'var(--font-terminal)',
+                    fontSize: '1rem',
+                    padding: 0
+                }}
+            >
+                <span>&lt;</span> BACK_TO_LIST
+            </button>
+
             {/* Header / Breadcrumb-ish */}
             <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -50,7 +70,7 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                 {project.demo && (
                     <a href={project.demo} target="_blank" rel="noopener noreferrer">
                         <RetroButton variant="primary">
-                            LAUNCH LIVE SITE
+                            {['auto-typer', 'whatsapp-bot'].includes(project.slug) ? 'VIEW RELEASES' : 'LAUNCH LIVE SITE'}
                         </RetroButton>
                     </a>
                 )}
@@ -209,6 +229,17 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                             ))}
                         </div>
                     )}
+
+                    {/* GitHub Link below images for tools/all */}
+                    {project.github && (
+                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                            <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', width: '100%' }}>
+                                <RetroButton style={{ width: '100%', justifyContent: 'center' }}>
+                                    VIEW SOURCE CODE ON GITHUB
+                                </RetroButton>
+                            </a>
+                        </div>
+                    )}
                 </div>
 
                 {/* RIGHT COLUMN: Info */}
@@ -270,19 +301,7 @@ export default function ProjectDetailView({ project }: ProjectDetailViewProps) {
                         </div>
                     )}
 
-                    {/* Source Link */}
-                    {project.github && (
-                        <div>
-                            <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span>//</span> SOURCE_ACCESS
-                            </h4>
-                            <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', width: '100%' }}>
-                                <RetroButton style={{ width: '100%', justifyContent: 'center' }}>
-                                    VIEW SOURCE CODE ON GITHUB
-                                </RetroButton>
-                            </a>
-                        </div>
-                    )}
+
                 </div>
             </div>
 

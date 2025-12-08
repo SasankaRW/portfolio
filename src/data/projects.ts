@@ -15,6 +15,7 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+
     {
         id: 'proj-new-score',
         slug: 'basketball-scoreboard',
@@ -97,6 +98,27 @@ export const projects: Project[] = [
         ],
     },
     {
+        id: 'velvet-bloom',
+        slug: 'velvet-bloom',
+        name: 'Velvet Bloom',
+        description: 'Monolithic e-commerce platform for a clothing store featuring a Backend, Customer Frontend, and Admin Dashboard.',
+        icon: '👗', // Or another suitable icon
+        techStack: ['Java Spring Boot', 'React', 'MongoDB', 'Docker', 'Redux', 'Material UI'],
+        role: 'Team Lead',
+        github: 'https://github.com/SasankaRW/velvet-bloom',
+        image: '/images/projects/velvet-bloom/home.png',
+        gallery: [
+            '/images/projects/velvet-bloom/home.png',
+        ],
+        features: [
+            'Microservices-ready Monolithic Architecture',
+            'Full-stack: Java Spring Boot Backend + React Frontend',
+            'Admin Dashboard for managing products and orders',
+            'Dockerized environment with Docker Compose',
+            'Secure RESTful API integration'
+        ]
+    },
+    {
         id: 'proj-5',
         slug: 'sentinel-resq',
         name: 'SentinelResQ',
@@ -119,18 +141,44 @@ export const projects: Project[] = [
 
 export const tools: Project[] = [
     {
+        id: 'tool-whatsapp-bot',
+        slug: 'whatsapp-bot',
+        name: 'WhatsApp Auto Sender Bot',
+        description: 'A powerful, user-friendly desktop application to schedule and automate WhatsApp messages using Selenium.',
+        icon: '🤖',
+        techStack: ['Python', 'Selenium', 'Tkinter'],
+        role: 'Creator',
+        github: 'https://github.com/SasankaRW/WhatsApp-Bot/tree/v0.1.0',
+        demo: 'https://github.com/SasankaRW/WhatsApp-Bot/releases',
+        features: [
+            'GUI Interface: Simple graphical interface',
+            'Smart Scheduling: Just-In-Time browser system',
+            'Resource Friendly: Closes browser between actions',
+            'Persistent Login: Remembers sessions',
+            'Isolated Environment: Separate Chrome instance'
+        ],
+        image: '/images/projects/whatsapp-bot/gui.png',
+        gallery: [
+            '/images/projects/whatsapp-bot/gui.png'
+        ]
+    },
+    {
         id: 'tool-1',
         slug: 'auto-typer',
-        name: 'Auto Typer',
-        description: 'Automated typing utility for simulating keyboard input with adjustable speed.',
+        name: 'Text Cleaner and Auto-Typer',
+        description: 'A simple utility tool for Windows to clean formatted text and automatically type it into any application. Perfect for pasting text into restricted fields that block pasting.',
         icon: '⌨️',
         techStack: ['Python', 'PyAutoGUI', 'Tkinter'],
         role: 'Creator',
+        github: 'https://github.com/SasankaRW/typer',
+        demo: 'https://github.com/SasankaRW/typer/releases',
         features: [
-            'Adjustable typing speed',
-            'Script support for long texts',
-            'GUI interface for easy control',
-            'Start/Stop hotkeys'
+            'Text Cleaning: Automatically cleans formatted text',
+            'Clipboard Integration: One-click paste from system clipboard',
+            'Adjustable Speed with configurable delay',
+            'Progress Tracking & Real-time char count',
+            'Always on Top floating window',
+            'Safe: Quick "Stop" button'
         ],
         image: '/images/projects/typer/1.png',
         gallery: [

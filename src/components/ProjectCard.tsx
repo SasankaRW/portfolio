@@ -76,7 +76,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
                     <span style={{ fontSize: '1.25rem' }}>{project.icon}</span>
                     <span className="retro-window-title" style={{ fontSize: '0.8rem' }}>{project.name}</span>
                 </div>
-                {project.demo && (
+                {project.demo && !['auto-typer', 'whatsapp-bot'].includes(project.slug) && (
                     <div style={{
                         display: 'flex',
                         alignItems: 'center',
