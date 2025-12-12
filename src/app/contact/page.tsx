@@ -17,7 +17,7 @@ export default function ContactPage() {
     const formRef = useRef<HTMLFormElement>(null);
 
     const emailSocial = socials.find(s => s.name === 'Email');
-    const emailAddress = emailSocial ? emailSocial.url.replace('mailto:', '') : 'hello@example.com';
+    const emailAddress = emailSocial ? emailSocial.url.replace('mailto:', '') : 'Sasankarw@gmail.com';
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
