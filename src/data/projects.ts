@@ -33,6 +33,37 @@ export const projects: Project[] = [
         role: 'Creator',
         demo: 'https://basketball-score-board-tau.vercel.app/',
         image: '/images/projects/scoreboard.png',
+        longDescription: `
+The **Basketball ScoreBoard** is a professional-grade, web-based scoring solution designed for high-stakes tournaments and broadcast environments. It bridges the gap between expensive hardware scoreboards and modern digital streaming needs.
+
+### Key Features for Tournaments
+- **Real-Time Synchronization**: Built on Firebase, any update significantly reflects across all connected devices instantly.
+- **Remote Control Interface**: A separate, mobile-friendly interface allows referees or table officials to update scores without interfering with the main display.
+- **Broadcast Ready**: Designed with a clean, high-contrast UI that works perfectly as an OBS (Open Broadcaster Software) browser source overlay.
+- **Precision Timing**: Includes a 0.1s precision timer for critical game moments.
+
+### Why use a Web-Based Scoreboard?
+Traditional hardware scoreboards are expensive and hard to transport. This PWA (Progressive Web App) runs on any laptop or tablet, making it the perfect portable solution for traveling leagues, school tournaments, and recreational facilities.
+        `,
+        faqs: [
+            {
+                question: "Can I use this for live streaming?",
+                answer: "Yes! The scoreboard is designed to be used as a Browser Source in OBS, vMix, or Streamlabs. The background can be keyed out or used as-is for a professional overlay."
+            },
+            {
+                question: "Does it support remote control?",
+                answer: "Absoluteley. You can open the 'Remote' view on a phone or tablet to control the scoreboard wirelessly from anywhere in the gym."
+            },
+            {
+                question: "Is there a delay in score updates?",
+                answer: "No, thanks to Firebase Realtime Database, updates are instantaneous (sub-100ms latency under normal network conditions)."
+            }
+        ],
+        seoMeta: {
+            title: "Basketball Scoreboard – Free Online Scoreboard for OBS & Tournaments",
+            description: "A professional, real-time online basketball scoreboard. Features remote control, OBS overlay support, and precision timing. Perfect for tournaments and live streams.",
+            keywords: ["Basketball Scoreboard", "Online Scoreboard", "OBS Scoreboard Overlay", "Digital Scoreboard", "Tournament Software", "Real-time Scoring"]
+        },
         features: [
             'Real-Time Sync (Firebase Realtime DB)',
             'Precision Timer (down to 0.1s)',

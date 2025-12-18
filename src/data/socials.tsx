@@ -41,7 +41,7 @@ export const socials: Social[] = [
 
 export const bio = {
     name: "Sasanka Ravindu Wakkumbura",
-    title: "Software Engineer | BSc IT Undergraduate",
+    title: "Software Engineer",
     location: "Sri Lanka",
     short: "Dynamic software engineer with experience in system integration, scalable applications, and research-driven development.",
     long: "Dynamic software engineer with experience in system integration, scalable applications, and research-driven development. Skilled in Python, C#, and modern web technologies, with additional expertise in low-level hardware integration, device SDK connectivity, and UI/UX design. Experienced in building reliable applications that interface with RFID, barcode scanners, and simulation tools.",

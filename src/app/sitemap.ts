@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { tools } from '@/data/projects'
+import { tools, projects } from '@/data/projects'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://sasgrid.online'
@@ -26,5 +26,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.9,
     }))
 
-    return [...staticRoutes, ...toolRoutes]
+    // Dynamic project routes
+    const projectRoutes = projects.map((project) => ({
+        url: `${baseUrl}/projects/${project.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.8,
+    }))
+
+    return [...staticRoutes, ...toolRoutes, ...projectRoutes]
 }
