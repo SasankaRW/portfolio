@@ -304,4 +304,47 @@ Beyond just typing, this tool acts as a clipboard sanitizer. It automatically st
             keywords: ["Auto Typer", "Clipboard Cleaner", "Paste Block Bypass", "Data Entry Tool", "Windows Utility", "Text Sanitizer"]
         }
     },
+    {
+        id: 'tool-qr-gen',
+        slug: 'qr-generator',
+        name: 'QR Code Generator',
+        description: 'Instant, privacy-focused QR code generator. Create custom QR codes with logos, colors, and high-resolution export options directly in your browser.',
+        icon: '📱',
+        techStack: ['React', 'QRCode.js', 'Canvas API'],
+        role: 'Creator',
+        features: [
+            'Real-time Generation',
+            'Custom Logo Embedding',
+            'Foreground/Background Colorization',
+            'Privacy First (Client-side only)',
+            'High-Res PNG Download'
+        ],
+        longDescription: `
+The **QR Code Generator** is a lightweight, client-side utility built for quick and secure QR code creation. Unlike many online generators that send your data to a server, this tool processes everything locally in your browser using the HTML5 Canvas API.
+
+### Key Features
+- **Privacy Focused**: Your data never leaves your device.
+- **Customizable**: Match your brand identity with custom foreground and background colors.
+- **Branded**: Easily center your logo or icon within the QR code.
+- **High Quality**: Export sharp, high-resolution PNGs suitable for print or web use.
+
+### Tech Constraints
+This tool leverages the \`qrcode\` library for generation and raw Canvas manipulation for logo compositing, ensuring zero dependencies on external APIs.
+        `,
+        faqs: [
+            {
+                question: "Where is my data sent?",
+                answer: "Nowhere. All image generation happens right inside your web browser."
+            },
+            {
+                question: "Can I use these QR codes commercially?",
+                answer: "Yes, the generated images are yours to use freely."
+            }
+        ],
+        seoMeta: {
+            title: "Free Online QR Code Generator with Logo | Secure & Private",
+            description: "Generate custom QR codes with logos and colors instantly. No sign-up, no server uploads, privacy-focused client-side generation.",
+            keywords: ["QR Code Generator", "Free QR Creator", "QR with Logo", "Private QR Generator", "No Sign up QR"]
+        }
+    }
 ];
