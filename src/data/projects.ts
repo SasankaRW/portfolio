@@ -3,6 +3,13 @@ export interface Project {
     slug: string;
     name: string;
     description: string;
+    longDescription?: string;
+    faqs?: { question: string; answer: string }[];
+    seoMeta?: {
+        title?: string;
+        description?: string;
+        keywords?: string[];
+    };
     icon: string;
     techStack: string[];
     role: string;
@@ -162,7 +169,45 @@ export const tools: Project[] = [
         image: '/images/projects/whatsapp-bot/gui.png',
         gallery: [
             '/images/projects/whatsapp-bot/gui.png'
-        ]
+        ],
+        longDescription: `
+The **WhatsApp Auto Sender Bot** is a powerful desktop automation tool designed to streamline your messaging workflows. Built with Python and Selenium, it allows individuals and businesses to schedule and send WhatsApp messages automatically without manual intervention.
+
+### Who is this for?
+This tool is perfect for:
+- **Small Business Owners**: Send order updates, invoices, or promotional offers to customers.
+- **Marketers**: Manage broadcast lists and engagement campaigns effectively.
+- **Community Managers**: Keep your groups and contacts informed with scheduled announcements.
+- **Data Entry Professionals**: Automate repetitive messaging tasks.
+
+### Key Capabilities
+Unlike standard broadcasting lists, this bot simulates a real user interaction using a dedicated Chrome instance. This ensures higher delivery rates and allows you to send messages to numbers that haven't saved your contact details. The "Just-In-Time" browser system manages system resources efficiently by only running the browser when a message needs to be sent.
+
+*Disclaimer: This tool is intended for personal productivity and legitimate business communication. Please use responsibly and adhere to WhatsApp's terms of service.*
+        `,
+        faqs: [
+            {
+                question: "Is this bot safe to use?",
+                answer: "Yes, the bot operates by simulating natural human interactions through a real browser instance, making it safer than API-based unauthorized tools."
+            },
+            {
+                question: "Do I need to save contacts to send messages?",
+                answer: "No, one of the key features is the ability to send messages to any phone number without needing to add them to your contacts first."
+            },
+            {
+                question: "Can I schedule messages for later?",
+                answer: "Absolutely. The tool includes a smart scheduling system that lets you queue messages for specific dates and times."
+            },
+            {
+                question: "Does it run in the background?",
+                answer: "The application runs as a desktop app. It manages a separate Chrome window that opens and closes automatically based on your schedule to save RAM."
+            }
+        ],
+        seoMeta: {
+            title: "WhatsApp Auto Sender Bot – Free Application for PC | SasankaRW",
+            description: "Download the free WhatsApp Auto Sender Bot. Schedule messages, send to unsaved contacts, and automate your workflow with this Python-based desktop tool.",
+            keywords: ["WhatsApp Automation", "WhatsApp Bot", "Bulk Sender", "Selenium Automation", "Python Tool", "Message Scheduler"]
+        }
     },
     {
         id: 'tool-1',
@@ -186,6 +231,46 @@ export const tools: Project[] = [
         gallery: [
             '/images/projects/typer/1.png',
             '/images/projects/typer/Screenshot 2025-12-08 223519.png'
-        ]
+        ],
+        longDescription: `
+The **Text Cleaner and Auto-Typer** is a specialized utility for Windows designed to solve a common frustration: restricted form fields that block "Ctrl+V" (Paste) operations.
+
+### Why use an Auto-Typer?
+Many legacy banking sites, remote desktop environments, and secure forms disable the paste function, forcing users to manually type long strings of data. This tool bypasses those restrictions by simulating keystrokes at the operating system level. It takes your text, cleans up unwanted formatting, and "types" it into the active window as if you were using your keyboard.
+
+### Advanced Formatting Cleaning
+Beyond just typing, this tool acts as a clipboard sanitizer. It automatically strips:
+- Rich text formatting (bold, color, fonts)
+- Smart quotes and special hidden characters
+- Excessive whitespace and line breaks
+
+### Use Cases
+- **Data Entry**: Transfer data from Excel/Web to legacy ERP systems.
+- **Remote Desktops (RDP/Citrix)**: Type text across remote sessions where clipboard sharing is disabled.
+- **Forms**: Fill "Confirm Email" fields that block pasting.
+        `,
+        faqs: [
+            {
+                question: "How does the Auto-Typer work?",
+                answer: "It uses the PyAutoGUI library to simulate physical keyboard presses. The computer sees the input as coming from your hardware keyboard, allowing it to work in any application."
+            },
+            {
+                question: "Is this a keylogger?",
+                answer: "No. This is a one-way outgoing tool. It reads from your clipboard only when you tell it to and outputs text. It does not record or store your keystrokes."
+            },
+            {
+                question: "Can I control the typing speed?",
+                answer: "Yes, the tool includes an adjustable delay setting. You can slow it down for older, laggy applications or speed it up for instant entry."
+            },
+            {
+                question: "Does it work on Windows 11?",
+                answer: "Yes, it is fully compatible with Windows 10 and Windows 11."
+            }
+        ],
+        seoMeta: {
+            title: "Auto Typer & Text Cleaner – Bypass Paste Restrictions | SasankaRW",
+            description: "Free Auto Typer utility for Windows. Clean formatted text and simulate keystrokes to paste into protected fields, RDP sessions, and legacy apps.",
+            keywords: ["Auto Typer", "Clipboard Cleaner", "Paste Block Bypass", "Data Entry Tool", "Windows Utility", "Text Sanitizer"]
+        }
     },
 ];

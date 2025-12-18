@@ -3,16 +3,18 @@
 import { useRef } from 'react';
 import anime from 'animejs';
 import { Project } from '@/data/projects';
+import Link from 'next/link';
 
 interface ProjectCardProps {
     project: Project;
-    onClick: () => void;
+    onClick?: () => void;
+    href?: string;
 }
 
-export default function ProjectCard({ project, onClick }: ProjectCardProps) {
+export default function ProjectCard({ project, onClick, href }: ProjectCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent) => {
         if (cardRef.current) {
             anime({
                 targets: cardRef.current,
@@ -21,7 +23,9 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
                 easing: 'easeInOutQuad',
             });
         }
-        onClick();
+        if (onClick) {
+            onClick();
+        }
     };
 
     const handleMouseEnter = () => {
@@ -48,11 +52,11 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
         }
     };
 
-    return (
+    const CardContent = (
         <div
             ref={cardRef}
             className="retro-window"
-            onClick={handleClick}
+            onClick={href ? undefined : handleClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             style={{
@@ -60,7 +64,9 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'border-color 0.2s'
+                transition: 'border-color 0.2s',
+                textDecoration: 'none',
+                color: 'inherit'
             }}
         >
             <style jsx>{`
@@ -147,4 +153,14 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
             </div>
         </div>
     );
+
+    if (href) {
+        return (
+            <Link href={href} legacyBehavior={false} style={{ textDecoration: 'none', display: 'block', height: '100%' }} onClick={handleClick}>
+                {CardContent}
+            </Link>
+        );
+    }
+
+    return CardContent;
 }

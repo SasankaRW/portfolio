@@ -16,6 +16,7 @@ import { projects as projectsData } from '@/data/projects';
 const menuItems = [
   { href: '/experience', icon: '📁', label: 'EXPERIENCE', color: 'var(--accent-amber)' },
   { href: '/projects', icon: '💾', label: 'PROJECTS', color: 'var(--accent-cyan)' },
+  { href: '/tools', icon: '🛠️', label: 'TOOLS', color: 'var(--accent-pink)' },
   { href: '/research', icon: '📑', label: 'RESEARCH', color: 'var(--accent-green)' },
   { href: '/contact', icon: '✉️', label: 'CONTACT', color: 'var(--accent-blue)' },
 ];
