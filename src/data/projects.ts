@@ -115,6 +115,19 @@ Traditional hardware scoreboards are expensive and hard to transport. This PWA (
         icon: '🛠️',
         techStack: ['React', 'Node.js', 'MongoDB'],
         role: 'Full Stack Developer',
+        image: '/images/projects/taskgo/2025-12-21 111936.png',
+        gallery: [
+            '/images/projects/taskgo/2025-12-21 111936.png',
+            '/images/projects/taskgo/2025-12-21 111952.png',
+            '/images/projects/taskgo/2025-12-21 112010.png',
+            '/images/projects/taskgo/2025-12-21 112022.png',
+            '/images/projects/taskgo/2025-12-21 112114.png',
+            '/images/projects/taskgo/2025-12-21 112205.png',
+            '/images/projects/taskgo/2025-12-21 112225.png',
+            '/images/projects/taskgo/2025-12-21 112252.png',
+            '/images/projects/taskgo/2025-12-21 112329.png',
+            '/images/projects/taskgo/2025-12-21 112410.png'
+        ],
         features: [
             'Service marketplace functionality',
             'User-worker connection',
