@@ -798,6 +798,13 @@ a:hover {
   padding: 2rem;
 }
 
+@media (max-width: 768px) {
+  .retro-modal-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+}
+
 .retro-modal {
   background: rgba(10, 25, 30, 0.95);
   border: 1px solid var(--border-color);
@@ -810,6 +817,67 @@ a:hover {
   /* Increased from 90vh */
   overflow: auto;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .retro-modal {
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+  
+  .retro-modal::before,
+  .retro-modal::after {
+    display: none;
+  }
+  
+  .retro-modal .retro-window-titlebar {
+    flex-shrink: 0;
+    padding: 1rem;
+    min-height: 60px;
+  }
+  
+  .retro-modal .retro-window-title {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+  
+  .retro-modal .retro-window-content {
+    flex: 1;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  
+  .retro-modal .retro-window-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  
+  /* Fullscreen image container in modal on mobile */
+  .retro-modal .crt-frame {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .retro-modal .crt-frame > div:first-child {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+  }
 }
 
 .retro-modal::before {

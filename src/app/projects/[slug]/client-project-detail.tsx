@@ -247,10 +247,21 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
             {/* Zoom Modal */}
             <RetroModal isOpen={!!selectedMedia} onClose={() => setSelectedMedia(null)} title={project.name} >
                 {selectedMedia && (
-                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
-                        <div style={{ position: 'relative', width: '100%', height: 'auto', minHeight: '60vh', maxHeight: '80vh', background: 'var(--bg-black)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="crt-frame" style={{ padding: 0, border: 'none', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ 
+                            position: 'relative', 
+                            width: '100%', 
+                            flex: 1,
+                            minHeight: '60vh', 
+                            maxHeight: '80vh',
+                            height: 'calc(100vh - 80px)',
+                            background: 'var(--bg-black)', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center' 
+                        }}>
                             {selectedMedia.type === 'video' ? (
-                                <video src={selectedMedia.src} controls autoPlay style={{ width: '100%', maxHeight: '80vh', objectFit: 'contain', outline: 'none' }} />
+                                <video src={selectedMedia.src} controls autoPlay style={{ width: '100%', height: '100%', maxHeight: '100%', objectFit: 'contain', outline: 'none' }} />
                             ) : (
                                 <Image src={selectedMedia.src} alt="Gallery Zoom" fill style={{ objectFit: 'contain' }} />
                             )}

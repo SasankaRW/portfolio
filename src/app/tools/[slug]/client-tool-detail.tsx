@@ -304,13 +304,14 @@ export default function ClientToolDetail({ tool }: { tool: Project }) {
                 title={tool.name + (selectedMedia?.type === 'video' ? ' (Video Demo)' : ' (Gallery)')}
             >
                 {selectedMedia && (
-                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
+                    <div className="crt-frame" style={{ padding: 0, border: 'none', height: '100%', display: 'flex', flexDirection: 'column' }}>
                         <div style={{
                             position: 'relative',
                             width: '100%',
-                            height: 'auto',
+                            flex: 1,
                             minHeight: '60vh',
                             maxHeight: '80vh',
+                            height: 'calc(100vh - 80px)',
                             background: 'var(--bg-black)',
                             display: 'flex',
                             alignItems: 'center',
@@ -321,7 +322,7 @@ export default function ClientToolDetail({ tool }: { tool: Project }) {
                                     src={selectedMedia.src}
                                     controls
                                     autoPlay
-                                    style={{ width: '100%', maxHeight: '80vh', objectFit: 'contain', outline: 'none' }}
+                                    style={{ width: '100%', height: '100%', maxHeight: '100%', objectFit: 'contain', outline: 'none' }}
                                 />
                             ) : (
                                 <Image

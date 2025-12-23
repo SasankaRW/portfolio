@@ -151,16 +151,17 @@ export default function DesignsPage() {
                 title={selectedDesign?.title || 'Design Viewer'}
             >
                 {selectedDesign && (
-                    <div className="crt-frame" style={{ padding: 0, border: 'none' }}>
+                    <div className="crt-frame" style={{ padding: 0, border: 'none', height: '100%', display: 'flex', flexDirection: 'column' }}>
                         <div
                             onMouseMove={handleMouseMove}
                             onClick={() => setIsZoomed(!isZoomed)}
                             style={{
                                 position: 'relative',
                                 width: '100%',
-                                height: 'auto',
+                                flex: 1,
                                 minHeight: '60vh',
                                 maxHeight: '80vh',
+                                height: 'calc(100vh - 120px)',
                                 background: 'var(--bg-black)',
                                 overflow: 'hidden',
                                 cursor: isZoomed ? 'zoom-out' : 'zoom-in'
@@ -178,7 +179,7 @@ export default function DesignsPage() {
                                 }}
                             />
                         </div>
-                        <div style={{ padding: '1rem', borderTop: '2px solid var(--border-color)' }}>
+                        <div style={{ padding: '1rem', borderTop: '2px solid var(--border-color)', flexShrink: 0 }}>
                             <p className="text-accent">{selectedDesign.title} ({selectedDesign.category})</p>
                             <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
                                 {isZoomed ? '[CLICK TO RESET]' : '[CLICK TO ZOOM]'}
