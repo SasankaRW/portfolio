@@ -32,14 +32,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title,
         description,
         keywords,
+        robots: {
+            index: true,
+            follow: true,
+        },
         openGraph: {
             title,
             description,
             type: 'website',
             images: tool.image ? [tool.image] : [],
+            url: `https://sasgrid.online/tools/${slug}`,
         },
         alternates: {
-            canonical: `/tools/${slug}`
+            canonical: `https://sasgrid.online/tools/${slug}`
         }
     };
 }

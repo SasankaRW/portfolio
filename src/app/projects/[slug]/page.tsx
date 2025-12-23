@@ -28,14 +28,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title,
         description,
         keywords,
+        robots: {
+            index: true,
+            follow: true,
+        },
         openGraph: {
             title,
             description,
             type: 'website',
             images: project.image ? [project.image] : [],
+            url: `https://sasgrid.online/projects/${slug}`,
         },
         alternates: {
-            canonical: `/projects/${slug}`
+            canonical: `https://sasgrid.online/projects/${slug}`
         }
     };
 }

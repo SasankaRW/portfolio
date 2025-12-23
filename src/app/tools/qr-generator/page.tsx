@@ -13,10 +13,18 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
         title,
         description,
+        robots: {
+            index: true,
+            follow: true,
+        },
         openGraph: {
             title,
             description,
             type: 'website',
+            url: 'https://sasgrid.online/tools/qr-generator',
+        },
+        alternates: {
+            canonical: 'https://sasgrid.online/tools/qr-generator'
         }
     };
 }

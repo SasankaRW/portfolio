@@ -13,6 +13,17 @@ export const metadata: Metadata = {
   },
   description: "Sasanka Wakkumbura's personal portfolio showcasing work experience, projects, research, and design work.",
   keywords: ["portfolio", "developer", "software engineer", "Sasanka Wakkumbura", "web development"],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: "SAS.GRID.SYS",
     description: "Sasanka Wakkumbura's personal portfolio showcasing work experience, projects, research, and design work.",
