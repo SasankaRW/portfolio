@@ -7,11 +7,12 @@ import anime from 'animejs';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
 import RetroModal from '@/components/RetroModal';
+import MediaViewer, { MediaItem } from '@/components/MediaViewer';
 import { Project } from '@/data/projects';
 
 export default function ClientProjectDetail({ project }: { project: Project }) {
     const contentRef = useRef<HTMLDivElement>(null);
-    const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
+    const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
 
     useEffect(() => {
         if (contentRef.current) {
@@ -27,18 +28,18 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
     }, []);
 
     // Construct unified media list
-    const mediaList: { type: 'image' | 'video', src: string }[] = [];
+    const mediaList: MediaItem[] = [];
 
     if (project.video) {
-        mediaList.push({ type: 'video', src: project.video });
+        mediaList.push({ type: 'video', src: project.video, alt: `${project.name} video` });
     }
 
     if (project.gallery && project.gallery.length > 0) {
-        project.gallery.forEach(img => {
-            mediaList.push({ type: 'image', src: img });
+        project.gallery.forEach((img, idx) => {
+            mediaList.push({ type: 'image', src: img, alt: `${project.name} image ${idx + 1}` });
         });
     } else if (project.image && !project.video) {
-        mediaList.push({ type: 'image', src: project.image });
+        mediaList.push({ type: 'image', src: project.image, alt: `${project.name} image` });
     }
 
     // Construct Schema.org JSON-LD (Product/Software)
@@ -152,7 +153,7 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
                                     <div
                                         key={idx}
                                         className="gallery-item"
-                                        onClick={() => setSelectedMedia(media)}
+                                        onClick={() => setSelectedMediaIndex(idx)}
                                     >
                                         <div style={{
                                             position: 'relative',
@@ -245,28 +246,13 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
             </div>
 
             {/* Zoom Modal */}
-            <RetroModal isOpen={!!selectedMedia} onClose={() => setSelectedMedia(null)} title={project.name} >
-                {selectedMedia && (
-                    <div className="crt-frame" style={{ padding: 0, border: 'none', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ 
-                            position: 'relative', 
-                            width: '100%', 
-                            flex: 1,
-                            minHeight: '60vh', 
-                            maxHeight: '80vh',
-                            height: 'calc(100vh - 80px)',
-                            background: 'var(--bg-black)', 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center' 
-                        }}>
-                            {selectedMedia.type === 'video' ? (
-                                <video src={selectedMedia.src} controls autoPlay style={{ width: '100%', height: '100%', maxHeight: '100%', objectFit: 'contain', outline: 'none' }} />
-                            ) : (
-                                <Image src={selectedMedia.src} alt="Gallery Zoom" fill style={{ objectFit: 'contain' }} />
-                            )}
-                        </div>
-                    </div>
+            <RetroModal
+                isOpen={selectedMediaIndex !== null}
+                onClose={() => setSelectedMediaIndex(null)}
+                title={project.name}
+            >
+                {selectedMediaIndex !== null && mediaList.length > 0 && (
+                    <MediaViewer items={mediaList} index={selectedMediaIndex} onIndexChange={setSelectedMediaIndex} />
                 )}
             </RetroModal>
         </div>

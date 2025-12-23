@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Project } from '@/data/projects';
 import RetroButton from './RetroButton';
 import RetroModal from './RetroModal';
+import MediaViewer, { MediaItem } from './MediaViewer';
 
 interface ProjectDetailViewProps {
     project: Project;
@@ -12,16 +13,16 @@ interface ProjectDetailViewProps {
 }
 
 export default function ProjectDetailView({ project, onBack }: ProjectDetailViewProps) {
-    const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video', src: string } | null>(null);
+    const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
 
     // Helper to build media list
-    const getMediaList = (p: Project) => {
-        const list: { type: 'image' | 'video', src: string }[] = [];
-        if (p.video) list.push({ type: 'video', src: p.video });
+    const getMediaList = (p: Project): MediaItem[] => {
+        const list: MediaItem[] = [];
+        if (p.video) list.push({ type: 'video', src: p.video, alt: `${p.name} video` });
         if (p.gallery) {
-            p.gallery.forEach(img => list.push({ type: 'image', src: img }));
+            p.gallery.forEach((img, idx) => list.push({ type: 'image', src: img, alt: `${p.name} image ${idx + 1}` }));
         } else if (p.image && !p.video) {
-            list.push({ type: 'image', src: p.image });
+            list.push({ type: 'image', src: p.image, alt: `${p.name} image` });
         }
         return list;
     };
@@ -29,7 +30,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
     const mediaList = getMediaList(project);
 
     return (
-        <div className="animate-fade-in">
+        <div>
             <style jsx>{`
                 .hide-scrollbar::-webkit-scrollbar {
                     display: none;
@@ -58,6 +59,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
                 <span>&lt;</span> BACK_TO_LIST
             </button>
 
+            <div className="animate-fade-in">
             {/* Header / Breadcrumb-ish */}
             <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -96,7 +98,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
                                 {mediaList.map((media, idx) => (
                                     <div
                                         key={idx}
-                                        onClick={() => setSelectedMedia(media)}
+                                        onClick={() => setSelectedMediaIndex(idx)}
                                         className="media-item-wrapper"
                                         style={{
                                             flex: '0 0 100%',
@@ -199,7 +201,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
                                 <div
                                     key={idx}
                                     className="gallery-item"
-                                    onClick={() => setSelectedMedia(media)}
+                                    onClick={() => setSelectedMediaIndex(idx)}
                                     style={{
                                         aspectRatio: '1',
                                         border: '1px solid var(--border-color)',
@@ -307,43 +309,15 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
 
             {/* Media Zoom Modal */}
             <RetroModal
-                isOpen={!!selectedMedia}
-                onClose={() => setSelectedMedia(null)}
+                isOpen={selectedMediaIndex !== null}
+                onClose={() => setSelectedMediaIndex(null)}
                 title="MEDIA_VIEWER"
             >
-                {selectedMedia && (
-                    <div className="crt-frame" style={{ padding: 0, border: 'none', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                        <div style={{
-                            position: 'relative',
-                            width: '100%',
-                            flex: 1,
-                            minHeight: '60vh',
-                            maxHeight: '80vh',
-                            height: 'calc(100vh - 80px)',
-                            background: 'var(--bg-black)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            {selectedMedia.type === 'video' ? (
-                                <video
-                                    src={selectedMedia.src}
-                                    controls
-                                    autoPlay
-                                    style={{ width: '100%', height: '100%', maxHeight: '100%', objectFit: 'contain', outline: 'none' }}
-                                />
-                            ) : (
-                                <Image
-                                    src={selectedMedia.src}
-                                    alt="Zoom"
-                                    fill
-                                    style={{ objectFit: 'contain' }}
-                                />
-                            )}
-                        </div>
-                    </div>
+                {selectedMediaIndex !== null && mediaList.length > 0 && (
+                    <MediaViewer items={mediaList} index={selectedMediaIndex} onIndexChange={setSelectedMediaIndex} />
                 )}
             </RetroModal>
+            </div>
         </div>
     );
 }
