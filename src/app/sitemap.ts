@@ -1,15 +1,19 @@
 import { MetadataRoute } from 'next'
 import { tools, projects } from '@/data/projects'
+import { getSiteUrl } from '@/lib/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://sasgrid.online'
+    const baseUrl = getSiteUrl()
 
     // Static routes
     const staticRoutes = [
         '',
         '/about',
+        '/experience',
         '/projects',
         '/tools',
+        '/designs',
+        '/research',
         '/contact',
     ].map((route) => ({
         url: `${baseUrl}${route}`,

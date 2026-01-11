@@ -1,12 +1,35 @@
 import type { Metadata } from "next";
+import { IBM_Plex_Mono, Press_Start_2P, VT323 } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import ScanlineOverlay from "@/components/ScanlineOverlay";
+
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+  display: "swap",
+});
+
+const vt323 = VT323({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-vt323",
+  display: "swap",
+});
+
+const pressStart2P = Press_Start_2P({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-press-start-2p",
+  display: "swap",
+});
 import { SoundProvider } from "@/context/SoundContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sasgrid.online'),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "SAS.GRID.SYS",
     template: "%s | SAS.GRID.SYS"
@@ -27,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SAS.GRID.SYS",
     description: "Sasanka Wakkumbura's personal portfolio showcasing work experience, projects, research, and design work.",
-    url: "https://sasgrid.online",
+    url: getSiteUrl(),
     siteName: "SAS.GRID.SYS",
     locale: "en_US",
     type: "website",
@@ -39,24 +62,25 @@ export const metadata: Metadata = {
   },
 };
 
+const siteUrl = getSiteUrl();
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://sasgrid.online/#website",
-      "url": "https://sasgrid.online",
+      "@id": `${siteUrl}/#website`,
+      "url": siteUrl,
       "name": "Sasanka Wakkumbura Portfolio",
       "description": "Personal portfolio of Sasanka Wakkumbura",
       "publisher": {
-        "@id": "https://sasgrid.online/#person"
+        "@id": `${siteUrl}/#person`
       }
     },
     {
       "@type": "Person",
-      "@id": "https://sasgrid.online/#person",
+      "@id": `${siteUrl}/#person`,
       "name": "Sasanka Wakkumbura",
-      "url": "https://sasgrid.online",
+      "url": siteUrl,
       "sameAs": [
         "https://github.com/SasankaRW",
         "https://www.linkedin.com/in/sasanka-wakkumbura"
@@ -76,8 +100,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={`${ibmPlexMono.variable} ${vt323.variable} ${pressStart2P.variable}`}>
+      <body className="antialiased">
         <ThemeProvider>
           <SoundProvider>
             <a

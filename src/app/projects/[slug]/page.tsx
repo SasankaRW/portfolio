@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             description,
             type: 'website',
             images: project.image ? [project.image] : [],
-            url: `https://sasgrid.online/projects/${slug}`,
+            url: `/projects/${slug}`,
         },
         alternates: {
-            canonical: `https://sasgrid.online/projects/${slug}`
+            canonical: `/projects/${slug}`
         }
     };
 }

@@ -41,10 +41,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             description,
             type: 'website',
             images: tool.image ? [tool.image] : [],
-            url: `https://sasgrid.online/tools/${slug}`,
+            url: `/tools/${slug}`,
         },
         alternates: {
-            canonical: `https://sasgrid.online/tools/${slug}`
+            canonical: `/tools/${slug}`
         }
     };
 }

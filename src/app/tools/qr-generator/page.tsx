@@ -21,10 +21,10 @@ export async function generateMetadata(): Promise<Metadata> {
             title,
             description,
             type: 'website',
-            url: 'https://sasgrid.online/tools/qr-generator',
+            url: '/tools/qr-generator',
         },
         alternates: {
-            canonical: 'https://sasgrid.online/tools/qr-generator'
+            canonical: '/tools/qr-generator'
         }
     };
 }
