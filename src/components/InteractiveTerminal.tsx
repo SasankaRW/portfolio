@@ -190,7 +190,12 @@ ${e.details ? `(${e.details})` : ''}
 
 const FILE_SYSTEM = generateFileSystem();
 
-export default function InteractiveTerminal() {
+interface InteractiveTerminalProps {
+    className?: string;
+    style?: React.CSSProperties;
+}
+
+export default function InteractiveTerminal({ className = '', style }: InteractiveTerminalProps) {
     const [input, setInput] = useState('');
     const [history, setHistory] = useState<CommandHistoryDisplay[]>([
         { id: 1, text: ASCII_HEADER, type: 'ascii' },
@@ -473,7 +478,8 @@ export default function InteractiveTerminal() {
 
     return (
         <div
-            className="retro-window interactive-terminal"
+            className={`retro-window interactive-terminal ${className}`}
+            style={style}
             onClick={focusInput}
         >
             <div className="retro-window-titlebar">

@@ -30,7 +30,8 @@
   /* Text Colors */
   --text-primary: #FFFFFF;
   --text-secondary: #CCCCCC;
-  --text-muted: #666666;
+  --text-muted: #888888;
+  /* Increased contrast from #666666 (>4.5:1) */
 
   /* Fonts */
   --font-main: var(--font-ibm-plex-mono), monospace;
@@ -70,7 +71,8 @@
   --accent-cyan: #95E6CB;
   --text-primary: #E6E6E6;
   --text-secondary: #B3B9C5;
-  --text-muted: #5C6773;
+  --text-muted: #8CA4BF;
+  /* Increased contrast from #5C6773 */
   --glow-accent: 0 0 5px rgba(127, 213, 234, 0.2);
 }
 
@@ -85,7 +87,8 @@
   --accent-cyan: #FFFFFF;
   --text-primary: #FFFFFF;
   --text-secondary: #888888;
-  --text-muted: #555555;
+  --text-muted: #888888;
+  /* Increased contrast from #555555 */
   --shadow-retro: none;
   --shadow-window: none;
   --glow-accent: none;
@@ -396,6 +399,25 @@ a:hover {
   50% {
     opacity: 0.7;
   }
+}
+
+/* CSS Entry Animation for Windows */
+@keyframes retroWindowEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.stagger-enter {
+  opacity: 0;
+  /* Briefly hidden before animation starts */
+  animation: retroWindowEnter 0.5s ease-out forwards;
 }
 
 /* ============================================

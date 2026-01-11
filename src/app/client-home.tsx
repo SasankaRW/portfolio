@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import anime from 'animejs';
+// anime.js removed for performance
 import InteractiveTerminal from '@/components/InteractiveTerminal';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
@@ -53,19 +53,8 @@ export default function HomePage() {
     }
   }, [bootComplete]);
 
-  useEffect(() => {
-    if (showContent && containerRef.current) {
-      const windows = containerRef.current.querySelectorAll('.retro-window');
-      anime({
-        targets: windows,
-        opacity: [0, 1],
-        scale: [0.95, 1],
-        delay: anime.stagger(100),
-        duration: 500,
-        easing: 'easeOutBack',
-      });
-    }
-  }, [showContent]);
+  // Entry animation is now handled via CSS in globals.css (retroWindowEnter)
+  // to prevent running expensive JS animations causing reflows.
 
   // Content Rotation - Each section rotates separately
   useEffect(() => {
@@ -142,7 +131,7 @@ export default function HomePage() {
 
           {/* COLUMN 1: IDENTITY & LOGS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <RetroWindow title="USER_PROFILE">
+            <RetroWindow title="USER_PROFILE" shouldAnimate={false} className="stagger-enter" style={{ opacity: 0, animationDelay: '0ms' }}>
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
                 <div style={{
                   width: '60px',
@@ -186,7 +175,7 @@ export default function HomePage() {
               </div>
             </RetroWindow>
 
-            <RetroWindow title="ACTIVITY_LOG">
+            <RetroWindow title="ACTIVITY_LOG" shouldAnimate={false} className="stagger-enter" style={{ opacity: 0, animationDelay: '100ms' }}>
               <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.9rem' }}>
                 <li style={{ marginBottom: '0.75rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-color)' }}>
                   <span className="text-muted" style={{ fontSize: '0.75rem', display: 'block' }}>EXPERIENCE_LOG_{logIndex + 1}</span>
@@ -206,9 +195,9 @@ export default function HomePage() {
 
           {/* COLUMN 2: COMMAND CENTER (TERMINAL) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <InteractiveTerminal />
+            <InteractiveTerminal className="stagger-enter" style={{ opacity: 0, animationDelay: '200ms' }} />
 
-            <RetroWindow title="PROJECT_FEED" className="project-feed">
+            <RetroWindow title="PROJECT_FEED" className="project-feed stagger-enter" shouldAnimate={false} style={{ opacity: 0, animationDelay: '300ms' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
                 {displayProjects.map((project, idx) => (
                   <Link key={`${project.id}-${idx}`} href={`/projects`} style={{ textDecoration: 'none' }}>
@@ -268,7 +257,7 @@ export default function HomePage() {
 
           {/* COLUMN 3: NAVIGATION & STATS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <RetroWindow title="MAIN_MENU">
+            <RetroWindow title="MAIN_MENU" shouldAnimate={false} className="stagger-enter" style={{ opacity: 0, animationDelay: '400ms' }}>
               <div style={{ display: 'grid', gap: '0.5rem' }}>
                 {menuItems.map((item) => (
                   <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
@@ -289,7 +278,7 @@ export default function HomePage() {
               </div>
             </RetroWindow>
 
-            <RetroWindow title="MEMORY_BANK">
+            <RetroWindow title="MEMORY_BANK" shouldAnimate={false} className="stagger-enter" style={{ opacity: 0, animationDelay: '500ms' }}>
               <div style={{ fontSize: '0.9rem' }}>
                 <div style={{ marginBottom: '0.5rem' }}>
                   <span className="text-amber">EDUCATION_AND_STATS</span>
