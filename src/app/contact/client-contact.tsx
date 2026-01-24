@@ -86,8 +86,8 @@ export default function ContactPage() {
             </div>
           ) : (
             <form ref={formRef} onSubmit={handleSubmit}>
-              <div className="terminal-container" style={{ border: 'none', padding: 0, marginBottom: '1.5rem' }}>
-                <div className="terminal-header" style={{ marginBottom: '1rem' }}>
+              <div className="terminal-container" style={{ border: 'none', marginBottom: '1.5rem' }}>
+                <div className="terminal-header" style={{ marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <span className="terminal-prompt">C:\MAIL&gt;</span>
                   <span className="text-muted">compose</span>
                 </div>
@@ -140,8 +140,8 @@ export default function ContactPage() {
 
         {/* Social Links */}
         <RetroWindow title="CONNECT">
-          <div className="terminal-container" style={{ border: 'none', padding: 0, marginBottom: '1.5rem' }}>
-            <div className="terminal-header">
+          <div className="terminal-container" style={{ border: 'none', marginBottom: '1.5rem' }}>
+            <div className="terminal-header" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
               <span className="terminal-prompt">C:\SOCIAL&gt;</span>
               <span className="text-muted">links</span>
             </div>

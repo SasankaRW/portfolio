@@ -619,9 +619,10 @@ a:hover {
 .terminal-header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  padding: 0.75rem 1rem 0.5rem 1rem;
   border-bottom: 1px solid var(--border-color);
 }
 
