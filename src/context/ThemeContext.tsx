@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type ThemeMode = 'classic' | 'arch' | 'minimal' | 'light' | 'matrix';
+export type ThemeMode = 'classic' | 'arch' | 'minimal' | 'light' | 'matrix' | 'neo';
 
 interface ThemeContextType {
     theme: ThemeMode;
@@ -16,7 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         // Reset classes
-        document.body.classList.remove('theme-arch', 'theme-minimal', 'theme-light', 'theme-matrix');
+        document.body.classList.remove('theme-arch', 'theme-minimal', 'theme-light', 'theme-matrix', 'theme-neo');
 
         // Apply new theme class
         if (theme !== 'classic') {

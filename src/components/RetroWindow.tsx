@@ -40,11 +40,6 @@ export default function RetroWindow({
         >
             <div className="retro-window-titlebar">
                 <span className="retro-window-title">{title}</span>
-                <div className="retro-window-controls">
-                    <button className="retro-window-btn">_</button>
-                    <button className="retro-window-btn">□</button>
-                    <button className="retro-window-btn">×</button>
-                </div>
             </div>
             <div className="retro-window-content">
                 {children}

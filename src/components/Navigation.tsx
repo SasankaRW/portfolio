@@ -29,7 +29,7 @@ export default function Navigation() {
     };
 
     const handleThemeCycle = () => {
-        const themes: ThemeMode[] = ['minimal', 'classic', 'arch', 'light', 'matrix'];
+        const themes: ThemeMode[] = ['minimal', 'classic', 'arch', 'light', 'matrix', 'neo'];
         const currentIndex = themes.indexOf(theme);
         const nextTheme = themes[(currentIndex + 1) % themes.length];
         setTheme(nextTheme);
@@ -42,6 +42,7 @@ export default function Navigation() {
             case 'minimal': return 'MIN';
             case 'light': return 'LGT';
             case 'matrix': return '0x1';
+            case 'neo': return 'NEO';
             default: return 'SYS';
         }
     };
