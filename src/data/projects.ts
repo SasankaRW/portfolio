@@ -22,6 +22,39 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+    {
+        id: 'ceylon-spice-hub',
+        slug: 'ceylon-spice-hub',
+        name: 'Ceylon Spice Hub',
+        description: 'Full-stack e-commerce platform for premium Sri Lankan spices with a dynamic storefront and admin dashboard.',
+        icon: '🌶️',
+        techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'Tailwind CSS'],
+        role: 'Full Stack Developer',
+        demo: 'https://ceylon-spice-hub.vercel.app/',
+        // image: '/images/projects/ceylon-spice-hub/cover.png',
+        longDescription: `
+**Ceylon Spice Hub** is a modern full-stack e-commerce platform dedicated to selling premium Sri Lankan spices. It bridges the gap between traditional spice markets and digital convenience, offering a seamless shopping experience.
+
+### Key Features
+- **E-Commerce Engine**: Features a dynamic product catalog, real-time shopping cart, and secure checkout flow integrated with Stripe.
+- **Admin Dashboard**: A comprehensive CMS allowing authorized personnel to manage inventory, track customer orders, and curate recipes.
+- **Rich User Experience**: Designed with **Tailwind CSS** and **Radix UI**, enhancing engagement through smooth page transitions and micro-interactions powered by **Framer Motion**.
+- **Culinary Integration**: A specialized "Recipes" section that links products to usage examples, driving customer engagement.
+- **Robust Security**: Implements JWT authentication, rate limiting, and data sanitization for a secure backend environment.
+        `,
+        features: [
+            'Full-Stack E-Commerce with Stripe',
+            'Secure Admin Dashboard (CMS)',
+            'Recipe & Content Management',
+            'JWT Auth & Rate Limiting',
+            'Responsive UI with Dark Mode'
+        ],
+        seoMeta: {
+            title: "Ceylon Spice Hub – Premium E-Commerce Platform",
+            description: "Full-stack e-commerce solution for Sri Lankan spices built with React, Node.js, and MongoDB. Features secure payments and a custom admin dashboard.",
+            keywords: ["Full Stack", "E-commerce", "React", "Node.js", "MongoDB", "Stripe", "Sri Lankan Spices"]
+        }
+    },
 
     {
         id: 'proj-new-score',
