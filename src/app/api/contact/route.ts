@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
     try {
         const { name, email, message } = await request.json();
 
-        // 1. Validate input
         if (!name || !email || !message) {
             return NextResponse.json(
                 { error: 'Missing required fields' },
@@ -13,65 +14,53 @@ export async function POST(request: Request) {
             );
         }
 
-        // 2. Check for SMTP configuration
-        // In a real scenario, you'd use these env vars.
-        // For this demo, if they aren't set, we'll simulate success.
-        if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-            console.log('------------------------------------------------');
-            console.log('⚠️  SMTP credentials not found in env variables.');
-            console.log('📧 SIMULATING EMAIL SENDING:');
-            console.log('FROM:', email);
-            console.log('NAME:', name);
-            console.log('MESSAGE:', message);
-            console.log('------------------------------------------------');
+        const apiKey = process.env.RESEND_API_KEY;
 
-            // Artificial delay to simulate network request
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
+        // Check availability of API Key
+        if (!apiKey || apiKey.includes('your_api_key_here')) {
+            console.warn('⚠️ RESEND_API_KEY is missing or invalid.');
             return NextResponse.json(
-                { message: 'Message received (Simulation Mode). Configure SMTP to send real emails.' },
-                { status: 200 }
+                {
+                    message: 'Configuration Error: RESEND_API_KEY is missing. Please check .env.local file.'
+                },
+                { status: 500 }
             );
         }
 
-        // 3. Configure Transporter
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT) || 587,
-            secure: process.env.SMTP_SECURE === 'true', // correctly parse "false" string
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
-            },
-        });
+        try {
+            const data = await resend.emails.send({
+                from: 'Portfolio Contact <onboarding@resend.dev>', // Use default until user configures custom domain
+                to: 'sasankarw@gmail.com', // Explicitly set to user's email
+                replyTo: email,
+                subject: `[Portfolio] New Message from ${name}`,
+                html: `
+                    <div style="font-family: monospace; color: #333; padding: 20px;">
+                        <h2>New Contact Form Submission</h2>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <hr/>
+                        <p><strong>Message:</strong></p>
+                        <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px;">${message}</pre>
+                    </div>
+                `
+            });
 
-        // 4. Send Email
-        await transporter.sendMail({
-            from: process.env.SMTP_FROM || process.env.SMTP_USER,
-            to: process.env.SMTP_TO || process.env.SMTP_USER, // Default to sending to yourself
-            replyTo: email,
-            subject: `[Portfolio] New Message from ${name}`,
-            text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-            html: `
-                <div style="font-family: monospace; color: #333; padding: 20px;">
-                    <h2>New Contact Form Submission</h2>
-                    <p><strong>Name:</strong> ${name}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                    <hr/>
-                    <p><strong>Message:</strong></p>
-                    <pre style="background: #f4f4f4; padding: 15px; border-radius: 5px;">${message}</pre>
-                </div>
-            `
-        });
+            if (data.error) {
+                console.error('Resend API Error:', data.error);
+                return NextResponse.json({ error: data.error.message }, { status: 500 });
+            }
 
-        return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
+            return NextResponse.json({ message: 'Email sent successfully', id: data.data?.id }, { status: 200 });
+
+        } catch (emailError: any) {
+            console.error('Resend Send Error:', emailError);
+            return NextResponse.json({ error: emailError.message }, { status: 500 });
+        }
 
     } catch (error) {
-        console.error('Error sending email:', error);
-        // Cast error to any to access properties safely
-        const errorMessage = (error as any)?.message || 'Unknown error';
+        console.error('Request processing error:', error);
         return NextResponse.json(
-            { error: `Failed to send email: ${errorMessage}` },
+            { error: 'Internal Server Error' },
             { status: 500 }
         );
     }
