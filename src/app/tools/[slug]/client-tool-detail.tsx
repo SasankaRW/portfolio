@@ -121,7 +121,7 @@ export default function ClientToolDetail({ tool }: { tool: Project }) {
             )}
 
             <div className="section-header">
-                <Link href="/tools" className="text-muted" style={{
+                <Link href="/tools" className="text-muted project-back-btn project-back-btn--visible" style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',

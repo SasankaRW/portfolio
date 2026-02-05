@@ -42,30 +42,6 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
         mediaList.push({ type: 'image', src: project.image, alt: `${project.name} image` });
     }
 
-    // Construct Schema.org JSON-LD (Product/Software)
-    const softwareSchema = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": project.name,
-        "description": project.description,
-        "applicationCategory": "Application",
-        "operatingSystem": "Any",
-    };
-
-    // FAQ Schema
-    const faqSchema = project.faqs ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": project.faqs.map(f => ({
-            "@type": "Question",
-            "name": f.question,
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": f.answer
-            }
-        }))
-    } : null;
-
     const renderDescription = (text: string) => {
         return text.split('\n').map((line, i) => {
             if (line.startsWith('### ')) {
@@ -97,19 +73,8 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
 
     return (
         <div className="section">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
-            />
-            {faqSchema && (
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-                />
-            )}
-
-            <div className="section-header">
-                <Link href="/projects" className="text-muted" style={{
+            <div className="section-header project-detail-header">
+                <Link href="/projects" className="text-muted project-back-btn project-back-btn--visible" style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
@@ -118,14 +83,14 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
                 }}>
                     ← BACK TO PROJECTS
                 </Link>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-                    <h1 className="section-title">
-                        <span style={{ marginRight: '1rem' }}>{project.icon}</span>
+                <div className="project-detail-title-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                    <h1 className="section-title project-detail-title">
+                        <span className="project-detail-icon" style={{ marginRight: '1rem' }}>{project.icon}</span>
                         {project.name}
                     </h1>
                     {project.demo && (
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                            <RetroButton variant="primary">LIVE DEMO</RetroButton>
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer" className="project-detail-cta">
+                            <RetroButton variant="primary" className="project-live-cta">LIVE DEMO</RetroButton>
                         </a>
                     )}
                 </div>

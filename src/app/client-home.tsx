@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import styles from './home.module.css';
 // anime.js removed for performance
 import InteractiveTerminal from '@/components/InteractiveTerminal';
 import RetroWindow from '@/components/RetroWindow';
@@ -35,13 +36,14 @@ export default function HomePage() {
     document.body.classList.toggle('amber-mode');
   });
 
-  // Check if boot sequence has already run in this session
+  // Check if boot sequence has already run
   useEffect(() => {
-    const hasBooted = sessionStorage.getItem('sas_grid_booted');
+    const hasBooted = localStorage.getItem('sas_grid_booted');
     if (hasBooted) {
       setBootComplete(true);
-      setShowContent(true);
     }
+    setShowContent(true);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, []);
 
   useEffect(() => {
@@ -50,46 +52,42 @@ export default function HomePage() {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
   }, [bootComplete]);
 
   // Entry animation is now handled via CSS in globals.css (retroWindowEnter)
   // to prevent running expensive JS animations causing reflows.
 
-  // Content Rotation - Each section rotates separately
+  // Content Rotation - Single timer for all sections
   useEffect(() => {
     if (!showContent) return;
 
-    // Activity Log rotates every 8 seconds
-    const logIntervalId = setInterval(() => {
-      setLogIndex(prev => (prev + 1) % experiences.length);
-    }, 8000);
+    let elapsedMs = 0;
+    const intervalId = setInterval(() => {
+      elapsedMs += 1000;
+      if (elapsedMs % 8000 === 0) {
+        setLogIndex(prev => (prev + 1) % experiences.length);
+      }
+      if (elapsedMs % 10000 === 0) {
+        setMemoryIndex(prev => (prev + 1) % education.length);
+      }
+      if (elapsedMs % 12000 === 0) {
+        setProjectIndex(prev => (prev + 1) % projectsData.length);
+      }
+    }, 1000);
 
-    // Memory Bank rotates every 10 seconds
-    const memoryIntervalId = setInterval(() => {
-      setMemoryIndex(prev => (prev + 1) % education.length);
-    }, 10000);
-
-    // Projects rotate every 12 seconds
-    const projectIntervalId = setInterval(() => {
-      setProjectIndex(prev => (prev + 1) % projectsData.length);
-    }, 12000);
-
-    return () => {
-      clearInterval(logIntervalId);
-      clearInterval(memoryIntervalId);
-      clearInterval(projectIntervalId);
-    };
+    return () => clearInterval(intervalId);
   }, [showContent]);
 
   // Circular project buffer for seamless 2-item display
   const displayProjects = [...projectsData, ...projectsData].slice(projectIndex, projectIndex + 2);
 
   return (
-    <div className="section-wide" style={{ minHeight: '100vh', paddingTop: '1rem', paddingBottom: '1rem' }}>
+    <div className="section-wide home-root" style={{ minHeight: '100vh', paddingTop: '1rem', paddingBottom: '1rem' }}>
 
       {/* Header Status Bar */}
-      <div style={{
+      <div className="home-header" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -101,10 +99,9 @@ export default function HomePage() {
           <h1 style={{ fontSize: '1.5rem', margin: 0, lineHeight: 1 }}>{bio.name}</h1>
           <p className="text-muted" style={{ margin: 0, fontSize: '0.875rem' }}>
             {bio.title}
-            <span className="terminal-cursor" style={{ height: '0.8em', width: '0.4em', verticalAlign: 'baseline', opacity: 0.7 }}></span>
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="home-status" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{
             width: '10px',
             height: '10px',
@@ -116,23 +113,23 @@ export default function HomePage() {
         </div>
       </div>
 
-      {!bootComplete ? (
-        <div style={{ height: '100vh', width: '100vw', position: 'fixed', top: 0, left: 0, background: 'var(--bg-main)', zIndex: 9999 }}>
+      {!bootComplete && (
+        <div className={styles.bootOverlay} aria-hidden="true">
           <BootSequence onComplete={() => {
             setBootComplete(true);
-            setTimeout(() => setShowContent(true), 100);
-            sessionStorage.setItem('sas_grid_booted', 'true');
+            localStorage.setItem('sas_grid_booted', 'true');
           }} />
         </div>
-      ) : (
-        <div ref={containerRef} className="home-dashboard-grid" style={{
-          opacity: showContent ? 1 : 0
-        }}>
+      )}
+
+      <div ref={containerRef} className={styles.homeDashboardGrid} style={{
+        opacity: showContent ? 1 : 0
+      }}>
 
           {/* COLUMN 1: IDENTITY & LOGS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <RetroWindow title="USER_PROFILE" shouldAnimate={false} className="stagger-enter" style={{ opacity: 0, animationDelay: '0ms' }}>
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
+              <div className="home-profile" style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem' }}>
                 <div style={{
                   width: '60px',
                   height: '60px',
@@ -148,7 +145,7 @@ export default function HomePage() {
                 <div>
                   <div className="text-accent" style={{ fontWeight: 600, fontSize: '1.2rem' }}>{bio.location}</div>
                   <div className="text-muted" style={{ fontSize: '1rem' }}>ID: SRW-2025</div>
-                  <div style={{ marginTop: '0.5rem', display: 'flex', gap: '1rem' }}>
+                  <div className="home-socials" style={{ marginTop: '0.5rem', display: 'flex', gap: '1rem' }}>
                     {socials.map(s => (
                       <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
                         style={{ textDecoration: 'none', fontSize: '1.2rem' }} title={s.name}>
@@ -161,7 +158,7 @@ export default function HomePage() {
               <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
                 {bio.short}
               </p>
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+              <div className="home-resume" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
                 <a
                   href="/Sasanka_Ravindu_SE_Resume.pdf"
                   target="_blank"
@@ -197,8 +194,8 @@ export default function HomePage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <InteractiveTerminal className="stagger-enter" style={{ opacity: 0, animationDelay: '200ms' }} />
 
-            <RetroWindow title="PROJECT_FEED" className="project-feed stagger-enter" shouldAnimate={false} style={{ opacity: 0, animationDelay: '300ms' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+            <RetroWindow title="PROJECT_FEED" className={`${styles.projectFeed} stagger-enter`} shouldAnimate={false} style={{ opacity: 0, animationDelay: '300ms' }}>
+              <div className="home-project-feed-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
                 {displayProjects.map((project, idx) => (
                   <Link key={`${project.id}-${idx}`} href={`/projects`} style={{ textDecoration: 'none' }}>
                     <div className="retro-btn animate-fade-in" style={{
@@ -258,10 +255,10 @@ export default function HomePage() {
           {/* COLUMN 3: NAVIGATION & STATS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <RetroWindow title="MAIN_MENU" shouldAnimate={false} className="stagger-enter" style={{ opacity: 0, animationDelay: '400ms' }}>
-              <div style={{ display: 'grid', gap: '0.5rem' }}>
+              <div className="home-menu-grid" style={{ display: 'grid', gap: '0.5rem' }}>
                 {menuItems.map((item) => (
                   <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
-                    <div className="retro-btn dos-flicker" style={{
+                    <div className="retro-btn dos-flicker home-menu-item" style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.75rem',
@@ -293,8 +290,7 @@ export default function HomePage() {
 
           </div>
 
-        </div>
-      )}
+      </div>
     </div>
   );
 }

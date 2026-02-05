@@ -133,7 +133,7 @@ export default function ClientQrTool({ tool }: { tool?: Project }) {
     return (
         <div className="section">
             <div className="section-header">
-                <Link href="/tools" className="text-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', fontSize: '0.875rem' }}>
+                <Link href="/tools" className="text-muted project-back-btn project-back-btn--visible" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', fontSize: '0.875rem' }}>
                     ← BACK TO TOOLS
                 </Link>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>

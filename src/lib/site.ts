@@ -1,4 +1,5 @@
 export const DEFAULT_SITE_URL = 'https://sasgrid.online';
+export const DEFAULT_OG_IMAGE = '/images/ui/prototype.png';
 
 function normalizeSiteUrl(raw: string): string {
   const trimmed = raw.trim();

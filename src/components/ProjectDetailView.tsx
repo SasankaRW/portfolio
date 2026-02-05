@@ -30,7 +30,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
     const mediaList = getMediaList(project);
 
     return (
-        <div>
+        <div className="project-detail">
             <style jsx>{`
                 .hide-scrollbar::-webkit-scrollbar {
                     display: none;
@@ -42,6 +42,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
 
             <button
                 onClick={onBack}
+                className="project-back-btn project-back-btn--visible"
                 style={{
                     background: 'none',
                     border: 'none',
@@ -61,8 +62,8 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
 
             <div className="animate-fade-in">
             {/* Header / Breadcrumb-ish */}
-            <div style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="project-detail-header" style={{ marginBottom: '2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="project-detail-title" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <span style={{ fontSize: '2.5rem' }}>{project.icon}</span>
                     <div>
                         <h1 style={{ fontSize: '2rem', lineHeight: 1, marginBottom: '0.25rem' }}>{project.name}</h1>
@@ -70,18 +71,18 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
                     </div>
                 </div>
                 {project.demo && (
-                    <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                        <RetroButton variant="primary">
+                    <a href={project.demo} target="_blank" rel="noopener noreferrer" className="project-detail-cta">
+                        <RetroButton variant="primary" className="project-live-cta">
                             {['auto-typer', 'whatsapp-bot'].includes(project.slug) ? 'VIEW RELEASES' : 'LAUNCH LIVE SITE'}
                         </RetroButton>
                     </a>
                 )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 450px), 1fr))', gap: '3rem' }}>
+            <div className="project-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 450px), 1fr))', gap: '3rem' }}>
                 {/* LEFT COLUMN: Media */}
                 <div style={{ minWidth: 0 }}> {/* minWidth 0 is critical for grid/flex children scrolling */}
-                    <div className="crt-frame" style={{ marginBottom: '1.5rem', padding: 0, overflow: 'hidden', position: 'relative' }}>
+                    <div className="crt-frame project-media-frame" style={{ marginBottom: '1.5rem', padding: 0, overflow: 'hidden', position: 'relative' }}>
                         {mediaList.length > 0 ? (
                             <div
                                 style={{
@@ -234,7 +235,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
 
                     {/* GitHub Link below images for tools/all */}
                     {project.github && (
-                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                        <div className="project-github-cta" style={{ marginTop: '1.5rem', textAlign: 'center' }}>
                             <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', width: '100%' }}>
                                 <RetroButton style={{ width: '100%', justifyContent: 'center' }}>
                                     VIEW SOURCE CODE ON GITHUB
@@ -246,7 +247,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
 
                 {/* RIGHT COLUMN: Info */}
                 <div>
-                    <div style={{
+                    <div className="project-summary" style={{
                         marginBottom: '2.5rem',
                         color: 'var(--text-secondary)',
                         lineHeight: 1.8,

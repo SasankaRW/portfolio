@@ -1,0 +1,71 @@
+.homeDashboardGrid {
+  display: grid;
+  grid-template-columns: 320px 1fr 280px;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.homeDashboardGrid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.homeDashboardGrid :global(.retro-window) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.homeDashboardGrid :global(.retro-window-content) {
+  flex: 1;
+}
+
+.homeDashboardGrid :global(.interactive-terminal) {
+  height: 450px !important;
+  min-height: 450px !important;
+  max-height: 450px !important;
+  flex: 0 0 auto !important;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-terminal);
+  font-size: 0.9rem;
+}
+
+.projectFeed {
+  flex: 0 0 auto !important;
+  max-height: 280px;
+}
+
+.bootOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.88);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .homeDashboardGrid {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .homeDashboardGrid :global(.interactive-terminal) {
+    font-size: 0.7rem;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+
+  .projectFeed {
+    max-height: none;
+  }
+}

@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, Press_Start_2P, VT323 } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import ScanlineOverlay from "@/components/ScanlineOverlay";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -26,7 +27,7 @@ const pressStart2P = Press_Start_2P({
 });
 import { SoundProvider } from "@/context/SoundContext";
 import { ThemeProvider } from "@/context/ThemeContext";
-import { getSiteUrl } from "@/lib/site";
+import { DEFAULT_OG_IMAGE, getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -54,11 +55,13 @@ export const metadata: Metadata = {
     siteName: "SAS.GRID.SYS",
     locale: "en_US",
     type: "website",
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "SAS.GRID.SYS",
     description: "Sasanka Wakkumbura's personal portfolio.",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
@@ -111,6 +114,7 @@ export default function RootLayout({
               Skip to content
             </a>
             <Navigation />
+            <ScrollToTop />
             <main id="main-content" className="main-content">
               {children}
             </main>

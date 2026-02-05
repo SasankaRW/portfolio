@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import styles from './BootSequence.module.css';
 
 interface BootSequenceProps {
     onComplete: () => void;
@@ -35,32 +36,13 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
     }, [onComplete]);
 
     return (
-        <div className="boot-screen" style={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start', // Align left like a real boot screen
-            justifyContent: 'center',
-            fontFamily: 'var(--font-terminal)',
-            fontSize: '1.2rem',
-            color: 'var(--accent-primary)',
-            gap: '0.5rem',
-            paddingLeft: '2rem' // Add some padding
-        }}>
+        <div className={styles.bootScreen}>
             {displayedLines.map((line, index) => (
-                <div key={index} style={{
-                    opacity: 0,
-                    animation: 'fadeIn 0.1s forwards'
-                }}>
+                <div key={index} className={styles.bootLine}>
                     <span style={{ marginRight: '1rem' }}>&gt;</span>
                     {line}
                 </div>
             ))}
-            <style jsx>{`
-                @keyframes fadeIn {
-                    to { opacity: 1; }
-                }
-            `}</style>
         </div>
     );
 }

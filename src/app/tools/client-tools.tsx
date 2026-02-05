@@ -27,7 +27,7 @@ export default function ToolsPage() {
     <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
       <div className="section-header" style={{ marginBottom: '2rem' }}>
-        <Link href="/projects" className="text-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+        <Link href="/projects" className="text-muted project-back-btn project-back-btn--visible" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
           ← BACK TO PROJECTS
         </Link>
         <h1 className="section-title">&gt; TOOLS.EXE</h1>
