@@ -7,14 +7,6 @@
       - Accent Cyan: #00FFCC
 -->
 
-<div align="center">
-
-```text
-> BOOT_SEQUENCE_INIT...
-> CHECKING_SYSTEM_INTEGRITY... OK
-> LOADING_PROFILE_MODULES... OK
-> ESTABLISHING_SECURE_CONNECTION... 100%
-```
 
 ```text
   _____  _____   _____  ______ _____ _      ______ 
