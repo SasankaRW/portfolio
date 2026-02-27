@@ -69,6 +69,7 @@ export const projects: Project[] = [
         techStack: ['Next.js 16', 'TypeScript', 'Supabase', 'Tailwind CSS v4', 'Cloudinary', 'Resend', 'PayPal', 'Zod', 'Framer Motion', 'Lucide React'],
         role: 'Full Stack Developer',
         demo: 'https://island-safaris.vercel.app/',
+        image: '/images/projects/IslandSafari.png',
         features: [
             'Safari & package booking (cooking class, village tour, bicycle rent) with dynamic pricing',
             'Destinations: public listing and detail pages; admin CRUD',
@@ -110,7 +111,12 @@ export const projects: Project[] = [
         techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'Tailwind CSS'],
         role: 'Full Stack Developer',
         demo: 'https://ceylon-spice-hub.vercel.app/',
-        image: '/images/projects/IslandSafari.png',
+        image: '/images/projects/spicehub.png',
+        gallery: [
+            '/images/projects/spicehub.png',
+            '/images/projects/spicehub2.png',
+            '/images/projects/spicehub3.png'
+        ],
         longDescription: `
 **Ceylon Spice Hub** is a modern full-stack e-commerce platform dedicated to selling premium Sri Lankan spices. It bridges the gap between traditional spice markets and digital convenience, offering a seamless shopping experience.
 
