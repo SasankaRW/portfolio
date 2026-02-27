@@ -23,6 +23,85 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'omniware-web',
+        slug: 'omniware-web',
+        name: 'OmniwareWeb',
+        description: 'Full-stack e-commerce platform for custom PC builds and components in Sri Lanka (Omniware.lk).',
+        icon: '🖥️',
+        techStack: ['Next.js 16', 'React 19', 'TypeScript', 'Express 5', 'Mongoose', 'MongoDB', 'JWT', 'Tailwind CSS 4', 'React Query', 'Zod', 'Framer Motion'],
+        role: 'Full Stack Developer',
+        demo: 'https://omniware-web.vercel.app/',
+        features: [
+            'Storefront: shop by category, product detail, cart & checkout',
+            'Custom PC builder requests (BuildRequest API)',
+            'JWT auth; admin dashboard (products, orders, categories, analytics)',
+            'Single-origin API at /api/* (serverless-friendly for Vercel)',
+            'Admin: products CRUD, orders, categories & spec features, settings',
+        ],
+        longDescription: `
+**OmniwareWeb** (Omniware.lk) is a full-stack e-commerce web app for custom PC builds and components in Sri Lanka. It is a monorepo with a Next.js frontend and an Express API that can run inside the same app (serverless) or as a standalone server.
+
+### Architecture
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4.
+- **API**: Express 5, Mongoose, JWT — mounted at \`/api/*\` via a catch-all route for single-origin deployment (e.g. Vercel).
+- **Database**: MongoDB via Mongoose.
+- **Standalone server**: The \`server/\` folder can run as a separate Express app for local or other hosting.
+
+### Main Features
+- **Storefront**: Home (hero, search, featured), shop by category, product detail with gallery/variants/specs, cart, checkout.
+- **Auth**: Login/register; JWT in localStorage; axios sends \`Authorization: Bearer <token>\`.
+- **Admin**: Dashboard, products (list/create/edit), orders (list/detail), categories & spec features, settings; protected by \`requireAdmin\`, rate limiting.
+- **API surface**: Auth, products, orders, admin, builder (custom build requests), analytics.
+- **Data models**: User, Product (variants, specs, images, stock), Category, Brand, Order, OrderEvent, BuildRequest, CategoryFeaturedSpecs, AuditLog, AnalyticsDaily, Event.
+        `,
+        seoMeta: {
+            title: 'OmniwareWeb – E-Commerce for Custom PC Builds | Sri Lanka',
+            description: 'Full-stack e-commerce platform for custom PC builds and components in Sri Lanka. Next.js 16, Express API, MongoDB, JWT auth, admin dashboard.',
+            keywords: ['E-commerce', 'PC builds', 'Sri Lanka', 'Next.js', 'Express', 'MongoDB', 'Omniware']
+        }
+    },
+    {
+        id: 'island-safaris',
+        slug: 'island-safaris',
+        name: 'Island Safaris Sri Lanka',
+        description: 'Safari and experiences booking site for Sri Lanka with PayPal, promo codes, and admin dashboard.',
+        icon: '🦒',
+        techStack: ['Next.js 16', 'TypeScript', 'Supabase', 'Tailwind CSS v4', 'Cloudinary', 'Resend', 'PayPal', 'Zod', 'Framer Motion', 'Lucide React'],
+        role: 'Full Stack Developer',
+        demo: 'https://island-safaris.vercel.app/',
+        features: [
+            'Safari & package booking (cooking class, village tour, bicycle rent) with dynamic pricing',
+            'Destinations: public listing and detail pages; admin CRUD',
+            'PayPal integration and advance payment tracking',
+            'Promo codes (fixed/percentage, min order, date range, usage limits)',
+            'Reviews with admin moderation; WhatsApp floating button, gallery, about, contact',
+        ],
+        longDescription: `
+**Island Safaris Sri Lanka** is a safari and experiences booking site for Sri Lanka, built with Next.js 16, Supabase, and Tailwind CSS. It is production-ready and deployable on Vercel.
+
+### Tech Stack
+- **Framework**: Next.js 16 (App Router), TypeScript.
+- **Database**: Supabase (PostgreSQL).
+- **Media**: Cloudinary for images.
+- **Email**: Resend.
+- **Payments**: PayPal (create-order API + client integration).
+- **Validation**: Zod; UI: Framer Motion, Lucide React, Outfit font.
+
+### Main Features
+- **Safari & package booking**: Multi-step wizard with dynamic pricing (jeep fees, tickets, extra hours). Package types include cooking class, village tour, bicycle rent. Confirmation pages per booking.
+- **Destinations**: Stored in Supabase with slugs, descriptions, pricing, vehicle/duration, seasonal info. Public listing and detail pages; full admin management.
+- **Admin dashboard**: Password + cookie auth; middleware protects all \`/admin\` routes. Manages bookings, package bookings, reviews, destinations, promo codes, calendar.
+- **Reviews**: Public submission; admin can moderate/approve.
+- **Promo codes**: Fixed or percentage discounts, min order, max discount, date range, usage limits; \`applicable_scope\` in DB.
+- **Other**: WhatsApp floating button, gallery, about, contact.
+        `,
+        seoMeta: {
+            title: 'Island Safaris Sri Lanka – Safari & Experiences Booking',
+            description: 'Safari and activity package booking site for Sri Lanka. Next.js 16, Supabase, PayPal, promo codes, reviews, and admin dashboard.',
+            keywords: ['Safari', 'Sri Lanka', 'Booking', 'Next.js', 'Supabase', 'PayPal', 'Experiences']
+        }
+    },
+    {
         id: 'ceylon-spice-hub',
         slug: 'ceylon-spice-hub',
         name: 'Ceylon Spice Hub',
@@ -31,7 +110,7 @@ export const projects: Project[] = [
         techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'Tailwind CSS'],
         role: 'Full Stack Developer',
         demo: 'https://ceylon-spice-hub.vercel.app/',
-        // image: '/images/projects/ceylon-spice-hub/cover.png',
+        image: '/images/projects/IslandSafari.png',
         longDescription: `
 **Ceylon Spice Hub** is a modern full-stack e-commerce platform dedicated to selling premium Sri Lankan spices. It bridges the gap between traditional spice markets and digital convenience, offering a seamless shopping experience.
 
@@ -223,85 +302,7 @@ Traditional hardware scoreboards are expensive and hard to transport. This PWA (
             'Sensor integration',
         ],
     },
-    {
-        id: 'omniware-web',
-        slug: 'omniware-web',
-        name: 'OmniwareWeb',
-        description: 'Full-stack e-commerce platform for custom PC builds and components in Sri Lanka (Omniware.lk).',
-        icon: '🖥️',
-        techStack: ['Next.js 16', 'React 19', 'TypeScript', 'Express 5', 'Mongoose', 'MongoDB', 'JWT', 'Tailwind CSS 4', 'React Query', 'Zod', 'Framer Motion'],
-        role: 'Full Stack Developer',
-        demo: 'https://omniware-web.vercel.app/',
-        features: [
-            'Storefront: shop by category, product detail, cart & checkout',
-            'Custom PC builder requests (BuildRequest API)',
-            'JWT auth; admin dashboard (products, orders, categories, analytics)',
-            'Single-origin API at /api/* (serverless-friendly for Vercel)',
-            'Admin: products CRUD, orders, categories & spec features, settings',
-        ],
-        longDescription: `
-**OmniwareWeb** (Omniware.lk) is a full-stack e-commerce web app for custom PC builds and components in Sri Lanka. It is a monorepo with a Next.js frontend and an Express API that can run inside the same app (serverless) or as a standalone server.
-
-### Architecture
-- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4.
-- **API**: Express 5, Mongoose, JWT — mounted at \`/api/*\` via a catch-all route for single-origin deployment (e.g. Vercel).
-- **Database**: MongoDB via Mongoose.
-- **Standalone server**: The \`server/\` folder can run as a separate Express app for local or other hosting.
-
-### Main Features
-- **Storefront**: Home (hero, search, featured), shop by category, product detail with gallery/variants/specs, cart, checkout.
-- **Auth**: Login/register; JWT in localStorage; axios sends \`Authorization: Bearer <token>\`.
-- **Admin**: Dashboard, products (list/create/edit), orders (list/detail), categories & spec features, settings; protected by \`requireAdmin\`, rate limiting.
-- **API surface**: Auth, products, orders, admin, builder (custom build requests), analytics.
-- **Data models**: User, Product (variants, specs, images, stock), Category, Brand, Order, OrderEvent, BuildRequest, CategoryFeaturedSpecs, AuditLog, AnalyticsDaily, Event.
-        `,
-        seoMeta: {
-            title: 'OmniwareWeb – E-Commerce for Custom PC Builds | Sri Lanka',
-            description: 'Full-stack e-commerce platform for custom PC builds and components in Sri Lanka. Next.js 16, Express API, MongoDB, JWT auth, admin dashboard.',
-            keywords: ['E-commerce', 'PC builds', 'Sri Lanka', 'Next.js', 'Express', 'MongoDB', 'Omniware']
-        }
-    },
-    {
-        id: 'island-safaris',
-        slug: 'island-safaris',
-        name: 'Island Safaris Sri Lanka',
-        description: 'Safari and experiences booking site for Sri Lanka with PayPal, promo codes, and admin dashboard.',
-        icon: '🦒',
-        techStack: ['Next.js 16', 'TypeScript', 'Supabase', 'Tailwind CSS v4', 'Cloudinary', 'Resend', 'PayPal', 'Zod', 'Framer Motion', 'Lucide React'],
-        role: 'Full Stack Developer',
-        demo: 'https://island-safaris.vercel.app/',
-        features: [
-            'Safari & package booking (cooking class, village tour, bicycle rent) with dynamic pricing',
-            'Destinations: public listing and detail pages; admin CRUD',
-            'PayPal integration and advance payment tracking',
-            'Promo codes (fixed/percentage, min order, date range, usage limits)',
-            'Reviews with admin moderation; WhatsApp floating button, gallery, about, contact',
-        ],
-        longDescription: `
-**Island Safaris Sri Lanka** is a safari and experiences booking site for Sri Lanka, built with Next.js 16, Supabase, and Tailwind CSS. It is production-ready and deployable on Vercel.
-
-### Tech Stack
-- **Framework**: Next.js 16 (App Router), TypeScript.
-- **Database**: Supabase (PostgreSQL).
-- **Media**: Cloudinary for images.
-- **Email**: Resend.
-- **Payments**: PayPal (create-order API + client integration).
-- **Validation**: Zod; UI: Framer Motion, Lucide React, Outfit font.
-
-### Main Features
-- **Safari & package booking**: Multi-step wizard with dynamic pricing (jeep fees, tickets, extra hours). Package types include cooking class, village tour, bicycle rent. Confirmation pages per booking.
-- **Destinations**: Stored in Supabase with slugs, descriptions, pricing, vehicle/duration, seasonal info. Public listing and detail pages; full admin management.
-- **Admin dashboard**: Password + cookie auth; middleware protects all \`/admin\` routes. Manages bookings, package bookings, reviews, destinations, promo codes, calendar.
-- **Reviews**: Public submission; admin can moderate/approve.
-- **Promo codes**: Fixed or percentage discounts, min order, max discount, date range, usage limits; \`applicable_scope\` in DB.
-- **Other**: WhatsApp floating button, gallery, about, contact.
-        `,
-        seoMeta: {
-            title: 'Island Safaris Sri Lanka – Safari & Experiences Booking',
-            description: 'Safari and activity package booking site for Sri Lanka. Next.js 16, Supabase, PayPal, promo codes, reviews, and admin dashboard.',
-            keywords: ['Safari', 'Sri Lanka', 'Booking', 'Next.js', 'Supabase', 'PayPal', 'Experiences']
-        }
-    },
+   
 ];
 
 export const tools: Project[] = [

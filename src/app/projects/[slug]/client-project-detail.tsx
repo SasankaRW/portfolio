@@ -90,7 +90,7 @@ export default function ClientProjectDetail({ project }: { project: Project }) {
                     </h1>
                     {project.demo && (
                         <a href={project.demo} target="_blank" rel="noopener noreferrer" className="project-detail-cta">
-                            <RetroButton variant="primary" className="project-live-cta">LIVE DEMO</RetroButton>
+                            <RetroButton variant="primary" className="project-live-cta">Visit site</RetroButton>
                         </a>
                     )}
                 </div>

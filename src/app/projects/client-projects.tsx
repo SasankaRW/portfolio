@@ -6,16 +6,19 @@ import ProjectCard from '@/components/ProjectCard';
 import ProjectDetailView from '@/components/ProjectDetailView';
 import { projects, tools, Project } from '@/data/projects';
 
-type ViewMode = 'all-projects' | 'all-tools' | 'project-detail';
+const clientSites = projects.filter((p) => p.demo);
+
+type ViewMode = 'all-projects' | 'client-sites' | 'all-tools' | 'project-detail';
 
 export default function ProjectsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('all-projects');
+  const [previousViewMode, setPreviousViewMode] = useState<ViewMode>('all-projects');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Animate grid items when view satisfies grid condition
-    if ((viewMode === 'all-projects' || viewMode === 'all-tools') && gridRef.current) {
+    if ((viewMode === 'all-projects' || viewMode === 'client-sites' || viewMode === 'all-tools') && gridRef.current) {
       const items = gridRef.current.children;
       anime({
         targets: items,
@@ -28,8 +31,9 @@ export default function ProjectsPage() {
     }
   }, [viewMode]);
 
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: Project, fromView: ViewMode) => {
     setSelectedProject(project);
+    setPreviousViewMode(fromView);
     setViewMode('project-detail');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -40,13 +44,49 @@ export default function ProjectsPage() {
       <div className="section-header" style={{ marginBottom: '2rem' }}>
         <h1 className="section-title">&gt; PROJECTS.EXE</h1>
         <p className="section-subtitle">Project Directory</p>
+        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() => setViewMode('all-projects')}
+            className={viewMode === 'all-projects' ? 'project-tab project-tab--active' : 'project-tab'}
+            style={{
+              padding: '0.5rem 1rem',
+              fontFamily: 'var(--font-terminal)',
+              fontSize: '0.875rem',
+              border: '1px solid var(--border-color)',
+              background: viewMode === 'all-projects' ? 'var(--accent-primary)' : 'transparent',
+              color: viewMode === 'all-projects' ? 'var(--bg-page)' : 'var(--text-primary)',
+              cursor: 'pointer',
+              borderRadius: '2px',
+            }}
+          >
+            All projects
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('client-sites')}
+            className={viewMode === 'client-sites' ? 'project-tab project-tab--active' : 'project-tab'}
+            style={{
+              padding: '0.5rem 1rem',
+              fontFamily: 'var(--font-terminal)',
+              fontSize: '0.875rem',
+              border: '1px solid var(--border-color)',
+              background: viewMode === 'client-sites' ? 'var(--accent-primary)' : 'transparent',
+              color: viewMode === 'client-sites' ? 'var(--bg-page)' : 'var(--text-primary)',
+              cursor: 'pointer',
+              borderRadius: '2px',
+            }}
+          >
+            Client sites ({clientSites.length})
+          </button>
+        </div>
       </div>
 
       <div className="layout-container" style={{ display: 'flex', gap: '2rem', flex: 1, alignItems: 'flex-start', flexDirection: 'column' }}>
         {/* MAIN CONTENT AREA */}
         <main style={{ flex: 1, width: '100%', minWidth: 0 }}> {/* minWidth 0 prevents flex child from overflowing */}
 
-          {/* VIEW: PROJECT GRID */}
+          {/* VIEW: ALL PROJECTS GRID */}
           {viewMode === 'all-projects' && (
             <div className="animate-fade-in">
               <div className="terminal-container" style={{ marginBottom: '2rem' }}>
@@ -72,7 +112,40 @@ export default function ProjectsPage() {
                   <ProjectCard
                     key={project.id}
                     project={project}
-                    onClick={() => handleProjectClick(project)}
+                    onClick={() => handleProjectClick(project, 'all-projects')}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* VIEW: CLIENT SITES GRID */}
+          {viewMode === 'client-sites' && (
+            <div className="animate-fade-in">
+              <div className="terminal-container" style={{ marginBottom: '2rem' }}>
+                <div className="terminal-header">
+                  <span className="terminal-prompt">C:\PROJECTS\CLIENT_SITES&gt;</span>
+                  <span className="text-muted">dir /v</span>
+                </div>
+                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
+                  {clientSites.length} client site(s). Click to view details or visit the live site.
+                </p>
+              </div>
+
+              <div
+                ref={gridRef}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  gap: '1.5rem',
+                  marginBottom: '4rem'
+                }}
+              >
+                {clientSites.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onClick={() => handleProjectClick(project, 'client-sites')}
                   />
                 ))}
               </div>
@@ -104,7 +177,7 @@ export default function ProjectsPage() {
                   <ProjectCard
                     key={tool.id}
                     project={tool}
-                    onClick={() => handleProjectClick(tool)}
+                    onClick={() => handleProjectClick(tool, 'all-tools')}
                   />
                 ))}
               </div>
@@ -116,8 +189,7 @@ export default function ProjectsPage() {
             <ProjectDetailView
               project={selectedProject}
               onBack={() => {
-                const isTool = tools.some(t => t.id === selectedProject.id);
-                setViewMode(isTool ? 'all-tools' : 'all-projects');
+                setViewMode(previousViewMode);
                 setSelectedProject(null);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}

@@ -73,7 +73,7 @@ export default function ProjectDetailView({ project, onBack }: ProjectDetailView
                 {project.demo && (
                     <a href={project.demo} target="_blank" rel="noopener noreferrer" className="project-detail-cta">
                         <RetroButton variant="primary" className="project-live-cta">
-                            {['auto-typer', 'whatsapp-bot'].includes(project.slug) ? 'VIEW RELEASES' : 'LAUNCH LIVE SITE'}
+                            {['auto-typer', 'whatsapp-bot'].includes(project.slug) ? 'VIEW RELEASES' : 'Visit site'}
                         </RetroButton>
                     </a>
                 )}
