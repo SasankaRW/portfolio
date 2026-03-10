@@ -8,6 +8,8 @@ import Link from 'next/link';
 
 export default function ToolsPage() {
   const gridRef = useRef<HTMLDivElement>(null);
+  const sourceAvailableCount = tools.filter((tool) => tool.github).length;
+  const releaseReadyCount = tools.filter((tool) => tool.demo).length;
 
   useEffect(() => {
     if (gridRef.current) {
@@ -24,35 +26,54 @@ export default function ToolsPage() {
   }, []);
 
   return (
-    <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-
-      <div className="section-header" style={{ marginBottom: '2rem' }}>
-        <Link href="/projects" className="text-muted project-back-btn project-back-btn--visible" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
-          ← BACK TO PROJECTS
-        </Link>
-        <h1 className="section-title">&gt; TOOLS.EXE</h1>
-        <p className="section-subtitle">Useful utilities and automation tools</p>
-      </div>
-
+    <div className="catalog-page">
       <div className="animate-fade-in">
-        <div className="terminal-container" style={{ marginBottom: '2rem' }}>
+        <section className="retro-window catalog-hero">
+          <div className="retro-window-content">
+            <div className="catalog-hero-grid">
+              <div className="catalog-hero-copy">
+                <span className="catalog-eyebrow">Utility Directory</span>
+                <div className="section-header" style={{ marginBottom: 0 }}>
+                  <Link href="/projects" className="project-back-btn project-back-btn--visible catalog-back-link">
+                    ← Back to Projects
+                  </Link>
+                  <h1 className="section-title">&gt; TOOLS.EXE</h1>
+                  <p className="section-subtitle">Useful utilities and automation tools with the same portfolio catalog layout</p>
+                </div>
+                <p className="catalog-hero-text">
+                  A focused library of practical tools, from browser-first utilities to downloadable automation helpers.
+                </p>
+              </div>
+
+              <div className="catalog-stat-grid">
+                <div className="catalog-stat-card">
+                  <span className="catalog-stat-value">{tools.length}</span>
+                  <span className="catalog-stat-label">Total Tools</span>
+                </div>
+                <div className="catalog-stat-card">
+                  <span className="catalog-stat-value">{sourceAvailableCount}</span>
+                  <span className="catalog-stat-label">Source Available</span>
+                </div>
+                <div className="catalog-stat-card">
+                  <span className="catalog-stat-value">{releaseReadyCount}</span>
+                  <span className="catalog-stat-label">Live Or Downloadable</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="terminal-container catalog-terminal">
           <div className="terminal-header">
             <span className="terminal-prompt">C:\TOOLS&gt;</span>
-            <span className="text-muted">list --all</span>
+            <span className="text-muted">list --all --detailed</span>
           </div>
-          <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-            {tools.length} tool(s) found.
+          <p className="catalog-terminal-text">
+            {tools.length} tool(s) ready to explore. Open a card for the full feature set, stack, and release links.
           </p>
         </div>
 
-        <div
-          ref={gridRef}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '1.5rem',
-          }}
-        >
+        <div ref={gridRef} className="catalog-card-grid">
           {tools.map((tool) => (
             <ProjectCard
               key={tool.id}

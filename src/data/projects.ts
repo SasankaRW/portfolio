@@ -68,7 +68,7 @@ export const projects: Project[] = [
         icon: '🦒',
         techStack: ['Next.js 16', 'TypeScript', 'Supabase', 'Tailwind CSS v4', 'Cloudinary', 'Resend', 'PayPal', 'Zod', 'Framer Motion', 'Lucide React'],
         role: 'Full Stack Developer',
-        demo: 'https://island-safaris.vercel.app/',
+        demo: 'https://www.islandsafarisl.com/',
         image: '/images/projects/IslandSafari.png',
         features: [
             'Safari & package booking (cooking class, village tour, bicycle rent) with dynamic pricing',

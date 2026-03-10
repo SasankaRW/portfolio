@@ -18,11 +18,12 @@ export default function ContactPage() {
 
   const emailSocial = socials.find(s => s.name === 'Email');
   const emailAddress = emailSocial ? emailSocial.url.replace('mailto:', '') : 'Sasankarw@gmail.com';
+  const emailHref = `mailto:${emailAddress}`;
   const contactMethods = [
     {
       name: 'Email',
       label: emailAddress,
-      url: `mailto:${emailAddress}`,
+      url: emailHref,
       description: 'Best for project briefs, freelance work, and collaboration ideas.',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -56,6 +57,17 @@ export default function ContactPage() {
       icon: socials.find(s => s.name === 'Phone')?.icon,
       external: false,
     },
+  ];
+  const contactNotes = [
+    { label: 'Location', value: bio.location },
+    { label: 'Focus', value: 'Web apps, tooling, integrations' },
+    { label: 'Best brief', value: 'Goals, scope, timeline, references' },
+  ];
+  const projectStarter = [
+    'What you are building',
+    'The outcome you want',
+    'Timeline or delivery window',
+    'Any links, references, or existing product context',
   ];
 
   const handleSubmit = async (e: FormEvent) => {
@@ -94,6 +106,10 @@ export default function ContactPage() {
     }
   };
 
+  const handleEmailClick = () => {
+    window.location.assign(emailHref);
+  };
+
   return (
     <div className="section">
       <div className="section-header">
@@ -101,37 +117,80 @@ export default function ContactPage() {
         <p className="section-subtitle">Let&apos;s build something useful together</p>
       </div>
 
-      <div className="contact-hero">
-        <div className="contact-hero-copy">
-          <div className="terminal-header" style={{ marginBottom: '1rem', padding: 0, borderBottom: 'none' }}>
-            <span className="terminal-prompt">C:\CONTACT&gt;</span>
-            <span className="text-muted">init handshake</span>
-          </div>
-          <h2 className="contact-hero-title">Open for collaborations, product work, and engineering-heavy builds.</h2>
-          <p className="contact-hero-text">
-            {bio.short} If you have an idea, a product to refine, or a system that needs careful implementation,
-            send a note and I&apos;ll get back to you.
-          </p>
-        </div>
+      <RetroWindow title="CONTACT_PORTAL" className="contact-shell">
+        <div className="contact-shell-grid">
+          <div className="contact-shell-copy">
+            <div className="terminal-header" style={{ marginBottom: '1rem', padding: 0, borderBottom: 'none' }}>
+              <span className="terminal-prompt">C:\CONTACT&gt;</span>
+              <span className="text-muted">open collaboration-channel</span>
+            </div>
+            <h2 className="contact-hero-title">Open for collaborations, product work, and engineering-heavy builds.</h2>
+            <p className="contact-hero-text">
+              {bio.short} If you have an idea, a product to refine, or a system that needs careful implementation,
+              send a note and I&apos;ll get back to you.
+            </p>
 
-        <div className="contact-hero-stats">
-          <div className="contact-stat-card">
-            <span className="contact-stat-label">Primary channel</span>
-            <strong>{emailAddress}</strong>
+            <div className="contact-shell-actions">
+              <RetroButton
+                onClick={handleEmailClick}
+                variant="primary"
+                className="contact-resume-link"
+              >
+                EMAIL ME
+              </RetroButton>
+              <a
+                href="/Sasanka_Ravindu_SE_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="retro-btn contact-resume-link"
+              >
+                DOWNLOAD RESUME
+              </a>
+            </div>
+
+            <div className="contact-shell-notes">
+              {contactNotes.map((note) => (
+                <div key={note.label} className="contact-note-card">
+                  <span className="contact-stat-label">{note.label}</span>
+                  <strong>{note.value}</strong>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="contact-stat-card">
-            <span className="contact-stat-label">Location</span>
-            <strong>{bio.location}</strong>
-          </div>
-          <div className="contact-stat-card">
-            <span className="contact-stat-label">Response window</span>
-            <strong>Usually within 24-48 hours</strong>
+
+          <div className="contact-shell-panel">
+            <div className="contact-shell-panel-header">
+              <span className="contact-status-pill">
+                <span className="contact-status-dot"></span>
+                Available for new conversations
+              </span>
+              <span className="text-muted">Choose the fastest way to reach out</span>
+            </div>
+
+            <div className="contact-method-list">
+              {contactMethods.map((method) => (
+                <a
+                  key={method.name}
+                  href={method.url}
+                  target={method.external ? '_blank' : undefined}
+                  rel={method.external ? 'noopener noreferrer' : undefined}
+                  className="contact-method-card dos-flicker"
+                >
+                  <span className="contact-method-icon">{method.icon}</span>
+                  <span className="contact-method-body">
+                    <span className="contact-method-name">{method.name}</span>
+                    <span className="contact-method-value">{method.label}</span>
+                    <span className="contact-method-description">{method.description}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </RetroWindow>
 
       <div className="contact-layout">
-        <RetroWindow title="MESSAGE_COMPOSER">
+        <RetroWindow title="MESSAGE_COMPOSER" className="contact-form-window">
           {submitted ? (
             <div className="contact-success">
               <p className="text-accent" style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>
@@ -208,7 +267,7 @@ export default function ContactPage() {
                   {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
                 </RetroButton>
                 <p className="text-muted" style={{ margin: 0, fontSize: '0.85rem' }}>
-                  Prefer direct email? <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+                  Prefer direct email? <a href={emailHref}>{emailAddress}</a>
                 </p>
               </div>
             </form>
@@ -216,63 +275,46 @@ export default function ContactPage() {
         </RetroWindow>
 
         <div className="contact-sidebar">
-          <RetroWindow title="QUICK_CONNECT">
+          <RetroWindow title="DIRECT_CHANNELS">
             <div className="terminal-container contact-sidebar-intro" style={{ border: 'none' }}>
               <div className="terminal-header" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span className="terminal-prompt">C:\SOCIAL&gt;</span>
-                <span className="text-muted">links --priority</span>
+                <span className="text-muted">show --primary</span>
               </div>
               <p className="text-muted" style={{ marginBottom: 0 }}>
-                Pick the channel that best matches how you want to start the conversation.
+                Prefer direct contact first? Start with email, then use LinkedIn or phone if needed.
               </p>
             </div>
 
-            <div className="contact-method-list">
-              {contactMethods.map((method) => (
+            <div className="contact-direct-links">
+              {contactMethods.slice(0, 2).map((method) => (
                 <a
                   key={method.name}
                   href={method.url}
                   target={method.external ? '_blank' : undefined}
                   rel={method.external ? 'noopener noreferrer' : undefined}
-                  className="contact-method-card dos-flicker"
+                  className="contact-direct-link dos-flicker"
                 >
                   <span className="contact-method-icon">{method.icon}</span>
                   <span className="contact-method-body">
                     <span className="contact-method-name">{method.name}</span>
                     <span className="contact-method-value">{method.label}</span>
-                    <span className="contact-method-description">{method.description}</span>
                   </span>
                 </a>
               ))}
             </div>
           </RetroWindow>
 
-          <RetroWindow title="STATUS_PANEL">
+          <RetroWindow title="PROJECT_STARTER">
             <div className="contact-status-panel">
-              <div className="contact-status-pill">
-                <span className="contact-status-dot"></span>
-                Available for new conversations
-              </div>
-
-              <div className="contact-status-grid">
-                <div className="contact-status-item">
-                  <span className="contact-status-label">Focus</span>
-                  <strong>Web apps, tooling, integrations</strong>
-                </div>
-                <div className="contact-status-item">
-                  <span className="contact-status-label">Best brief</span>
-                  <strong>Goals, scope, timeline, references</strong>
-                </div>
-              </div>
-
-              <a
-                href="/Sasanka_Ravindu_SE_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="retro-btn retro-btn-primary contact-resume-link"
-              >
-                DOWNLOAD RESUME
-              </a>
+              <p className="text-muted" style={{ margin: 0 }}>
+                To get a faster response, include these details in your message:
+              </p>
+              <ul className="contact-checklist">
+                {projectStarter.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
           </RetroWindow>
         </div>

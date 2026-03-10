@@ -4,21 +4,57 @@ import { useEffect, useRef, useState } from 'react';
 import anime from 'animejs';
 import ProjectCard from '@/components/ProjectCard';
 import ProjectDetailView from '@/components/ProjectDetailView';
-import { projects, tools, Project } from '@/data/projects';
+import { projects, Project } from '@/data/projects';
 
 const clientSites = projects.filter((p) => p.demo);
 
-type ViewMode = 'all-projects' | 'client-sites' | 'all-tools' | 'project-detail';
+type ViewMode = 'all-projects' | 'client-sites' | 'project-detail';
+type CollectionViewKey = Exclude<ViewMode, 'project-detail'>;
+
+interface CollectionView {
+  id: CollectionViewKey;
+  label: string;
+  title: string;
+  subtitle: string;
+  prompt: string;
+  command: string;
+  helper: string;
+  items: Project[];
+}
 
 export default function ProjectsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('all-projects');
   const [previousViewMode, setPreviousViewMode] = useState<ViewMode>('all-projects');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const collectionViews: Record<CollectionViewKey, CollectionView> = {
+    'all-projects': {
+      id: 'all-projects',
+      label: 'All Projects',
+      title: '> PROJECTS.EXE',
+      subtitle: 'Selected builds across apps, systems, and client work',
+      prompt: 'C:\\PROJECTS>',
+      command: 'dir /v /sort:date',
+      helper: 'Browse the full archive of shipped products, experiments, and production systems in one place.',
+      items: projects,
+    },
+    'client-sites': {
+      id: 'client-sites',
+      label: 'Client Sites',
+      title: '> CLIENT_SITES.EXE',
+      subtitle: 'Live websites built for businesses and real-world launches',
+      prompt: 'C:\\PROJECTS\\CLIENT_SITES>',
+      command: 'dir /v /filter:live',
+      helper: 'A focused view of public-facing websites with live demos and polished delivery work.',
+      items: clientSites,
+    },
+  };
+  const activeCollectionKey = (viewMode === 'project-detail' ? previousViewMode : viewMode) as CollectionViewKey;
+  const activeCollection = collectionViews[activeCollectionKey];
 
   useEffect(() => {
     // Animate grid items when view satisfies grid condition
-    if ((viewMode === 'all-projects' || viewMode === 'client-sites' || viewMode === 'all-tools') && gridRef.current) {
+    if (viewMode !== 'project-detail' && gridRef.current) {
       const items = gridRef.current.children;
       anime({
         targets: items,
@@ -39,130 +75,79 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-
-      <div className="section-header" style={{ marginBottom: '2rem' }}>
-        <h1 className="section-title">&gt; PROJECTS.EXE</h1>
-        <p className="section-subtitle">Project Directory</p>
-      </div>
-
-      <div className="layout-container" style={{ display: 'flex', gap: '2rem', flex: 1, alignItems: 'flex-start', flexDirection: 'column' }}>
-        {/* MAIN CONTENT AREA */}
-        <main style={{ flex: 1, width: '100%', minWidth: 0 }}> {/* minWidth 0 prevents flex child from overflowing */}
-
-          {/* VIEW: ALL PROJECTS GRID */}
-          {viewMode === 'all-projects' && (
-            <div className="animate-fade-in">
-              <div className="terminal-container" style={{ marginBottom: '2rem' }}>
-                <div className="terminal-header">
-                  <span className="terminal-prompt">C:\PROJECTS&gt;</span>
-                  <span className="text-muted">dir /v /sort:date</span>
+    <div className="catalog-page">
+      {viewMode !== 'project-detail' ? (
+        <div className="animate-fade-in">
+          <section className="retro-window catalog-hero">
+            <div className="retro-window-content">
+              <div className="catalog-hero-grid">
+                <div className="catalog-hero-copy">
+                  <span className="catalog-eyebrow">Portfolio Directory</span>
+                  <div className="section-header" style={{ marginBottom: 0 }}>
+                    <h1 className="section-title">{activeCollection.title}</h1>
+                    <p className="section-subtitle">{activeCollection.subtitle}</p>
+                  </div>
+                  <p className="catalog-hero-text">{activeCollection.helper}</p>
+                  <div className="catalog-actions">
+                    {Object.values(collectionViews).map((collection) => (
+                      <button
+                        key={collection.id}
+                        type="button"
+                        className={`retro-btn ${activeCollectionKey === collection.id ? 'retro-btn-primary' : ''}`}
+                        onClick={() => setViewMode(collection.id)}
+                      >
+                        {collection.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                  {projects.length} project(s) found. Select a project to view details.
-                </p>
-              </div>
 
-              <div
-                ref={gridRef}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                  gap: '1.5rem',
-                  marginBottom: '4rem'
-                }}
-              >
-                {projects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    onClick={() => handleProjectClick(project, 'all-projects')}
-                  />
-                ))}
+                <div className="catalog-stat-grid">
+                  <div className="catalog-stat-card">
+                    <span className="catalog-stat-value">{projects.length}</span>
+                    <span className="catalog-stat-label">Projects</span>
+                  </div>
+                  <div className="catalog-stat-card">
+                    <span className="catalog-stat-value">{clientSites.length}</span>
+                    <span className="catalog-stat-label">Client Sites</span>
+                  </div>
+                </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {/* VIEW: CLIENT SITES GRID */}
-          {viewMode === 'client-sites' && (
-            <div className="animate-fade-in">
-              <div className="terminal-container" style={{ marginBottom: '2rem' }}>
-                <div className="terminal-header">
-                  <span className="terminal-prompt">C:\PROJECTS\CLIENT_SITES&gt;</span>
-                  <span className="text-muted">dir /v</span>
-                </div>
-                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                  {clientSites.length} client site(s). Click to view details or visit the live site.
-                </p>
-              </div>
-
-              <div
-                ref={gridRef}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                  gap: '1.5rem',
-                  marginBottom: '4rem'
-                }}
-              >
-                {clientSites.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    onClick={() => handleProjectClick(project, 'client-sites')}
-                  />
-                ))}
-              </div>
+          <div className="terminal-container catalog-terminal">
+            <div className="terminal-header">
+              <span className="terminal-prompt">{activeCollection.prompt}</span>
+              <span className="text-muted">{activeCollection.command}</span>
             </div>
-          )}
+            <p className="catalog-terminal-text">
+              {activeCollection.items.length} item(s) found. Select any card to inspect the full build story.
+            </p>
+          </div>
 
-          {/* VIEW: TOOLS GRID */}
-          {viewMode === 'all-tools' && (
-            <div className="animate-fade-in">
-              <div className="terminal-container" style={{ marginBottom: '2rem' }}>
-                <div className="terminal-header">
-                  <span className="terminal-prompt">C:\TOOLS&gt;</span>
-                  <span className="text-muted">list --all</span>
-                </div>
-                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
-                  {tools.length} tool(s) found.
-                </p>
-              </div>
-
-              <div
-                ref={gridRef}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                  gap: '1.5rem',
-                }}
-              >
-                {tools.map((tool) => (
-                  <ProjectCard
-                    key={tool.id}
-                    project={tool}
-                    onClick={() => handleProjectClick(tool, 'all-tools')}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* VIEW: DETAIL */}
-          {viewMode === 'project-detail' && selectedProject && (
-            <ProjectDetailView
-              project={selectedProject}
-              onBack={() => {
-                setViewMode(previousViewMode);
-                setSelectedProject(null);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            />
-          )}
-
-        </main>
-      </div>
-    </div >
+          <div ref={gridRef} className="catalog-card-grid">
+            {activeCollection.items.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onClick={() => handleProjectClick(project, activeCollection.id)}
+              />
+            ))}
+          </div>
+        </div>
+      ) : selectedProject ? (
+        <ProjectDetailView
+          project={selectedProject}
+          onBack={() => {
+            setViewMode(previousViewMode);
+            setSelectedProject(null);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      ) : null
+      }
+    </div>
   );
 }
 

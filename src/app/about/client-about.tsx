@@ -3,12 +3,12 @@
 import { useEffect, useRef } from 'react';
 import anime from 'animejs';
 import RetroWindow from '@/components/RetroWindow';
-import RetroButton from '@/components/RetroButton';
 import { bio, skills, education, achievements, socials } from '@/data/socials';
 import { experiences } from '@/data/experiences';
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const skillCategories = Object.entries(skills);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -25,27 +25,20 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="section" ref={containerRef} style={{ maxWidth: '1400px', margin: '0 auto' }}>
-      <div className="section-header">
-        <h1 className="section-title">&gt; ABOUT.EXE</h1>
-        <p className="section-subtitle">System Information & Status</p>
-      </div>
+    <div className="about-page" ref={containerRef}>
+      <section className="retro-window about-hero">
+        <div className="retro-window-content">
+          <div className="about-hero-grid">
+            <div className="about-hero-copy">
+              <span className="catalog-eyebrow">System Profile</span>
+              <div className="section-header" style={{ marginBottom: 0 }}>
+                <h1 className="section-title">&gt; ABOUT.EXE</h1>
+                <p className="section-subtitle">Background, strengths, and the way I build software</p>
+              </div>
 
-      {/* 1. Top Section: Profile & Bio */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-        <RetroWindow title="USER_PROFILE">
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-            {/* ASCII Art Avatar */}
-            <pre style={{
-              fontFamily: 'var(--font-terminal)',
-              color: 'var(--accent-primary)',
-              fontSize: '0.6rem',
-              lineHeight: 1,
-              marginBottom: '1rem',
-              overflow: 'hidden',
-              textAlign: 'center'
-            }}>
-              {`
+              <div className="about-profile-inline">
+                <div className="about-avatar-shell" aria-hidden="true">
+                  <pre className="about-avatar-art">{`
       .::::.
     .::::::::.
    :::::::::::
@@ -53,141 +46,118 @@ export default function AboutPage() {
   '::::::::::::'
     '::::::::'
       '::::'
-`}
-            </pre>
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>{bio.name}</h2>
-            <p className="text-accent" style={{ fontSize: '0.875rem' }}>{bio.title}</p>
-            <p className="text-muted" style={{ fontSize: '0.75rem', marginBottom: '1.5rem' }}>📍 {bio.location}</p>
+`}</pre>
+                </div>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              {socials.map((link) => (
-                <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" title={link.name}>
-                  <RetroButton style={{ padding: '0.5rem', minWidth: 'auto' }}>
-                    <span style={{ fontSize: '1.25rem' }}>{link.icon}</span>
-                  </RetroButton>
-                </a>
-              ))}
+                <div className="about-identity">
+                  <h2 className="about-name">{bio.name}</h2>
+                  <p className="about-role">{bio.title}</p>
+                  <p className="about-location">Sri Lanka based, building across web, automation, and device-connected systems.</p>
+                </div>
+              </div>
+
+              <p className="about-summary">{bio.long}</p>
+
+              <div className="about-socials">
+                {socials.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="about-social-link"
+                    title={link.name}
+                  >
+                    <span className="about-social-icon">{link.icon}</span>
+                    <span>{link.name}</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-        </RetroWindow>
+        </div>
+      </section>
 
-        <RetroWindow title="SYSTEM_BIO">
-          <div className="terminal-container" style={{ height: '100%', border: 'none', background: 'transparent', padding: '1rem', display: 'flex', flexDirection: 'column' }}>
-            <ul style={{ listStyle: 'none', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-              {/* Make sure bio.points exists in your data file, otherwise fallback to splitting bio.long if needed, 
-                                but we implemented points in the data step successfully. */}
-              {bio.points && bio.points.map((point, idx) => (
-                <li key={idx} style={{
-                  display: 'flex',
-                  gap: '1rem',
-                  fontSize: '1.15rem', // Increased font size as requested
-                  color: 'var(--text-secondary)',
-                  lineHeight: 1.5,
-                  alignItems: 'flex-start'
-                }}>
-                  <span style={{ color: 'var(--accent-primary)', fontWeight: 'bold', marginTop: '0.2rem' }}>&gt;</span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </RetroWindow>
-      </div>
-
-      {/* 2. Middle Section: Experience (Left) & Skills (Right) */}
-      <div className="about-grid-middle" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '2rem',
-        marginBottom: '3rem'
-      }}>
-        {/* Left Column: Experience */}
-        <div style={{ gridColumn: 'span 2' }}>
-          <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>// EXECUTION_LOG (Experience)</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {experiences.map((exp) => (
-              <div key={exp.id} style={{
-                borderLeft: '2px solid var(--border-color)',
-                paddingLeft: '1.5rem',
-                position: 'relative'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  left: '-5px',
-                  top: '0',
-                  width: '8px',
-                  height: '8px',
-                  background: 'var(--accent-primary)',
-                  boxShadow: '0 0 5px var(--accent-primary)'
-                }} />
-                <span className="text-accent" style={{ fontSize: '0.75rem', fontFamily: 'var(--font-terminal)' }}>{exp.duration}</span>
-                <h4 style={{ fontSize: '1.1rem', margin: '0.25rem 0' }}>{exp.role}</h4>
-                <p className="text-muted" style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>{exp.company}</p>
-                <p style={{ fontSize: '0.85rem', lineHeight: 1.6 }}>{exp.description}</p>
+      <section className="about-main-grid">
+        <RetroWindow title="SYSTEM_BIO" className="about-panel">
+          <div className="about-bio-list">
+            {bio.points.map((point) => (
+              <div key={point} className="about-bio-item">
+                <span className="about-bio-bullet">&gt;</span>
+                <span>{point}</span>
               </div>
             ))}
           </div>
-        </div>
+        </RetroWindow>
 
-        {/* Right Column: Skills */}
-        <div style={{ gridColumn: 'span 1' }}>
-          <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>// INSTALLED_MODULES</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {Object.entries(skills).map(([category, items]) => (
-              <RetroWindow key={category} title={`MOD:${category.toUpperCase()}`} style={{ height: 'auto' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  {items.map(skill => (
-                    <span key={skill} style={{
-                      fontSize: '0.75rem',
-                      padding: '0.25rem 0.5rem',
-                      background: 'var(--bg-section)',
-                      border: '1px solid var(--border-color)',
-                      color: 'var(--text-secondary)',
-                      borderRadius: '2px'
-                    }}>
+        <RetroWindow title="INSTALLED_MODULES" className="about-panel">
+          <div className="about-skill-groups">
+            {skillCategories.map(([category, items]) => (
+              <div key={category} className="about-skill-group">
+                <div className="about-skill-group-header">
+                  <span className="about-skill-group-name">{category}</span>
+                  <span className="about-skill-group-count">{items.length}</span>
+                </div>
+                <div className="about-chip-list">
+                  {items.map((skill) => (
+                    <span key={skill} className="about-chip">
                       {skill}
                     </span>
                   ))}
                 </div>
-              </RetroWindow>
+              </div>
             ))}
           </div>
-        </div>
-      </div>
+        </RetroWindow>
+      </section>
 
-      {/* 3. Bottom Section: Education & Achievements */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-        {/* Education */}
-        <div>
-          <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>// SYSTEM_SPECS (Education)</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {education.map((edu, idx) => (
-              <RetroWindow key={idx} title="EDU_NODE">
-                <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>{edu.degree}</h4>
-                <p className="text-muted" style={{ fontSize: '0.8rem' }}>{edu.institution}</p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginTop: '0.5rem', color: 'var(--accent-secondary)' }}>
-                  <span>{edu.year}</span>
-                  <span>{edu.details}</span>
+      <section className="about-content-grid">
+        <RetroWindow title="EXECUTION_LOG" className="about-panel">
+          <div className="about-experience-list">
+            {experiences.map((exp) => (
+              <article key={exp.id} className="about-timeline-item">
+                <span className="about-timeline-dot" aria-hidden="true" />
+                <div className="about-timeline-content">
+                  <span className="about-timeline-duration">{exp.duration}</span>
+                  <h3 className="about-timeline-role">{exp.role}</h3>
+                  <p className="about-timeline-company">{exp.company}</p>
+                  <p className="about-timeline-description">{exp.description}</p>
+                  <ul className="about-responsibility-list">
+                    {exp.responsibilities.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
                 </div>
-              </RetroWindow>
+              </article>
             ))}
           </div>
-        </div>
+        </RetroWindow>
 
-        {/* Achievements */}
-        <div>
-          <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>// TROPHIES (Achievements)</h3>
-          <RetroWindow title="ACHIEVEMENTS_LOG">
-            <ul className="skills-list" style={{ listStyle: 'none', padding: 0 }}>
-              {achievements.map((item, idx) => (
-                <li key={idx} className="skill-item" style={{ fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-                  {item}
-                </li>
+        <div className="about-side-stack">
+          <RetroWindow title="SYSTEM_SPECS" className="about-panel">
+            <div className="about-education-list">
+              {education.map((edu) => (
+                <article key={`${edu.institution}-${edu.degree}`} className="about-education-card">
+                  <h3>{edu.degree}</h3>
+                  <p className="about-education-school">{edu.institution}</p>
+                  <div className="about-education-meta">
+                    <span>{edu.year}</span>
+                    {edu.details ? <span>{edu.details}</span> : null}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </RetroWindow>
+
+          <RetroWindow title="ACHIEVEMENTS_LOG" className="about-panel">
+            <ul className="about-achievement-list">
+              {achievements.map((item) => (
+                <li key={item}>{item}</li>
               ))}
             </ul>
           </RetroWindow>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
