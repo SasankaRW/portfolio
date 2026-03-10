@@ -44,42 +44,6 @@ export default function ProjectsPage() {
       <div className="section-header" style={{ marginBottom: '2rem' }}>
         <h1 className="section-title">&gt; PROJECTS.EXE</h1>
         <p className="section-subtitle">Project Directory</p>
-        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => setViewMode('all-projects')}
-            className={viewMode === 'all-projects' ? 'project-tab project-tab--active' : 'project-tab'}
-            style={{
-              padding: '0.5rem 1rem',
-              fontFamily: 'var(--font-terminal)',
-              fontSize: '0.875rem',
-              border: '1px solid var(--border-color)',
-              background: viewMode === 'all-projects' ? 'var(--accent-primary)' : 'transparent',
-              color: viewMode === 'all-projects' ? 'var(--bg-page)' : 'var(--text-primary)',
-              cursor: 'pointer',
-              borderRadius: '2px',
-            }}
-          >
-            All projects
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewMode('client-sites')}
-            className={viewMode === 'client-sites' ? 'project-tab project-tab--active' : 'project-tab'}
-            style={{
-              padding: '0.5rem 1rem',
-              fontFamily: 'var(--font-terminal)',
-              fontSize: '0.875rem',
-              border: '1px solid var(--border-color)',
-              background: viewMode === 'client-sites' ? 'var(--accent-primary)' : 'transparent',
-              color: viewMode === 'client-sites' ? 'var(--bg-page)' : 'var(--text-primary)',
-              cursor: 'pointer',
-              borderRadius: '2px',
-            }}
-          >
-            Client sites ({clientSites.length})
-          </button>
-        </div>
       </div>
 
       <div className="layout-container" style={{ display: 'flex', gap: '2rem', flex: 1, alignItems: 'flex-start', flexDirection: 'column' }}>

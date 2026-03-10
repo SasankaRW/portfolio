@@ -4,7 +4,7 @@ import { useState, useRef, FormEvent } from 'react';
 import anime from 'animejs';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
-import { socials } from '@/data/socials';
+import { bio, socials } from '@/data/socials';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -18,6 +18,45 @@ export default function ContactPage() {
 
   const emailSocial = socials.find(s => s.name === 'Email');
   const emailAddress = emailSocial ? emailSocial.url.replace('mailto:', '') : 'Sasankarw@gmail.com';
+  const contactMethods = [
+    {
+      name: 'Email',
+      label: emailAddress,
+      url: `mailto:${emailAddress}`,
+      description: 'Best for project briefs, freelance work, and collaboration ideas.',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+          <path d="m3 7 9 6 9-6"></path>
+        </svg>
+      ),
+      external: false,
+    },
+    {
+      name: 'LinkedIn',
+      label: 'linkedin.com/in/sasankaravindu',
+      url: socials.find(s => s.name === 'LinkedIn')?.url ?? 'https://linkedin.com/in/sasankaravindu',
+      description: 'Ideal for professional networking and role discussions.',
+      icon: socials.find(s => s.name === 'LinkedIn')?.icon,
+      external: true,
+    },
+    {
+      name: 'GitHub',
+      label: 'github.com/SasankaRW',
+      url: socials.find(s => s.name === 'GitHub')?.url ?? 'https://github.com/SasankaRW',
+      description: 'Browse code samples, experiments, and shipped work.',
+      icon: socials.find(s => s.name === 'GitHub')?.icon,
+      external: true,
+    },
+    {
+      name: 'Phone',
+      label: '+94 71 566 9231',
+      url: socials.find(s => s.name === 'Phone')?.url ?? 'tel:+94715669231',
+      description: 'Useful for urgent follow-ups and short syncs.',
+      icon: socials.find(s => s.name === 'Phone')?.icon,
+      external: false,
+    },
+  ];
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -59,19 +98,47 @@ export default function ContactPage() {
     <div className="section">
       <div className="section-header">
         <h1 className="section-title">&gt; CONTACT.EXE</h1>
-        <p className="section-subtitle">Send a Message</p>
+        <p className="section-subtitle">Let&apos;s build something useful together</p>
       </div>
 
-      <div style={{ display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-        {/* Contact Form */}
-        <RetroWindow title="NEW MESSAGE">
+      <div className="contact-hero">
+        <div className="contact-hero-copy">
+          <div className="terminal-header" style={{ marginBottom: '1rem', padding: 0, borderBottom: 'none' }}>
+            <span className="terminal-prompt">C:\CONTACT&gt;</span>
+            <span className="text-muted">init handshake</span>
+          </div>
+          <h2 className="contact-hero-title">Open for collaborations, product work, and engineering-heavy builds.</h2>
+          <p className="contact-hero-text">
+            {bio.short} If you have an idea, a product to refine, or a system that needs careful implementation,
+            send a note and I&apos;ll get back to you.
+          </p>
+        </div>
+
+        <div className="contact-hero-stats">
+          <div className="contact-stat-card">
+            <span className="contact-stat-label">Primary channel</span>
+            <strong>{emailAddress}</strong>
+          </div>
+          <div className="contact-stat-card">
+            <span className="contact-stat-label">Location</span>
+            <strong>{bio.location}</strong>
+          </div>
+          <div className="contact-stat-card">
+            <span className="contact-stat-label">Response window</span>
+            <strong>Usually within 24-48 hours</strong>
+          </div>
+        </div>
+      </div>
+
+      <div className="contact-layout">
+        <RetroWindow title="MESSAGE_COMPOSER">
           {submitted ? (
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <div className="contact-success">
               <p className="text-accent" style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>
                 MESSAGE SENT SUCCESSFULLY
               </p>
-              <p className="text-muted">
-                Thank you for reaching out. I'll get back to you soon.
+              <p className="text-muted" style={{ maxWidth: '34rem', margin: '0 auto 1rem' }}>
+                Thank you for reaching out. I&apos;ll get back to you soon.
               </p>
               <RetroButton
                 onClick={() => {
@@ -85,125 +152,130 @@ export default function ContactPage() {
               </RetroButton>
             </div>
           ) : (
-            <form ref={formRef} onSubmit={handleSubmit}>
-              <div className="terminal-container" style={{ border: 'none', marginBottom: '1.5rem' }}>
+            <form ref={formRef} onSubmit={handleSubmit} className="contact-form">
+              <div className="terminal-container contact-form-intro" style={{ border: 'none' }}>
                 <div className="terminal-header" style={{ marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <span className="terminal-prompt">C:\MAIL&gt;</span>
                   <span className="text-muted">compose</span>
                 </div>
                 <p className="terminal-text" style={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                  ENTER YOUR MESSAGE BELOW:
+                  SHARE YOUR IDEA, PROJECT, OR QUESTION BELOW:
+                </p>
+                <p className="text-muted" style={{ marginBottom: 0 }}>
+                  A short brief, timeline, or project goal is enough to start the conversation.
                 </p>
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label className="retro-label">NAME:</label>
-                <input
-                  type="text"
-                  className="retro-input"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Your Name"
-                  required
-                />
+              <div className="contact-form-grid">
+                <div>
+                  <label className="retro-label">NAME:</label>
+                  <input
+                    type="text"
+                    className="retro-input"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Your Name"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="retro-label">EMAIL:</label>
+                  <input
+                    type="email"
+                    className="retro-input"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="abc@example.com"
+                    required
+                  />
+                </div>
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label className="retro-label">EMAIL:</label>
-                <input
-                  type="email"
-                  className="retro-input"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="abc@example.com"
-                  required
-                />
-              </div>
-
-              <div style={{ marginBottom: '1.5rem' }}>
+              <div>
                 <label className="retro-label">MESSAGE:</label>
                 <textarea
                   className="retro-input retro-textarea"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Your message here..."
+                  placeholder="Tell me what you are building, what you need help with, or what outcome you are aiming for..."
                   required
                 />
               </div>
 
-              <RetroButton type="submit" variant="primary" disabled={isSubmitting}>
-                {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
-              </RetroButton>
+              <div className="contact-form-actions">
+                <RetroButton type="submit" variant="primary" disabled={isSubmitting}>
+                  {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
+                </RetroButton>
+                <p className="text-muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+                  Prefer direct email? <a href={`mailto:${emailAddress}`}>{emailAddress}</a>
+                </p>
+              </div>
             </form>
           )}
         </RetroWindow>
 
-        {/* Social Links */}
-        <RetroWindow title="CONNECT">
-          <div className="terminal-container" style={{ border: 'none', marginBottom: '1.5rem' }}>
-            <div className="terminal-header" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
-              <span className="terminal-prompt">C:\SOCIAL&gt;</span>
-              <span className="text-muted">links</span>
+        <div className="contact-sidebar">
+          <RetroWindow title="QUICK_CONNECT">
+            <div className="terminal-container contact-sidebar-intro" style={{ border: 'none' }}>
+              <div className="terminal-header" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
+                <span className="terminal-prompt">C:\SOCIAL&gt;</span>
+                <span className="text-muted">links --priority</span>
+              </div>
+              <p className="text-muted" style={{ marginBottom: 0 }}>
+                Pick the channel that best matches how you want to start the conversation.
+              </p>
             </div>
-          </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {socials.map((social) => (
+            <div className="contact-method-list">
+              {contactMethods.map((method) => (
+                <a
+                  key={method.name}
+                  href={method.url}
+                  target={method.external ? '_blank' : undefined}
+                  rel={method.external ? 'noopener noreferrer' : undefined}
+                  className="contact-method-card dos-flicker"
+                >
+                  <span className="contact-method-icon">{method.icon}</span>
+                  <span className="contact-method-body">
+                    <span className="contact-method-name">{method.name}</span>
+                    <span className="contact-method-value">{method.label}</span>
+                    <span className="contact-method-description">{method.description}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </RetroWindow>
+
+          <RetroWindow title="STATUS_PANEL">
+            <div className="contact-status-panel">
+              <div className="contact-status-pill">
+                <span className="contact-status-dot"></span>
+                Available for new conversations
+              </div>
+
+              <div className="contact-status-grid">
+                <div className="contact-status-item">
+                  <span className="contact-status-label">Focus</span>
+                  <strong>Web apps, tooling, integrations</strong>
+                </div>
+                <div className="contact-status-item">
+                  <span className="contact-status-label">Best brief</span>
+                  <strong>Goals, scope, timeline, references</strong>
+                </div>
+              </div>
+
               <a
-                key={social.name}
-                href={social.url}
+                href="/Sasanka_Ravindu_SE_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  padding: '0.75rem 1rem',
-                  background: 'var(--bg-section)',
-                  border: '2px solid var(--border-color)',
-                  color: 'var(--text-secondary)',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s',
-                }}
-                className="dos-flicker"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--accent-primary)';
-                  e.currentTarget.style.color = 'var(--accent-primary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--border-color)';
-                  e.currentTarget.style.color = 'var(--text-secondary)';
-                }}
+                className="retro-btn retro-btn-primary contact-resume-link"
               >
-                <span style={{ fontSize: '1.25rem' }}>{social.icon}</span>
-                <span>{social.name}</span>
+                DOWNLOAD RESUME
               </a>
-            ))}
-            <a
-              href="/Sasanka_Ravindu_SE_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="retro-btn retro-btn-primary"
-              style={{ textAlign: 'center', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
-            >
-              <span style={{ fontSize: '1.2rem' }}>💾</span> DOWNLOAD RESUME
-            </a>
-          </div>
-
-          <div style={{
-            marginTop: '2rem',
-            padding: '1rem',
-            background: 'var(--bg-section)',
-            border: '2px solid var(--border-color)'
-          }}>
-            <p className="text-muted" style={{ fontSize: '0.875rem', margin: 0 }}>
-              Prefer email? Reach out at{' '}
-              <a href={`mailto:${emailAddress}`} className="text-accent">
-                {emailAddress}
-              </a>
-            </p>
-          </div>
-        </RetroWindow>
+            </div>
+          </RetroWindow>
+        </div>
       </div>
     </div>
   );
