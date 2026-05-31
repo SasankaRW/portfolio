@@ -2344,7 +2344,8 @@ a:hover {
   .contact-shell-grid,
   .contact-layout,
   .contact-form-grid,
-  .contact-shell-notes {
+  .contact-shell-notes,
+  .contact-two-col {
     grid-template-columns: 1fr;
   }
 
