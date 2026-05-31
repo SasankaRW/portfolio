@@ -55,14 +55,6 @@
   --bg-terminal: #0a0a0a;
 }
 
-/* Amber Mode Theme (Easter Egg) */
-.amber-mode {
-  --accent-primary: var(--accent-amber);
-  --accent-cyan: var(--accent-amber);
-  --border-color: #3C2A0A;
-  --glow-accent: 0 0 8px rgba(255, 176, 0, 0.3);
-}
-
 /* ============================================
    THEME MODES
    ============================================ */
@@ -159,6 +151,15 @@
   --shadow-window: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 217, 255, 0.1);
   --glow-accent: 0 0 12px rgba(0, 217, 255, 0.4), 0 0 24px rgba(0, 217, 255, 0.2);
   --glow-strong: 0 0 16px rgba(0, 217, 255, 0.5), 0 0 32px rgba(0, 217, 255, 0.3);
+}
+
+/* Amber Mode Easter Egg — placed after themes so it overrides active theme accents */
+body.amber-mode {
+  --accent-primary: var(--accent-amber);
+  --accent-cyan: var(--accent-amber);
+  --border-color: #3C2A0A;
+  --glow-accent: 0 0 8px rgba(255, 176, 0, 0.3);
+  --glow-strong: 0 0 12px rgba(255, 176, 0, 0.4), 0 0 24px rgba(255, 176, 0, 0.2);
 }
 
 /* ============================================

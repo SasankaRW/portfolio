@@ -27,6 +27,7 @@ const pressStart2P = Press_Start_2P({
 });
 import { SoundProvider } from "@/context/SoundContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import KonamiEasterEgg from "@/components/KonamiEasterEgg";
 import { DEFAULT_OG_IMAGE, getSiteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -107,6 +108,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           <SoundProvider>
+            <KonamiEasterEgg />
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only fixed top-0 left-0 z-[1002] p-4 bg-[var(--bg-section)] text-[var(--accent-primary)] border border-[var(--accent-primary)] outline-none"

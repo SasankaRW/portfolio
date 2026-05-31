@@ -8,7 +8,6 @@ import InteractiveTerminal from '@/components/InteractiveTerminal';
 import RetroWindow from '@/components/RetroWindow';
 import RetroButton from '@/components/RetroButton';
 import BootSequence from '@/components/BootSequence';
-import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { bio, skills, education, achievements, socials } from '@/data/socials';
 import { experiences } from '@/data/experiences';
 import { projects as projectsData } from '@/data/projects';
@@ -24,17 +23,10 @@ const menuItems = [
 export default function HomePage() {
   const [bootComplete, setBootComplete] = useState(false);
   const [showContent, setShowContent] = useState(false);
-  const [amberMode, setAmberMode] = useState(false);
   const [logIndex, setLogIndex] = useState(0);
   const [projectIndex, setProjectIndex] = useState(0);
   const [memoryIndex, setMemoryIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Konami code easter egg
-  useKonamiCode(() => {
-    setAmberMode(prev => !prev);
-    document.body.classList.toggle('amber-mode');
-  });
 
   // Check if boot sequence has already run
   useEffect(() => {
