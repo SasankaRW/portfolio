@@ -78,28 +78,18 @@ export default function ContactPage() {
       </div>
 
       <RetroWindow title="CONTACT_PORTAL">
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '2.5rem',
-          alignItems: 'start',
-        }}
-          className="contact-two-col"
-        >
+        <div className="contact-two-col">
 
-          {/* LEFT — message form */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="contact-form-col">
             <div>
-              <p style={{ margin: '0 0 0.25rem', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--accent-primary)' }}>
-                Send a message
-              </p>
-              <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem' }}>
+              <p className="contact-form-intro-label">Send a message</p>
+              <p className="contact-form-intro-text">
                 Share what you&apos;re building and I&apos;ll get back to you.
               </p>
             </div>
 
             {submitted ? (
-              <div style={{ textAlign: 'center', padding: '2.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+              <div className="contact-success">
                 <p className="text-accent" style={{ fontSize: '1.1rem', margin: 0 }}>MESSAGE SENT</p>
                 <p className="text-muted" style={{ margin: 0, fontSize: '0.9rem' }}>I&apos;ll get back to you soon.</p>
                 <RetroButton onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', message: '' }); }}>
@@ -107,8 +97,8 @@ export default function ContactPage() {
                 </RetroButton>
               </div>
             ) : (
-              <form ref={formRef} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <form ref={formRef} onSubmit={handleSubmit} className="contact-form-stack">
+                <div className="contact-form-fields">
                   <div>
                     <label className="retro-label">NAME:</label>
                     <input
@@ -144,7 +134,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <div>
+                <div className="contact-form-actions">
                   <RetroButton type="submit" variant="primary" disabled={isSubmitting}>
                     {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
                   </RetroButton>
@@ -153,54 +143,46 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* Divider */}
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              position: 'absolute',
-              left: '-1.25rem',
-              top: 0,
-              bottom: 0,
-              width: '1px',
-              background: 'var(--border-color)',
-            }} aria-hidden="true" />
+          <div className="contact-channels-col">
+            <div className="contact-col-divider" aria-hidden="true" />
 
-            {/* RIGHT — contact channels */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                  Choose the fastest way to reach out
-                </p>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {contactMethods.map((method) => (
-                  <a
-                    key={method.name}
-                    href={method.url}
-                    target={method.external ? '_blank' : undefined}
-                    rel={method.external ? 'noopener noreferrer' : undefined}
-                    className="contact-method-card dos-flicker"
-                  >
-                    <span className="contact-method-icon">{method.icon}</span>
-                    <span className="contact-method-body">
-                      <span className="contact-method-name">{method.name}</span>
-                      <span className="contact-method-value">{method.label}</span>
-                      <span className="contact-method-description">{method.description}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-
-              <a
-                href="/Sasanka_Ravindu_SE_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="retro-btn retro-btn-primary"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'flex-start' }}
-              >
-                <span>💾</span> DOWNLOAD RESUME
-              </a>
+            <div className="contact-shell-panel-header">
+              <span className="contact-status-pill">
+                <span className="contact-status-dot"></span>
+                Available for new conversations
+              </span>
+              <p className="contact-channels-intro">
+                Choose the fastest way to reach out
+              </p>
             </div>
+
+            <div className="contact-channels-list">
+              {contactMethods.map((method) => (
+                <a
+                  key={method.name}
+                  href={method.url}
+                  target={method.external ? '_blank' : undefined}
+                  rel={method.external ? 'noopener noreferrer' : undefined}
+                  className="contact-method-card dos-flicker"
+                >
+                  <span className="contact-method-icon">{method.icon}</span>
+                  <span className="contact-method-body">
+                    <span className="contact-method-name">{method.name}</span>
+                    <span className="contact-method-value">{method.label}</span>
+                    <span className="contact-method-description">{method.description}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+
+            <a
+              href="/Sasanka_Ravindu_SE_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="retro-btn retro-btn-primary contact-resume-btn"
+            >
+              <span>💾</span> DOWNLOAD RESUME
+            </a>
           </div>
 
         </div>
